@@ -60,7 +60,7 @@ export default function About() {
             <a href="/" className="hover:text-primary transition-colors">Home</a>
             <a href="#" className="hover:text-primary transition-colors">Events</a>
             <a href="/education" className="hover:text-primary transition-colors">Education</a>
-            <a href="#" className="hover:text-primary transition-colors">Resources</a>
+            <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
             <a href="/about" className="hover:text-primary transition-colors text-primary font-bold">About</a>
           </div>
 

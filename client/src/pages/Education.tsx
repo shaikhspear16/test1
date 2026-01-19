@@ -86,8 +86,8 @@ export default function Education() {
             <a href="/" className="hover:text-primary transition-colors">Home</a>
             <a href="#" className="hover:text-primary transition-colors">Events</a>
             <a href="/education" className="hover:text-primary transition-colors text-primary font-bold">Education</a>
-            <a href="#" className="hover:text-primary transition-colors">Resources</a>
-            <a href="#" className="hover:text-primary transition-colors">About</a>
+            <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
+            <a href="/about" className="hover:text-primary transition-colors">About</a>
           </div>
 
           <a href="/donate">

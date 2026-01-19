@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Donate from "@/pages/Donate";
 import Education from "@/pages/Education";
 import About from "@/pages/About";
+import Resources from "@/pages/Resources";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/donate" component={Donate} />
       <Route path="/education" component={Education} />
       <Route path="/about" component={About} />
+      <Route path="/resources" component={Resources} />
       <Route component={NotFound} />
     </Switch>
   );
