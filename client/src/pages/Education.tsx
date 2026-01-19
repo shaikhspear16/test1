@@ -13,6 +13,12 @@ import {
   Calendar,
   Sparkles
 } from "lucide-react";
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -113,47 +119,132 @@ export default function Education() {
           </div>
         </section>
 
-        {/* Programs Grid */}
+        {/* Programs Accordion Section */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-8">
-              {EDUCATION_CATEGORIES.map((category, index) => (
-                <motion.div
-                  key={category.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="h-full border-border/50 hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col">
-                    <CardHeader>
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                          <category.icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider">{category.provider}</Badge>
+          <div className="container mx-auto px-4 max-w-4xl">
+            <Accordion type="single" collapsible className="w-full space-y-4">
+              {/* Quran Programs */}
+              <AccordionItem value="quran" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+                <AccordionTrigger className="hover:no-underline py-6">
+                  <div className="flex items-center gap-4 text-left">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <BookOpen className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Quran Programs</h3>
+                      <p className="text-sm text-muted-foreground">Full-time Hifz, After School & Summer Programs</p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pb-8 pt-2">
+                  <div className="space-y-8 pl-16">
+                    <div>
+                      <h4 className="font-bold text-lg mb-2">Darul Uloom Austin Full Time Quran Hifz</h4>
+                      <p className="text-muted-foreground mb-4">
+                        Students will memorize the Quran, learn to recite with proper tajweed and learn the basics of Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh in the Safer Series Curriculum.
+                      </p>
+                      <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
+                        <p className="font-bold mb-1">Class Hours:</p>
+                        <p>Mon - Thu: 8 am - 2 pm</p>
+                        <p>Fri: 8 am - 12 pm</p>
+                        <p>Sat: 8 am - 2 pm</p>
                       </div>
-                      <CardTitle className="text-2xl">{category.title}</CardTitle>
-                      <CardDescription className="text-sm">{category.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <ul className="space-y-3 mb-8">
-                        {category.items.map((item) => (
-                          <li key={item} className="flex items-center gap-3 text-sm text-muted-foreground">
-                            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                      <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg mt-auto">
-                        <a href={category.link} target="_blank" rel="noopener noreferrer">
-                          {category.linkText} <ExternalLink className="ml-2 h-4 w-4" />
-                        </a>
+                      <Button asChild variant="outline" size="sm">
+                        <a href="https://darululoomaustin.org/quran" target="_blank" rel="noopener noreferrer">Learn More at DUA</a>
                       </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold text-lg mb-2">Darul Uloom Austin After School Program</h4>
+                      <p className="text-muted-foreground mb-4">
+                        Students will learn to connect with the Book of Allah (SWT) and build a solid Islamic foundation in Aqeeda, Hadith, Akhlaq, Fiqh, and Tareekh.
+                      </p>
+                      <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
+                        <p className="font-bold mb-1">Class Hours:</p>
+                        <p>Mon - Thu: 5 pm - 7:00 pm at GIC</p>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Seminary Programs */}
+              <AccordionItem value="seminary" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+                <AccordionTrigger className="hover:no-underline py-6">
+                  <div className="flex items-center gap-4 text-left">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <GraduationCap className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Seminary Programs</h3>
+                      <p className="text-sm text-muted-foreground">Naseeha Program & Full-time Seminary</p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pb-8 pt-2">
+                  <div className="space-y-8 pl-16">
+                    <div>
+                      <h4 className="font-bold text-lg mb-2">DUA Seminary Naseeha Program</h4>
+                      <p className="text-muted-foreground mb-4">
+                        The Naseeha Program aims to help our students live Islamically in a secular environment through sacred knowledge and time with Ulama.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+                        {["Arabic Syntax", "Morphology", "Personal Development", "Hadith", "Aqidah", "Fiqh"].map(item => (
+                          <div key={item} className="flex items-center gap-2">
+                            <div className="h-1 w-1 rounded-full bg-primary" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                      <Button asChild variant="outline" size="sm">
+                        <a href="https://darululoomaustin.org/seminary" target="_blank" rel="noopener noreferrer">Learn More at DUA</a>
+                      </Button>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* Al Iman Sunday School */}
+              <AccordionItem value="aliman" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+                <AccordionTrigger className="hover:no-underline py-6">
+                  <div className="flex items-center gap-4 text-left">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <Users className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Al Iman Sunday School</h3>
+                      <p className="text-sm text-muted-foreground">Weekly Islamic education for children</p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="pb-8 pt-2">
+                  <div className="space-y-6 pl-16">
+                    <p className="text-muted-foreground">
+                      Sunday School 2025. Every Sunday from 10AM to 2:15PM at GIC.
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-secondary/20 p-4 rounded-xl text-sm">
+                        <p className="font-bold mb-2">Curriculum Includes:</p>
+                        <ul className="space-y-1">
+                          <li>• Quran Memorization & Tajweed</li>
+                          <li>• Arabic Language with Grammar</li>
+                          <li>• Islamic Studies & Aqeedah</li>
+                          <li>• Tarbiyya & Seerah</li>
+                        </ul>
+                      </div>
+                      <div className="bg-secondary/20 p-4 rounded-xl text-sm">
+                        <p className="font-bold mb-2">Key Dates:</p>
+                        <p>Open House: Aug 24, 2025</p>
+                        <p>First Day: Sept 14, 2025</p>
+                      </div>
+                    </div>
+                    <Button asChild variant="outline" size="sm">
+                      <a href="https://alimanaustin.org" target="_blank" rel="noopener noreferrer">Visit Al Iman Academy</a>
+                    </Button>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </section>
 
