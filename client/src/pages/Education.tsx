@@ -9,33 +9,54 @@ import {
   Mail,
   Phone,
   MapPin,
-  Heart
+  Heart,
+  Calendar,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
 
-const PROGRAMS = [
+const EDUCATION_CATEGORIES = [
   {
-    title: "Full-Time Programs",
-    description: "Dedicated Hifz and academic tracks for both boys and girls.",
-    icon: GraduationCap,
-  },
-  {
-    title: "Naseeha Seminary",
-    description: "Deep dive into traditional Islamic sciences and spirituality.",
+    title: "Quran Programs",
+    provider: "DUA at GIC",
+    description: "Foundational and advanced Quranic studies for various age groups.",
     icon: BookOpen,
+    items: [
+      "Full-time Hifdh Program",
+      "After School Quran Programs",
+      "Summer Quran Intensives"
+    ],
+    link: "https://darululoomaustin.org/quran",
+    linkText: "View Quran Programs"
   },
   {
-    title: "Deen Intensives",
-    description: "Short-term programs focused on specific areas of Islamic knowledge.",
-    icon: Users,
-  },
-  {
-    title: "GIC Academic Tracks",
-    description: "Integrated academic and Islamic education at our GIC campus.",
+    title: "Seminary Programs",
+    provider: "DUA at GIC",
+    description: "In-depth traditional Islamic sciences for serious students of knowledge.",
     icon: GraduationCap,
+    items: [
+      "1 Year Full-Time Seminary",
+      "3 Year Part-Time Naseeha Program",
+      "Summer Deen Intensives"
+    ],
+    link: "https://darululoomaustin.org/seminary",
+    linkText: "Explore Seminary"
+  },
+  {
+    title: "Al Iman Academy",
+    provider: "GIC Sunday School",
+    description: "Weekly Islamic education focusing on character and foundational knowledge.",
+    icon: Users,
+    items: [
+      "Weekend Islamic Studies",
+      "Arabic Language Tracks",
+      "Youth Character Building"
+    ],
+    link: "https://www.alimanacademy.org",
+    linkText: "Visit Al Iman Academy"
   }
 ];
 
@@ -81,78 +102,94 @@ export default function Education() {
               transition={{ duration: 0.6 }}
             >
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
-                Education & Knowledge
+                GIC Education
               </Badge>
-              <h2 className="text-5xl font-black mb-6">Darul Uloom <span className="text-primary italic">Austin</span></h2>
+              <h2 className="text-5xl font-black mb-6">Nurturing <span className="text-primary italic">Knowledge</span> & Faith</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-                Empowering the next generation through a holistic blend of traditional Islamic scholarship and contemporary academic excellence.
+                Georgetown Islamic Center is proud to host diverse educational programs catering to all ages, 
+                from foundational Quranic studies to advanced seminary tracks.
               </p>
-              <Button asChild className="rounded-full bg-primary px-8 h-12">
-                <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
-                  Visit Official DUA Website <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
             </motion.div>
           </div>
         </section>
 
-        {/* Blurb Section */}
+        {/* Programs Grid */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-3 gap-12 items-start">
-                <div className="md:col-span-2">
-                  <h3 className="text-3xl font-bold mb-6">Our Journey & Impact</h3>
-                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                    Starting in 2007 at NAMCC, Darul Uloom Austin (DUA) has since expanded to include girls and boys full-time programs, 
-                    Naseeha seminary programs, Deen Intensives, and GIC academic tracks.
-                  </p>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    In 2025, DUA celebrates its 16th graduation with 28 alumni now serving in diverse roles—from Islamic scholarship 
-                    to industry and higher education.
-                  </p>
-                </div>
-                <div className="bg-secondary/30 p-8 rounded-3xl border border-primary/10">
-                  <div className="space-y-6">
-                    <div>
-                      <p className="text-4xl font-black text-primary">2007</p>
-                      <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Founded</p>
-                    </div>
-                    <div>
-                      <p className="text-4xl font-black text-primary">16</p>
-                      <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Graduations</p>
-                    </div>
-                    <div>
-                      <p className="text-4xl font-black text-primary">28</p>
-                      <p className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Active Alumni</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="grid lg:grid-cols-3 gap-8">
+              {EDUCATION_CATEGORIES.map((category, index) => (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className="h-full border-border/50 hover:border-primary/30 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col">
+                    <CardHeader>
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                          <category.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <Badge variant="outline" className="text-[10px] uppercase tracking-wider">{category.provider}</Badge>
+                      </div>
+                      <CardTitle className="text-2xl">{category.title}</CardTitle>
+                      <CardDescription className="text-sm">{category.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <ul className="space-y-3 mb-8">
+                        {category.items.map((item) => (
+                          <li key={item} className="flex items-center gap-3 text-sm text-muted-foreground">
+                            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button asChild className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg mt-auto">
+                        <a href={category.link} target="_blank" rel="noopener noreferrer">
+                          {category.linkText} <ExternalLink className="ml-2 h-4 w-4" />
+                        </a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Programs Grid */}
-        <section className="py-24 bg-secondary/20">
+        {/* Summer Special Section */}
+        <section className="py-24 bg-secondary/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h3 className="text-4xl font-bold mb-4">Academic Programs</h3>
-              <p className="text-muted-foreground max-w-xl mx-auto">Diverse educational tracks designed to meet the needs of our community members at every stage of their journey.</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {PROGRAMS.map((program, index) => (
-                <Card key={program.title} className="border-none shadow-lg hover:shadow-xl transition-shadow bg-white">
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                      <program.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <CardTitle className="text-xl">{program.title}</CardTitle>
-                    <CardDescription>{program.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
+            <div className="bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden border border-primary/5">
+              <div className="flex flex-col md:flex-row items-center gap-12">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Sparkles className="h-5 w-5 text-accent" />
+                    <span className="text-sm font-bold uppercase tracking-widest text-accent">Summer 2026</span>
+                  </div>
+                  <h3 className="text-4xl font-bold mb-6">Deen Intensive & Summer Programs</h3>
+                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    Make your summer meaningful. Join our annual Deen Intensive and summer Quran programs 
+                    designed for youth and adults seeking a spiritual boost.
+                  </p>
+                  <Button size="lg" className="rounded-full bg-primary px-10">
+                    Registration Opening Soon
+                  </Button>
+                </div>
+                <div className="flex-1 grid grid-cols-2 gap-4">
+                  <div className="p-6 bg-secondary/20 rounded-2xl border border-primary/5">
+                    <Calendar className="h-6 w-6 text-primary mb-2" />
+                    <p className="font-bold">June - July</p>
+                    <p className="text-xs text-muted-foreground uppercase">Program Dates</p>
+                  </div>
+                  <div className="p-6 bg-secondary/20 rounded-2xl border border-primary/5">
+                    <Users className="h-6 w-6 text-primary mb-2" />
+                    <p className="font-bold">All Ages</p>
+                    <p className="text-xs text-muted-foreground uppercase">Target Groups</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
