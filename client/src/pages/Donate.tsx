@@ -83,7 +83,7 @@ export default function Donate() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-20 hero-gradient">
+        <section className="py-12 hero-gradient">
           <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -93,14 +93,14 @@ export default function Donate() {
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
                 Support GIC
               </Badge>
-              <h2 className="text-5xl font-black mb-6">Invest in Your <span className="text-primary italic">Akhirah</span></h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed italic">
+              <h2 className="text-4xl md:text-5xl font-black mb-4">Invest in Your <span className="text-primary italic">Akhirah</span></h2>
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed italic">
                 “Whoever builds a mosque, desiring thereby Allah’s pleasure, Allah builds for him the like of it in paradise.” — [Bukhari]
               </p>
-              <div className="bg-white/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 max-w-xl mx-auto inline-block">
+              <div className="bg-white/50 backdrop-blur-sm border border-border/50 rounded-2xl p-4 max-w-xl mx-auto inline-block">
                 <p className="text-sm font-medium">
-                  GIC is a 501(c)(3) nonprofit (EIN 83-1967983) organization. 
-                  <span className="block text-primary mt-1">All donations are tax-deductible.</span>
+                  GIC is a 501(c)(3) nonprofit (EIN 83-1967983). 
+                  <span className="text-primary ml-1">Donations are tax-deductible.</span>
                 </p>
               </div>
             </motion.div>
@@ -108,9 +108,9 @@ export default function Donate() {
         </section>
 
         {/* Donation Methods Grid */}
-        <section className="py-24 bg-white">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {DONATION_METHODS.map((method, index) => (
                 <motion.div
                   key={method.title}
