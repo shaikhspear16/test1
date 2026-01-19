@@ -188,45 +188,28 @@ export default function Home() {
         </section>
 
         {/* Education Section / DUA Link */}
-        <section className="py-24 bg-white border-t border-border/50">
+        <section className="py-20 bg-white border-t border-border/50">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center gap-12">
-              <div className="flex-1">
-                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
-                  Educational Partner
-                </Badge>
-                <h3 className="text-4xl font-bold mb-6">Darul Uloom Austin</h3>
-                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                  Starting in 2007, DUA has expanded to include girls and boys full-time programs, 
-                  Naseeha seminary programs, Deen Intensives, and GIC academic tracks.
-                </p>
-                <div className="flex gap-4">
-                  <a href="/education">
-                    <Button className="rounded-full bg-primary">
-                      Academic Programs
-                    </Button>
-                  </a>
-                  <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" className="rounded-full">
-                      Visit DUA Website
-                    </Button>
-                  </a>
-                </div>
-              </div>
-              <div className="flex-1 grid grid-cols-2 gap-4">
-                <div className="bg-secondary/20 p-8 rounded-2xl text-center">
-                  <p className="text-3xl font-bold text-primary mb-1">16th</p>
-                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Graduation</p>
-                </div>
-                <div className="bg-secondary/20 p-8 rounded-2xl text-center">
-                  <p className="text-3xl font-bold text-primary mb-1">28</p>
-                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Alumni</p>
-                </div>
-                <div className="col-span-2 bg-primary/5 p-8 rounded-2xl">
-                  <p className="text-sm font-medium leading-relaxed italic text-center">
-                    "Alumni now serving in diverse roles—from Islamic scholarship to industry and higher education."
-                  </p>
-                </div>
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                Educational Partner
+              </Badge>
+              <h3 className="text-4xl font-bold mb-6">Darul Uloom Austin</h3>
+              <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
+                Darul Uloom Austin (DUA) is a premier Islamic educational institution that provides holistic learning 
+                at our GIC campus, serving the community since 2007.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
+                  <Button className="rounded-full bg-primary px-8">
+                    Visit DUA Website
+                  </Button>
+                </a>
+                <a href="/education">
+                  <Button variant="outline" className="rounded-full px-8">
+                    View Programs at GIC
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
