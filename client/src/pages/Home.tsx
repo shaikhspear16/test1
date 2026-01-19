@@ -11,7 +11,9 @@ import {
   Youtube, 
   ArrowRight,
   Bell,
-  Heart
+  Heart,
+  Menu,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,6 +45,7 @@ const FLYERS = [flyer1, flyer2, flyer3];
 
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -65,12 +68,48 @@ export default function Home() {
             <a href="/about" className="hover:text-primary transition-colors">About</a>
           </div>
 
-          <a href="/donate">
-            <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
-              <Heart className="mr-2 h-4 w-4" /> Donate
+          <div className="flex items-center gap-4">
+            <a href="/donate" className="hidden sm:block">
+              <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
+                <Heart className="mr-2 h-4 w-4" /> Donate
+              </Button>
+            </a>
+
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
-          </a>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-background border-b border-border/50 overflow-hidden"
+            >
+              <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+                <a href="/" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Home</a>
+                <a href="#" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Events</a>
+                <a href="/education" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Education</a>
+                <a href="/resources" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Resources</a>
+                <a href="/about" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</a>
+                <a href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="w-full bg-primary text-white rounded-full">
+                    <Heart className="mr-2 h-4 w-4" /> Donate
+                  </Button>
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <main className="flex-grow">
