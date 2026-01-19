@@ -58,11 +58,11 @@ export default function Home() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#" className="hover:text-primary transition-colors">Home</a>
-            <a href="#" className="hover:text-primary transition-colors">Prayer Times</a>
+            <a href="#" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
             <a href="#" className="hover:text-primary transition-colors">Events</a>
-            <a href="#" className="hover:text-primary transition-colors">About Us</a>
-            <a href="#" className="hover:text-primary transition-colors">Contact</a>
+            <a href="#" className="hover:text-primary transition-colors">Education</a>
+            <a href="#" className="hover:text-primary transition-colors">Resources</a>
+            <a href="#" className="hover:text-primary transition-colors">About</a>
           </div>
 
           <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
@@ -106,29 +106,29 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative"
+                className="relative lg:justify-self-end w-full max-w-md"
               >
-                <Card className="shadow-2xl border-none bg-white/90 backdrop-blur-sm overflow-hidden">
-                  <div className="bg-primary text-primary-foreground p-4 flex justify-between items-center">
+                <Card className="shadow-2xl border-none bg-white/95 backdrop-blur-sm overflow-hidden">
+                  <div className="bg-primary text-primary-foreground p-3 flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      <span className="font-bold">Prayer Times</span>
+                      <Clock className="h-4 w-4" />
+                      <span className="font-bold text-sm">Prayer Times</span>
                     </div>
-                    <span className="text-sm opacity-90">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                    <span className="text-xs opacity-90">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                   </div>
                   <CardContent className="p-0">
                     <div className="divide-y divide-border/50">
                       {PRAYER_TIMES.map((prayer) => (
-                        <div key={prayer.name} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
-                          <span className="font-semibold text-lg">{prayer.name}</span>
-                          <div className="flex gap-8 text-right">
+                        <div key={prayer.name} className="flex items-center justify-between px-4 py-2 hover:bg-muted/30 transition-colors">
+                          <span className="font-semibold text-base">{prayer.name}</span>
+                          <div className="flex gap-6 text-right">
                             <div>
-                              <p className="text-[10px] uppercase tracking-tighter text-muted-foreground">Begins</p>
-                              <p className="font-medium">{prayer.time}</p>
+                              <p className="text-[9px] uppercase tracking-tighter text-muted-foreground">Begins</p>
+                              <p className="font-medium text-sm">{prayer.time}</p>
                             </div>
-                            <div className="w-20">
-                              <p className="text-[10px] uppercase tracking-tighter text-muted-foreground italic">Iqamah</p>
-                              <p className="font-bold text-primary">{prayer.iqamah}</p>
+                            <div className="w-16">
+                              <p className="text-[9px] uppercase tracking-tighter text-muted-foreground italic">Iqamah</p>
+                              <p className="font-bold text-primary text-sm">{prayer.iqamah}</p>
                             </div>
                           </div>
                         </div>
@@ -154,7 +154,13 @@ export default function Home() {
               </Button>
             </div>
 
-            <Carousel className="w-full max-w-6xl mx-auto">
+            <Carousel 
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full max-w-6xl mx-auto"
+            >
               <CarouselContent>
                 {FLYERS.map((flyer, index) => (
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-4">
@@ -167,9 +173,9 @@ export default function Home() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <div className="hidden md:block">
-                <CarouselPrevious className="-left-12" />
-                <CarouselNext className="-right-12" />
+              <div className="flex justify-center gap-4 mt-8">
+                <CarouselPrevious className="static translate-y-0" />
+                <CarouselNext className="static translate-y-0" />
               </div>
             </Carousel>
           </div>
@@ -183,7 +189,7 @@ export default function Home() {
                 {/* Embedded Youtube Mockup */}
                 <iframe 
                   className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/videoseries?list=PL_Xv4Vv_u9v2Z0Yx2FqT1_X7f-Qk8-v5O" 
+                  src="https://www.youtube.com/embed/qxhQ3qq2T-w" 
                   title="GIC Lectures"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
