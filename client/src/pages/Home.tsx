@@ -94,12 +94,16 @@ export default function Home() {
                   worship, and service to our community in the heart of Texas.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
-                    Join Our Programs
-                  </Button>
-                  <Button size="lg" variant="outline" className="rounded-full px-8">
-                    View Calendar
-                  </Button>
+                  <a href="/donate">
+                    <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
+                      Donate Now
+                    </Button>
+                  </a>
+                  <a href="#about">
+                    <Button size="lg" variant="outline" className="rounded-full px-8">
+                      Learn More
+                    </Button>
+                  </a>
                 </div>
               </motion.div>
 
@@ -122,13 +126,13 @@ export default function Home() {
                     <div className="divide-y divide-border/50">
                       {PRAYER_TIMES.map((prayer) => (
                         <div key={prayer.name} className="flex items-center justify-between px-4 py-2 hover:bg-muted/30 transition-colors">
-                          <span className="font-semibold text-base">{prayer.name}</span>
-                          <div className="flex gap-6 text-right">
-                            <div>
+                          <span className="font-semibold text-base w-24">{prayer.name}</span>
+                          <div className="flex gap-4 text-right flex-1 justify-end">
+                            <div className="min-w-[60px]">
                               <p className="text-[9px] uppercase tracking-tighter text-muted-foreground">Begins</p>
                               <p className="font-medium text-sm">{prayer.time}</p>
                             </div>
-                            <div className="w-16">
+                            <div className="min-w-[60px]">
                               <p className="text-[9px] uppercase tracking-tighter text-muted-foreground italic">Iqamah</p>
                               <p className="font-bold text-primary text-sm">{prayer.iqamah}</p>
                             </div>
@@ -184,7 +188,7 @@ export default function Home() {
         </section>
 
         {/* About & Video Section */}
-        <section className="py-24 bg-secondary/30">
+        <section id="about" className="py-24 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
