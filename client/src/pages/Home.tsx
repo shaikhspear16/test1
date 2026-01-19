@@ -58,16 +58,18 @@ export default function Home() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
+            <a href="/" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
             <a href="#" className="hover:text-primary transition-colors">Events</a>
             <a href="#" className="hover:text-primary transition-colors">Education</a>
             <a href="#" className="hover:text-primary transition-colors">Resources</a>
             <a href="#" className="hover:text-primary transition-colors">About</a>
           </div>
 
-          <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
-            <Heart className="mr-2 h-4 w-4" /> Donate
-          </Button>
+          <a href="/donate">
+            <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
+              <Heart className="mr-2 h-4 w-4" /> Donate
+            </Button>
+          </a>
         </div>
       </nav>
 
