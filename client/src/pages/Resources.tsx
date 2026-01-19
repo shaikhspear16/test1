@@ -80,7 +80,6 @@ export default function Resources() {
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="#" className="hover:text-primary transition-colors">Events</a>
             <a href="/education" className="hover:text-primary transition-colors">Education</a>
             <a href="/resources" className="hover:text-primary transition-colors text-primary font-bold">Resources</a>
             <a href="/about" className="hover:text-primary transition-colors">About</a>
@@ -115,7 +114,6 @@ export default function Resources() {
             >
               <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" onClick={() => setIsMenuOpen(false)}>Home</a>
-                <a href="#" onClick={() => setIsMenuOpen(false)}>Events</a>
                 <a href="/education" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Resources</a>
                 <a href="/about" onClick={() => setIsMenuOpen(false)}>About</a>

@@ -69,10 +69,9 @@ export default function Donate() {
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="#" className="hover:text-primary transition-colors">Events</a>
-            <a href="#" className="hover:text-primary transition-colors">Education</a>
-            <a href="#" className="hover:text-primary transition-colors">Resources</a>
-            <a href="#" className="hover:text-primary transition-colors">About</a>
+            <a href="/education" className="hover:text-primary transition-colors">Education</a>
+            <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
+            <a href="/about" className="hover:text-primary transition-colors">About</a>
           </div>
 
           <Button data-testid="button-donate-active" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 pointer-events-none opacity-80">

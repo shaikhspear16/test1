@@ -96,7 +96,6 @@ export default function Home() {
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="/" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
-            <a href="#" className="hover:text-primary transition-colors">Events</a>
             <a href="/education" className="hover:text-primary transition-colors">Education</a>
             <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
             <a href="/about" className="hover:text-primary transition-colors">About</a>
@@ -131,7 +130,6 @@ export default function Home() {
             >
               <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Home</a>
-                <a href="#" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Events</a>
                 <a href="/education" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Resources</a>
                 <a href="/about" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</a>
@@ -180,48 +178,59 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Prayer Times Table - Visible Early */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative lg:justify-self-end w-full max-w-md"
               >
-                <Card className="shadow-2xl border-none bg-white/95 backdrop-blur-sm overflow-hidden mb-4">
-                  <div className="bg-primary text-primary-foreground p-3 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span className="font-bold text-sm">Prayer Times</span>
+                <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl border border-white/20 overflow-hidden p-2">
+                  <Card className="border-none bg-transparent shadow-none">
+                    <div className="bg-primary text-primary-foreground p-4 flex justify-between items-center rounded-[2rem] mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
+                          <Clock className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-lg leading-none">Prayer Times</p>
+                          <p className="text-[10px] opacity-70 uppercase tracking-widest mt-1">Georgetown, TX</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-sm font-medium block">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        <span className="text-[10px] opacity-70 italic">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</span>
+                      </div>
                     </div>
-                    <span className="text-xs opacity-90">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                  </div>
-                  <CardContent className="p-0">
-                    <div className="divide-y divide-border/50">
-                      {PRAYER_TIMES.map((prayer) => (
-                        <div key={prayer.name} className="flex items-center justify-between px-4 py-2 hover:bg-muted/30 transition-colors">
-                          <span className="font-semibold text-base w-24">{prayer.name}</span>
-                          <div className="flex gap-4 text-right flex-1 justify-end">
-                            <div className="min-w-[60px]">
-                              <p className="text-[9px] uppercase tracking-tighter text-muted-foreground">Begins</p>
-                              <p className="font-medium text-sm">{prayer.time}</p>
-                            </div>
-                            <div className="min-w-[60px]">
-                              <p className="text-[9px] uppercase tracking-tighter text-muted-foreground italic">Iqamah</p>
-                              <p className="font-bold text-primary text-sm">{prayer.iqamah}</p>
+                    <CardContent className="p-2">
+                      <div className="space-y-1">
+                        {PRAYER_TIMES.map((prayer) => (
+                          <div key={prayer.name} className="flex items-center justify-between px-4 py-3 rounded-2xl hover:bg-primary/5 transition-colors group">
+                            <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
+                            <div className="flex gap-6 text-right">
+                              <div className="min-w-[65px]">
+                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0.5">Begins</p>
+                                <p className="font-medium text-sm text-foreground/70">{prayer.time}</p>
+                              </div>
+                              <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-1 border border-primary/10">
+                                <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0.5 italic">Iqamah</p>
+                                <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-                <Button 
-                  variant="outline" 
-                  className="w-full rounded-full border-primary/20 hover:bg-primary/5 text-primary font-bold"
-                  onClick={() => window.open('#', '_blank')}
-                >
-                  <Download className="mr-2 h-4 w-4" /> Download Monthly Timetable
-                </Button>
+                        ))}
+                      </div>
+                      <div className="mt-4 p-2">
+                        <Button 
+                          variant="default" 
+                          className="w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-12 shadow-lg shadow-primary/20"
+                          onClick={() => window.open('#', '_blank')}
+                        >
+                          <Download className="mr-2 h-4 w-4" /> Download Monthly Schedule
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </motion.div>
             </div>
           </div>
