@@ -148,7 +148,7 @@ export default function Home() {
         </section>
 
         {/* Event Flyer Gallery */}
-        <section className="py-24 bg-white">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
               <div>
@@ -188,7 +188,7 @@ export default function Home() {
         </section>
 
         {/* Education Section / DUA Link */}
-        <section className="py-20 bg-white border-t border-border/50">
+        <section className="py-12 bg-white border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
@@ -216,7 +216,7 @@ export default function Home() {
         </section>
 
         {/* About & Video Section */}
-        <section id="about" className="py-24 bg-secondary/30">
+        <section id="about" className="py-12 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
@@ -259,7 +259,7 @@ export default function Home() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="py-24 bg-primary text-primary-foreground overflow-hidden relative">
+        <section className="py-12 bg-primary text-primary-foreground overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
              <div className="absolute -top-24 -left-24 w-96 h-96 border-8 border-white rounded-full" />
              <div className="absolute -bottom-24 -right-24 w-96 h-96 border-8 border-white rounded-full" />

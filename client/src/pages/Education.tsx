@@ -114,7 +114,7 @@ export default function Education() {
         </section>
 
         {/* Programs Grid */}
-        <section className="py-24 bg-white">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-3 gap-8">
               {EDUCATION_CATEGORIES.map((category, index) => (
@@ -158,7 +158,7 @@ export default function Education() {
         </section>
 
         {/* Summer Special Section */}
-        <section className="py-24 bg-secondary/30 relative overflow-hidden">
+        <section className="py-12 bg-secondary/30 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
           <div className="container mx-auto px-4">
             <div className="bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden border border-primary/5">

@@ -108,7 +108,7 @@ export default function Donate() {
         </section>
 
         {/* Donation Methods Grid */}
-        <section className="py-16 bg-white">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {DONATION_METHODS.map((method, index) => (
@@ -156,7 +156,7 @@ export default function Donate() {
         </section>
 
         {/* Call to Action for Expansion */}
-        <section className="py-24 bg-secondary/30">
+        <section className="py-12 bg-secondary/30">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-4xl mx-auto bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
