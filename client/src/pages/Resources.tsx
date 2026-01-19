@@ -67,7 +67,7 @@ export default function Resources() {
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <a href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
@@ -112,7 +112,7 @@ export default function Resources() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
-              <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+          <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="/education" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Resources</a>
@@ -131,7 +131,7 @@ export default function Resources() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-12 hero-gradient">
-          <div className="container mx-auto px-4 text-center">
+          <div className="max-w-7xl mx-auto container px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function Resources() {
 
         {/* About Islam Section */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
               <div className="bg-secondary/30 p-8 rounded-3xl border border-primary/5 shadow-inner flex-1">
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
@@ -186,7 +186,7 @@ export default function Resources() {
 
         {/* Resources Grid */}
         <section className="py-12 bg-secondary/10">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="grid md:grid-cols-3 gap-8">
               {RESOURCE_GROUPS.map((group, index) => (
                 <motion.div

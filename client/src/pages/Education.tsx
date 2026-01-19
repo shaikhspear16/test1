@@ -76,7 +76,7 @@ export default function Education() {
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <a href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
@@ -121,7 +121,7 @@ export default function Education() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
-              <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+          <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="/education" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" onClick={() => setIsMenuOpen(false)}>Resources</a>
@@ -140,7 +140,7 @@ export default function Education() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-20 hero-gradient">
-          <div className="container mx-auto px-4 text-center">
+          <div className="max-w-7xl mx-auto container px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -160,7 +160,7 @@ export default function Education() {
 
         {/* Programs Accordion Section */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4 max-w-4xl">
+          <div className="max-w-7xl mx-auto container px-4 max-w-4xl">
             <Accordion type="single" collapsible className="w-full space-y-4">
               {/* Quran Programs */}
               <AccordionItem value="quran" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
@@ -290,7 +290,7 @@ export default function Education() {
         {/* Summer Special Section */}
         <section className="py-12 bg-secondary/30 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden border border-primary/5">
               <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="flex-1">

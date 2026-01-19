@@ -56,7 +56,7 @@ export default function Donate() {
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <a href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
@@ -83,7 +83,7 @@ export default function Donate() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-12 hero-gradient">
-          <div className="container mx-auto px-4 text-center">
+          <div className="max-w-7xl mx-auto container px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -108,7 +108,7 @@ export default function Donate() {
 
         {/* Donation Methods Grid */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {DONATION_METHODS.map((method, index) => (
                 <motion.div
@@ -156,7 +156,7 @@ export default function Donate() {
 
         {/* Call to Action for Expansion */}
         <section className="py-12 bg-secondary/30">
-          <div className="container mx-auto px-4 text-center">
+          <div className="max-w-7xl mx-auto container px-4 text-center">
             <div className="max-w-4xl mx-auto bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
               <h3 className="text-3xl font-bold mb-6">Support Our Expansion</h3>

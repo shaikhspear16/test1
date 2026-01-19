@@ -50,7 +50,7 @@ export default function About() {
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <a href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
@@ -95,7 +95,7 @@ export default function About() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
-              <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+          <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="/education" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" onClick={() => setIsMenuOpen(false)}>Resources</a>
@@ -114,7 +114,7 @@ export default function About() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-12 hero-gradient">
-          <div className="container mx-auto px-4 text-center">
+          <div className="max-w-7xl mx-auto container px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ export default function About() {
 
         {/* Vision & Mission Section */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               <Card className="border-none shadow-lg bg-secondary/20 p-8 rounded-3xl">
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
@@ -165,7 +165,7 @@ export default function About() {
 
         {/* Timeline Section */}
         <section className="py-12 bg-secondary/10">
-          <div className="container mx-auto px-4 max-w-4xl">
+          <div className="max-w-7xl mx-auto container px-4 max-w-4xl">
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <History className="h-5 w-5 text-primary" />

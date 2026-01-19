@@ -85,7 +85,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
             <div className="hidden sm:block">
@@ -128,7 +128,7 @@ export default function Home() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
-              <div className="container mx-auto px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+          <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
                 <a href="/" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Home</a>
                 <a href="/education" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Education</a>
                 <a href="/resources" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Resources</a>
@@ -147,7 +147,7 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-12 pb-20 hero-gradient">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
@@ -223,7 +223,7 @@ export default function Home() {
 
         {/* Event Flyer Gallery */}
         <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="text-center mb-12">
               <h3 className="text-4xl font-bold mb-4">Upcoming Events</h3>
               <p className="text-muted-foreground max-w-xl mx-auto">Stay connected with our community through educational seminars, youth programs, and family gatherings.</p>
@@ -303,7 +303,7 @@ export default function Home() {
 
         {/* Education Section / DUA Link */}
         <section className="py-12 bg-white border-t border-border/50">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
                 Educational Partner
@@ -331,7 +331,7 @@ export default function Home() {
 
         {/* About & Video Section */}
         <section id="about" className="py-12 bg-secondary/30">
-          <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto container px-4">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
                 {/* Embedded Youtube Mockup */}
@@ -379,7 +379,7 @@ export default function Home() {
              <div className="absolute -bottom-24 -right-24 w-96 h-96 border-8 border-white rounded-full" />
           </div>
           
-          <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl">
+        <div className="max-w-7xl mx-auto container px-4 relative z-10 text-center max-w-3xl">
             <Bell className="h-12 w-12 mx-auto mb-6 opacity-80" />
             <h3 className="text-4xl font-bold mb-4">Join Our Community</h3>
             <p className="text-primary-foreground/80 mb-10 text-lg">
