@@ -60,7 +60,7 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="/" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
             <a href="#" className="hover:text-primary transition-colors">Events</a>
-            <a href="#" className="hover:text-primary transition-colors">Education</a>
+            <a href="/education" className="hover:text-primary transition-colors">Education</a>
             <a href="#" className="hover:text-primary transition-colors">Resources</a>
             <a href="#" className="hover:text-primary transition-colors">About</a>
           </div>
@@ -184,6 +184,51 @@ export default function Home() {
                 <CarouselNext className="static translate-y-0" />
               </div>
             </Carousel>
+          </div>
+        </section>
+
+        {/* Education Section / DUA Link */}
+        <section className="py-24 bg-white border-t border-border/50">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="flex-1">
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                  Educational Partner
+                </Badge>
+                <h3 className="text-4xl font-bold mb-6">Darul Uloom Austin</h3>
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  Starting in 2007, DUA has expanded to include girls and boys full-time programs, 
+                  Naseeha seminary programs, Deen Intensives, and GIC academic tracks.
+                </p>
+                <div className="flex gap-4">
+                  <a href="/education">
+                    <Button className="rounded-full bg-primary">
+                      Academic Programs
+                    </Button>
+                  </a>
+                  <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="rounded-full">
+                      Visit DUA Website
+                    </Button>
+                  </a>
+                </div>
+              </div>
+              <div className="flex-1 grid grid-cols-2 gap-4">
+                <div className="bg-secondary/20 p-8 rounded-2xl text-center">
+                  <p className="text-3xl font-bold text-primary mb-1">16th</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Graduation</p>
+                </div>
+                <div className="bg-secondary/20 p-8 rounded-2xl text-center">
+                  <p className="text-3xl font-bold text-primary mb-1">28</p>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wider">Alumni</p>
+                </div>
+                <div className="col-span-2 bg-primary/5 p-8 rounded-2xl">
+                  <p className="text-sm font-medium leading-relaxed italic text-center">
+                    "Alumni now serving in diverse roles—from Islamic scholarship to industry and higher education."
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
