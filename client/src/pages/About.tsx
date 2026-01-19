@@ -222,8 +222,8 @@ export default function About() {
       {/* Footer */}
       <footer className="bg-foreground text-background py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div className="col-span-2">
+          <div className="flex flex-col md:grid md:grid-cols-4 gap-12">
+            <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" />
                 <span className="text-xl font-bold">Georgetown Islamic Center</span>

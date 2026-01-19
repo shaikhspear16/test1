@@ -153,8 +153,8 @@ export default function Resources() {
         {/* About Islam Section */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-              <div className="bg-secondary/30 p-8 rounded-3xl border border-primary/5 shadow-inner">
+            <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+              <div className="bg-secondary/30 p-8 rounded-3xl border border-primary/5 shadow-inner flex-1">
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
                   <Library className="h-6 w-6 text-primary" />
                 </div>
@@ -181,13 +181,6 @@ export default function Resources() {
                     </a>
                   ))}
                 </div>
-              </div>
-              <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Islamic Art" 
-                  className="rounded-3xl shadow-2xl object-cover h-[500px] w-full"
-                />
               </div>
             </div>
           </div>
@@ -241,8 +234,8 @@ export default function Resources() {
       {/* Footer */}
       <footer className="bg-foreground text-background py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div className="col-span-2">
+          <div className="flex flex-col md:grid md:grid-cols-4 gap-12">
+            <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" />
                 <span className="text-xl font-bold">Georgetown Islamic Center</span>
