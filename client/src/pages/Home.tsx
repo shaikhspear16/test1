@@ -13,7 +13,9 @@ import {
   Bell,
   Heart,
   Menu,
-  X
+  X,
+  Download,
+  ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,10 +28,20 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
 import flyer1 from "@assets/arabic_1768797774024.jpeg";
 import flyer2 from "@assets/ramadan_1768797774026.jpeg";
 import flyer3 from "@assets/tafsir_1768797774026.jpeg";
+import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.jpeg";
+import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.jpeg";
+import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.jpeg";
 
 const PRAYER_TIMES = [
   { name: "Fajr", time: "5:45 AM", iqamah: "6:15 AM" },
@@ -41,11 +53,33 @@ const PRAYER_TIMES = [
   { name: "Jumu'ah 2", time: "2:15 PM", iqamah: "2:30 PM" },
 ];
 
-const FLYERS = [flyer1, flyer2, flyer3];
+const FLYERS = [
+  { 
+    src: flyerNoorKids, 
+    title: "Family Night with Noor Kids", 
+    registrationLink: "https://tinyurl.com/GIC-2026-NoorKids",
+    description: "Join us for an engaging session with Br. Amin Aaser from Noor Kids. Featuring inspiring stories and interactive learning."
+  },
+  { 
+    src: flyerPotluck, 
+    title: "Monthly Community Potluck", 
+    registrationLink: "https://tinyurl.com/GIC-Monthly-Potluck",
+    description: "A monthly gathering to strengthen community bonds. Speaker: Mufti Hassan from Chicago."
+  },
+  { 
+    src: flyerSistersTafseer, 
+    title: "Sisters Tafseer Class", 
+    description: "Join us as we journey through the Tafseer of the Qur'an with Imam Osama Hussain and Muallimah Umme Yahya."
+  },
+  { src: flyer1, title: "Arabic Language Class" },
+  { src: flyer2, title: "Ramadan Prep" },
+  { src: flyer3, title: "Weekly Tafsir" },
+];
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedFlyer, setSelectedFlyer] = useState<typeof FLYERS[0] | null>(null);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -128,7 +162,7 @@ export default function Home() {
                 <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
                   A Place for <span className="text-primary italic">Faith</span> and Community
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
+                <p className="text-lg text-muted-foreground mb-8 max-lg leading-relaxed">
                   Join us at Georgetown Islamic Center as we grow together in knowledge, 
                   worship, and service to our community in the heart of Texas.
                 </p>
@@ -153,7 +187,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative lg:justify-self-end w-full max-w-md"
               >
-                <Card className="shadow-2xl border-none bg-white/95 backdrop-blur-sm overflow-hidden">
+                <Card className="shadow-2xl border-none bg-white/95 backdrop-blur-sm overflow-hidden mb-4">
                   <div className="bg-primary text-primary-foreground p-3 flex justify-between items-center">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
@@ -181,6 +215,13 @@ export default function Home() {
                     </div>
                   </CardContent>
                 </Card>
+                <Button 
+                  variant="outline" 
+                  className="w-full rounded-full border-primary/20 hover:bg-primary/5 text-primary font-bold"
+                  onClick={() => window.open('#', '_blank')}
+                >
+                  <Download className="mr-2 h-4 w-4" /> Download Monthly Timetable
+                </Button>
               </motion.div>
             </div>
           </div>
@@ -211,9 +252,10 @@ export default function Home() {
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-4">
                     <motion.div 
                       whileHover={{ y: -10 }}
-                      className="rounded-2xl overflow-hidden shadow-lg border border-border"
+                      className="rounded-2xl overflow-hidden shadow-lg border border-border cursor-pointer"
+                      onClick={() => setSelectedFlyer(flyer)}
                     >
-                      <img src={flyer} alt={`Event Flyer ${index + 1}`} className="w-full h-auto object-cover aspect-[3/4]" />
+                      <img src={flyer.src} alt={flyer.title} className="w-full h-auto object-cover aspect-[3/4]" />
                     </motion.div>
                   </CarouselItem>
                 ))}
@@ -225,6 +267,50 @@ export default function Home() {
             </Carousel>
           </div>
         </section>
+
+        {/* Flyer Modal */}
+        <Dialog open={!!selectedFlyer} onOpenChange={(open) => !open && setSelectedFlyer(null)}>
+          <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background/95 backdrop-blur-md">
+            <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
+              <div className="flex-1 bg-black/5 flex items-center justify-center p-4">
+                <img 
+                  src={selectedFlyer?.src} 
+                  alt={selectedFlyer?.title} 
+                  className="max-h-full max-w-full object-contain shadow-2xl rounded-lg"
+                />
+              </div>
+              {(selectedFlyer?.description || selectedFlyer?.registrationLink) && (
+                <div className="w-full md:w-80 p-8 flex flex-col justify-center bg-white border-l border-border">
+                  <DialogHeader className="mb-6">
+                    <DialogTitle className="text-2xl font-black text-primary leading-tight">{selectedFlyer?.title}</DialogTitle>
+                  </DialogHeader>
+                  
+                  {selectedFlyer?.description && (
+                    <p className="text-muted-foreground mb-8 leading-relaxed">
+                      {selectedFlyer.description}
+                    </p>
+                  )}
+
+                  {selectedFlyer?.registrationLink && (
+                    <div className="space-y-4">
+                      <p className="text-xs font-bold uppercase tracking-widest text-primary/60">Registration</p>
+                      <a 
+                        href={selectedFlyer.registrationLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block w-full"
+                      >
+                        <Button className="w-full bg-primary hover:bg-primary/90 rounded-full h-12 text-base font-bold">
+                          Register Now <ExternalLink className="ml-2 h-4 w-4" />
+                        </Button>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Education Section / DUA Link */}
         <section className="py-12 bg-white border-t border-border/50">
