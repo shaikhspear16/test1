@@ -224,14 +224,9 @@ export default function Home() {
         {/* Event Flyer Gallery */}
         <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-              <div>
-                <h3 className="text-4xl font-bold mb-4">Upcoming Events</h3>
-                <p className="text-muted-foreground max-w-xl">Stay connected with our community through educational seminars, youth programs, and family gatherings.</p>
-              </div>
-              <Button variant="ghost" className="group">
-                View All Events <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
+            <div className="text-center mb-12">
+              <h3 className="text-4xl font-bold mb-4">Upcoming Events</h3>
+              <p className="text-muted-foreground max-w-xl mx-auto">Stay connected with our community through educational seminars, youth programs, and family gatherings.</p>
             </div>
 
             <Carousel 
