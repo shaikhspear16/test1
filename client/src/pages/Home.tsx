@@ -184,48 +184,33 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative lg:justify-self-end w-full max-w-md"
               >
-                <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl border border-white/20 overflow-hidden p-2">
+                <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-white/20 overflow-hidden p-2">
                   <Card className="border-none bg-transparent shadow-none">
-                    <div className="bg-primary text-primary-foreground p-4 flex justify-between items-center rounded-[2rem] mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-                          <Clock className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-lg leading-none">Prayer Times</p>
-                          <p className="text-[10px] opacity-70 uppercase tracking-widest mt-1">Georgetown, TX</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-sm font-medium block">{new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                        <span className="text-[10px] opacity-70 italic">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</span>
-                      </div>
-                    </div>
                     <CardContent className="p-2">
-                      <div className="space-y-1">
+                      <div className="space-y-0.5">
                         {PRAYER_TIMES.map((prayer) => (
-                          <div key={prayer.name} className="flex items-center justify-between px-4 py-3 rounded-2xl hover:bg-primary/5 transition-colors group">
+                          <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group">
                             <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
                             <div className="flex gap-6 text-right">
                               <div className="min-w-[65px]">
-                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0.5">Begins</p>
+                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Begins</p>
                                 <p className="font-medium text-sm text-foreground/70">{prayer.time}</p>
                               </div>
-                              <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-1 border border-primary/10">
-                                <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0.5 italic">Iqamah</p>
+                              <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
+                                <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0 italic">Iqamah</p>
                                 <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
                               </div>
                             </div>
                           </div>
                         ))}
                       </div>
-                      <div className="mt-4 p-2">
+                      <div className="mt-3 p-1">
                         <Button 
                           variant="default" 
-                          className="w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-12 shadow-lg shadow-primary/20"
+                          className="w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-11 shadow-lg shadow-primary/10"
                           onClick={() => window.open('#', '_blank')}
                         >
-                          <Download className="mr-2 h-4 w-4" /> Download Monthly Schedule
+                          <Download className="mr-2 h-4 w-4" /> Monthly Schedule
                         </Button>
                       </div>
                     </CardContent>
