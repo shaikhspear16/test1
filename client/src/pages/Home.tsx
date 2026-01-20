@@ -307,9 +307,11 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <Button className="mt-10 rounded-full bg-primary" size="lg">
-                  Learn More About Us
-                </Button>
+                <Link href="/about">
+                  <Button className="mt-10 rounded-full bg-primary" size="lg">
+                    Learn More
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -322,7 +324,7 @@ export default function Home() {
              <div className="absolute -bottom-24 -right-24 w-96 h-96 border-8 border-white rounded-full" />
           </div>
           
-        <div className="max-w-7xl mx-auto container px-4 relative z-10 text-center max-w-3xl">
+        <div className="max-w-7xl mx-auto container px-4 relative z-10 text-center max-w-xl">
             <Bell className="h-12 w-12 mx-auto mb-6 opacity-80" />
             <h3 className="text-4xl font-bold mb-4">Join Our Community</h3>
             <p className="text-primary-foreground/80 mb-10 text-lg">
