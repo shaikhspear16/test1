@@ -114,11 +114,11 @@ export default function Home() {
                       Donate Now
                     </Button>
                   </Link>
-                  <a href="/about">
+                  <Link href="/about">
                     <Button size="lg" variant="outline" className="rounded-full px-8">
                       Learn More
                     </Button>
-                  </a>
+                  </Link>
                 </div>
               </motion.div>
 
