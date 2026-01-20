@@ -38,7 +38,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
 import flyer1 from "@assets/arabic_1768797774024.jpeg";
 import flyer2 from "@assets/ramadan_1768797774026.jpeg";
 import flyer3 from "@assets/tafsir_1768797774026.jpeg";
