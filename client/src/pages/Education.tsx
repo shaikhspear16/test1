@@ -94,14 +94,14 @@ export default function Education() {
           <div className="max-w-7xl mx-auto container px-4 max-w-4xl">
             <Accordion type="single" collapsible className="w-full space-y-4">
               {/* Quran Programs */}
-              <AccordionItem value="quran" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+              <AccordionItem value="quran" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
                 <AccordionTrigger className="hover:no-underline py-6">
                   <div className="flex items-center gap-4 text-left">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <BookOpen className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Quran Programs</h3>
+                      <h3 className="text-xl font-bold transition-colors group-hover:text-primary">Quran Programs</h3>
                       <p className="text-sm text-muted-foreground">Full-time Hifz, After School & Summer Programs</p>
                     </div>
                   </div>
@@ -139,14 +139,14 @@ export default function Education() {
               </AccordionItem>
 
               {/* Seminary Programs */}
-              <AccordionItem value="seminary" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+              <AccordionItem value="seminary" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
                 <AccordionTrigger className="hover:no-underline py-6">
                   <div className="flex items-center gap-4 text-left">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <GraduationCap className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Seminary Programs</h3>
+                      <h3 className="text-xl font-bold transition-colors group-hover:text-primary">Seminary Programs</h3>
                       <p className="text-sm text-muted-foreground">Naseeha Program & Full-time Seminary</p>
                     </div>
                   </div>
@@ -175,14 +175,14 @@ export default function Education() {
               </AccordionItem>
 
               {/* Al Iman Sunday School */}
-              <AccordionItem value="aliman" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm">
+              <AccordionItem value="aliman" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
                 <AccordionTrigger className="hover:no-underline py-6">
                   <div className="flex items-center gap-4 text-left">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <Users className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Al Iman Sunday School</h3>
+                      <h3 className="text-xl font-bold transition-colors group-hover:text-primary">Al Iman Sunday School</h3>
                       <p className="text-sm text-muted-foreground">Weekly Islamic education for children</p>
                     </div>
                   </div>
