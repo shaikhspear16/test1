@@ -91,11 +91,12 @@ export default function Home() {
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-12 pb-20 hero-gradient">
           <div className="max-w-7xl mx-auto container px-4">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-12 text-center lg:text-left">
               <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
+                className="flex-1"
               >
                 <Badge className="mb-4 bg-accent/20 text-accent-foreground border-accent/20 px-3 py-1">
                   Welcome to GIC
@@ -103,11 +104,11 @@ export default function Home() {
                 <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
                   A Place for <span className="text-primary italic">Faith</span> and Community
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 max-lg leading-relaxed">
+                <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
                   Join us at Georgetown Islamic Center as we grow together in knowledge, 
                   worship, and service to our community in the heart of Texas.
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <Link href="/donate">
                     <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
                       Donate Now
@@ -125,7 +126,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative lg:justify-self-end w-full max-w-md"
+                className="relative lg:justify-self-end w-full max-w-md mx-auto"
               >
                 <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-white/20 overflow-hidden p-2">
                   <Card className="border-none bg-transparent shadow-none">
