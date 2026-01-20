@@ -23,9 +23,9 @@ const RESOURCE_GROUPS = [
     title: "Services & Support",
     icon: HandHelping,
     resources: [
-      { name: "Imam's Office Hours", link: "#", icon: Clock },
-      { name: "Funeral Services", link: "https://www.gicmasjid.org/funeral-services", icon: MapPin },
-      { name: "GAMRC Relief Application", link: "https://www.gamrc.org/relief", icon: FileText },
+      { name: "Imam's Office Hours", link: "https://calendly.com/webapps-a_s/30minswithshaykhosama", icon: Clock },
+      { name: "Funeral Services", link: "https://www.icgamuslimcemetery.org/", icon: MapPin },
+      { name: "GAMRC Relief Application", link: "https://austinzakat.org/ApplyForHelp", icon: FileText },
       { name: "SMS Consent Form", link: "https://us.mohid.co/tx/austin/gic/masjid/online/donation", icon: MessageSquare }
     ]
   },
@@ -33,17 +33,17 @@ const RESOURCE_GROUPS = [
     title: "New Muslim Resources",
     icon: UserPlus,
     resources: [
-      { name: "New Muslim Resource Guide", link: "#", icon: BookOpen },
-      { name: "New Muslim Contact Form", link: "https://bit.ly/gic_new_muslim", icon: FileText }
+      { name: "New Muslim Resource Guide", link: "https://newmuslimguide.com/en", icon: BookOpen },
+      { name: "New Muslim Contact Form", link: "https://docs.google.com/forms/d/e/1FAIpQLSdJ5ym4gYL3QyoXNzzzk5R0R2vMOr4LiPREqF6N9iJFAr2I2w/viewform", icon: FileText }
     ]
   },
   {
     title: "Forms & Requests",
     icon: FileText,
     resources: [
-      { name: "Nikkah Request Form", link: "https://bit.ly/gic_nikkah", icon: Heart },
-      { name: "Ramadan Excuse Letter", link: "#", icon: FileText },
-      { name: "Eid Excuse Letter", link: "#", icon: FileText }
+      { name: "Nikkah Request Form", link: "https://docs.google.com/forms/d/e/1FAIpQLSdqZ7ILcDGEEUQez_jJPWa-d0jESr3US37ga2Q6WMf6JKX5hw/viewform?pli=1", icon: Heart },
+      { name: "Ramadan Excuse Letter", link: "https://docs.google.com/document/d/1KycE7-qqiG-Mel1KvLGIvcMQgMinj9DxatniaygXknI/edit?pli=1&tab=t.0", icon: FileText },
+      { name: "Eid Excuse Letter", link: "https://docs.google.com/document/d/1Ix8yenJZQ7ZDMK9znHomkHhEDrNmFs_vsiqLpxd3qAU/edit?pli=1&tab=t.0", icon: FileText }
     ]
   }
 ];
