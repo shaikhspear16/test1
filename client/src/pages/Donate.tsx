@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { 
   Heart, 
@@ -58,20 +59,20 @@ export default function Donate() {
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-primary leading-tight">Georgetown</h1>
                 <p className="text-xs text-muted-foreground uppercase tracking-widest">Islamic Center</p>
               </div>
-            </a>
+            </Link>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="/education" className="hover:text-primary transition-colors">Education</a>
-            <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
-            <a href="/about" className="hover:text-primary transition-colors">About</a>
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            <Link href="/education" className="hover:text-primary transition-colors">Education</Link>
+            <Link href="/resources" className="hover:text-primary transition-colors">Resources</Link>
+            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
           </div>
 
           <Button data-testid="button-donate-active" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 pointer-events-none opacity-80">

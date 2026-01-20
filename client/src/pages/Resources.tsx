@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FileText, 
@@ -69,28 +70,28 @@ export default function Resources() {
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <a href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-primary leading-tight">Georgetown</h1>
                 <p className="text-xs text-muted-foreground uppercase tracking-widest">Islamic Center</p>
               </div>
-            </a>
+            </Link>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="/education" className="hover:text-primary transition-colors">Education</a>
-            <a href="/resources" className="hover:text-primary transition-colors text-primary font-bold">Resources</a>
-            <a href="/about" className="hover:text-primary transition-colors">About</a>
+            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+            <Link href="/education" className="hover:text-primary transition-colors">Education</Link>
+            <Link href="/resources" className="hover:text-primary transition-colors text-primary font-bold">Resources</Link>
+            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="/donate" className="hidden sm:block">
+            <Link href="/donate" className="hidden sm:block">
               <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
                 <Heart className="mr-2 h-4 w-4" /> Donate
               </Button>
-            </a>
+            </Link>
 
             <Button 
               variant="ghost" 
@@ -113,15 +114,15 @@ export default function Resources() {
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
           <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
-                <a href="/" onClick={() => setIsMenuOpen(false)}>Home</a>
-                <a href="/education" onClick={() => setIsMenuOpen(false)}>Education</a>
-                <a href="/resources" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Resources</a>
-                <a href="/about" onClick={() => setIsMenuOpen(false)}>About</a>
-                <a href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                <Link href="/education" onClick={() => setIsMenuOpen(false)}>Education</Link>
+                <Link href="/resources" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Resources</Link>
+                <Link href="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+                <Link href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full bg-primary text-white rounded-full">
                     <Heart className="mr-2 h-4 w-4" /> Donate
                   </Button>
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}

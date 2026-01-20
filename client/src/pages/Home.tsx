@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Calendar, 
@@ -95,18 +96,18 @@ export default function Home() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="/" className="hover:text-primary transition-colors text-primary font-bold">Home</a>
-            <a href="/education" className="hover:text-primary transition-colors">Education</a>
-            <a href="/resources" className="hover:text-primary transition-colors">Resources</a>
-            <a href="/about" className="hover:text-primary transition-colors">About</a>
+            <Link href="/" className="hover:text-primary transition-colors text-primary font-bold">Home</Link>
+            <Link href="/education" className="hover:text-primary transition-colors">Education</Link>
+            <Link href="/resources" className="hover:text-primary transition-colors">Resources</Link>
+            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="/donate" className="hidden sm:block">
+            <Link href="/donate" className="hidden sm:block">
               <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
                 <Heart className="mr-2 h-4 w-4" /> Donate
               </Button>
-            </a>
+            </Link>
 
             <Button 
               variant="ghost" 
@@ -128,16 +129,16 @@ export default function Home() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden bg-background border-b border-border/50 overflow-hidden"
             >
-          <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
-                <a href="/" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Home</a>
-                <a href="/education" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Education</a>
-                <a href="/resources" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Resources</a>
-                <a href="/about" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</a>
-                <a href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
+              <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+                <Link href="/" className="text-primary font-bold" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                <Link href="/education" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Education</Link>
+                <Link href="/resources" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Resources</Link>
+                <Link href="/about" className="hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
+                <Link href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full bg-primary text-white rounded-full">
                     <Heart className="mr-2 h-4 w-4" /> Donate
                   </Button>
-                </a>
+                </Link>
               </div>
             </motion.div>
           )}
@@ -165,11 +166,11 @@ export default function Home() {
                   worship, and service to our community in the heart of Texas.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <a href="/donate">
+                  <Link href="/donate">
                     <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
                       Donate Now
                     </Button>
-                  </a>
+                  </Link>
                   <a href="#about">
                     <Button size="lg" variant="outline" className="rounded-full px-8">
                       Learn More
@@ -303,7 +304,7 @@ export default function Home() {
 
         {/* Education Section / DUA Link */}
         <section className="py-12 bg-white border-t border-border/50">
-          <div className="max-w-7xl mx-auto container px-4">
+              <div className="max-w-7xl mx-auto container px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
                 Educational Partner
@@ -319,11 +320,11 @@ export default function Home() {
                     Visit DUA Website
                   </Button>
                 </a>
-                <a href="/education">
+                <Link href="/education">
                   <Button variant="outline" className="rounded-full px-8">
                     View Programs at GIC
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
