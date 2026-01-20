@@ -276,8 +276,8 @@ export default function Home() {
         {/* About & Video Section */}
         <section id="about" className="py-12 bg-secondary/30">
           <div className="max-w-7xl mx-auto container px-4">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
+            <div className="flex flex-col lg:flex-row gap-16 items-center text-center lg:text-left">
+              <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black w-full lg:flex-1">
                 {/* Embedded Youtube Mockup */}
                 <iframe 
                   className="absolute inset-0 w-full h-full"
@@ -288,12 +288,12 @@ export default function Home() {
                   allowFullScreen
                 ></iframe>
               </div>
-              <div className="order-1 lg:order-2">
+              <div className="order-1 lg:order-2 lg:flex-1">
                 <h3 className="text-4xl font-bold mb-6">Growing Together <br/>In Texas</h3>
-                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                   The Georgetown Islamic Center (GIC) is more than just a masjid. It's a vibrant hub for Muslims in the Round Rock and Georgetown area to connect, learn, and contribute.
                 </p>
-                <div className="space-y-4">
+                <div className="space-y-4 max-w-sm mx-auto lg:mx-0 text-left">
                   {[
                     "Weekly Educational Programs",
                     "Youth Mentorship & Activities",
