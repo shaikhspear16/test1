@@ -8,6 +8,7 @@ import Donate from "@/pages/Donate";
 import Education from "@/pages/Education";
 import About from "@/pages/About";
 import Resources from "@/pages/Resources";
+import SMSConsent from "@/pages/SMSConsent";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/education" component={Education} />
       <Route path="/about" component={About} />
       <Route path="/resources" component={Resources} />
+      <Route path="/sms-consent" component={SMSConsent} />
       <Route component={NotFound} />
     </Switch>
   );

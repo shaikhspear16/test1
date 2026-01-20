@@ -26,7 +26,7 @@ const RESOURCE_GROUPS = [
       { name: "Imam's Office Hours", link: "https://calendly.com/webapps-a_s/30minswithshaykhosama", icon: Clock },
       { name: "Funeral Services", link: "https://www.icgamuslimcemetery.org/", icon: MapPin },
       { name: "GAMRC Relief Application", link: "https://austinzakat.org/ApplyForHelp", icon: FileText },
-      { name: "SMS Consent Form", link: "https://us.mohid.co/tx/austin/gic/masjid/online/donation", icon: MessageSquare }
+      { name: "SMS Consent Form", link: "/sms-consent", icon: MessageSquare, internal: true }
     ]
   },
   {
@@ -138,19 +138,33 @@ export default function Resources() {
                     <CardContent className="p-0">
                       <div className="divide-y divide-border/50">
                         {group.resources.map((res) => (
-                          <a 
-                            key={res.name} 
-                            href={res.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors group"
-                          >
-                            <div className="flex items-center gap-3">
-                              <res.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                              <span className="text-sm font-medium">{res.name}</span>
-                            </div>
-                            <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
-                          </a>
+                          res.internal ? (
+                            <Link 
+                              key={res.name} 
+                              href={res.link}
+                              className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors group"
+                            >
+                              <div className="flex items-center gap-3">
+                                <res.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                <span className="text-sm font-medium">{res.name}</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
+                            </Link>
+                          ) : (
+                            <a 
+                              key={res.name} 
+                              href={res.link} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors group"
+                            >
+                              <div className="flex items-center gap-3">
+                                <res.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                <span className="text-sm font-medium">{res.name}</span>
+                              </div>
+                              <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
+                            </a>
+                          )
                         ))}
                       </div>
                     </CardContent>
