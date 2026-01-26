@@ -152,7 +152,7 @@ export default function Home() {
                         <Button 
                           variant="default" 
                           className="w-full rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-11 shadow-lg shadow-primary/10"
-                          onClick={() => window.open('#', '_blank')}
+                          onClick={() => window.open('https://masjidal.com/widget/monthly/?masjid_id=xwLVMDKJ', '_blank')}
                         >
                           <Download className="mr-2 h-4 w-4" /> Monthly Schedule
                         </Button>
