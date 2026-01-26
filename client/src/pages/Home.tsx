@@ -310,7 +310,7 @@ export default function Home() {
                 </div>
                 <Link href="/about">
                   <Button className="mt-10 rounded-full bg-primary" size="lg">
-                    Learn More
+                    Learn More About Us
                   </Button>
                 </Link>
               </div>
