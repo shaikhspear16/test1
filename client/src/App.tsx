@@ -10,6 +10,7 @@ import Education from "@/pages/Education";
 import About from "@/pages/About";
 import Resources from "@/pages/Resources";
 import SMSConsent from "@/pages/SMSConsent";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/resources" component={Resources} />
       <Route path="/sms-consent" component={SMSConsent} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );

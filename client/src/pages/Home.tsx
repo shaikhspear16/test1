@@ -1,22 +1,11 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  ChevronLeft, 
-  ChevronRight, 
-  Youtube, 
-  ArrowRight,
   Bell,
-  Heart,
-  Menu,
-  X,
   Download,
   ExternalLink
 } from "lucide-react";
@@ -36,7 +25,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import flyer1 from "@assets/arabic_1768797774024.jpeg";
 import flyer2 from "@assets/ramadan_1768797774026.jpeg";
@@ -44,6 +32,7 @@ import flyer3 from "@assets/tafsir_1768797774026.jpeg";
 import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.jpeg";
 import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.jpeg";
 import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.jpeg";
+import type { Event } from "@shared/schema";
 
 const PRAYER_TIMES = [
   { name: "Fajr", time: "5:45 AM", iqamah: "6:15 AM" },
@@ -55,33 +44,59 @@ const PRAYER_TIMES = [
   { name: "Jumu'ah 2", time: "2:15 PM", iqamah: "2:30 PM" },
 ];
 
-const FLYERS = [
+interface DisplayEvent {
+  id?: number;
+  imageUrl: string;
+  title?: string | null;
+  description?: string | null;
+  registrationLink?: string | null;
+}
+
+const FALLBACK_FLYERS: DisplayEvent[] = [
   { 
-    src: flyerNoorKids, 
+    imageUrl: flyerNoorKids, 
     title: "Family Night with Noor Kids", 
     registrationLink: "https://tinyurl.com/GIC-2026-NoorKids",
     description: "Join us for an engaging session with Br. Amin Aaser from Noor Kids. Featuring inspiring stories and interactive learning."
   },
   { 
-    src: flyerPotluck, 
+    imageUrl: flyerPotluck, 
     title: "Monthly Community Potluck", 
     registrationLink: "https://tinyurl.com/GIC-Monthly-Potluck",
     description: "A monthly gathering to strengthen community bonds. Speaker: Mufti Hassan from Chicago."
   },
   { 
-    src: flyerSistersTafseer, 
+    imageUrl: flyerSistersTafseer, 
     title: "Sisters Tafseer Class", 
     description: "Join us as we journey through the Tafseer of the Qur'an with Imam Osama Hussain and Muallimah Umme Yahya."
   },
-  { src: flyer1, title: "Arabic Language Class" },
-  { src: flyer2, title: "Ramadan Prep" },
-  { src: flyer3, title: "Weekly Tafsir" },
+  { imageUrl: flyer1, title: "Arabic Language Class" },
+  { imageUrl: flyer2, title: "Ramadan Prep" },
+  { imageUrl: flyer3, title: "Weekly Tafsir" },
 ];
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedFlyer, setSelectedFlyer] = useState<typeof FLYERS[0] | null>(null);
+  const [selectedFlyer, setSelectedFlyer] = useState<DisplayEvent | null>(null);
+
+  const { data: dbEvents } = useQuery({
+    queryKey: ["/api/events"],
+    queryFn: async () => {
+      const res = await fetch("/api/events");
+      if (!res.ok) throw new Error("Failed to fetch events");
+      return res.json() as Promise<Event[]>;
+    },
+  });
+
+  const displayEvents: DisplayEvent[] = dbEvents && dbEvents.length > 0
+    ? dbEvents.map(e => ({
+        id: e.id,
+        imageUrl: e.imageUrl,
+        title: e.title,
+        description: e.description,
+        registrationLink: e.registrationLink,
+      }))
+    : FALLBACK_FLYERS;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -181,14 +196,14 @@ export default function Home() {
               className="w-full max-w-6xl mx-auto"
             >
               <CarouselContent>
-                {FLYERS.map((flyer, index) => (
-                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 p-4">
+                {displayEvents.map((event, index) => (
+                  <CarouselItem key={event.id || index} className="md:basis-1/2 lg:basis-1/3 p-4">
                     <motion.div 
                       whileHover={{ y: -10 }}
                       className="rounded-2xl overflow-hidden shadow-lg border border-border cursor-pointer"
-                      onClick={() => setSelectedFlyer(flyer)}
+                      onClick={() => setSelectedFlyer(event)}
                     >
-                      <img src={flyer.src} alt={flyer.title} className="w-full h-auto object-cover aspect-[3/4]" />
+                      <img src={event.imageUrl} alt={event.title || "Event"} className="w-full h-auto object-cover aspect-[3/4]" />
                     </motion.div>
                   </CarouselItem>
                 ))}
@@ -207,8 +222,8 @@ export default function Home() {
             <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
               <div className="flex-1 bg-black/5 flex items-center justify-center p-4">
                 <img 
-                  src={selectedFlyer?.src} 
-                  alt={selectedFlyer?.title} 
+                  src={selectedFlyer?.imageUrl} 
+                  alt={selectedFlyer?.title || "Event"} 
                   className="max-h-full max-w-full object-contain shadow-2xl rounded-lg"
                 />
               </div>
