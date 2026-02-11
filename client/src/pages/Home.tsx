@@ -113,15 +113,11 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="flex-1"
               >
-                <Badge className="mb-4 bg-accent/20 text-accent-foreground border-accent/20 px-3 py-1">
-                  Welcome to GIC
-                </Badge>
                 <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
-                  A Place for <span className="text-primary italic">Faith</span> and Community
+                  Georgetown Islamic Center
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                  Join us at Georgetown Islamic Center as we grow together in knowledge, 
-                  worship, and service to our community in the heart of Texas.
+                <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed italic">
+                  "The best among you are those who have the best manners and character." [<a href="https://sunnah.com/bukhari:6029" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">Bukhari</a>]
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <Link href="/donate">
