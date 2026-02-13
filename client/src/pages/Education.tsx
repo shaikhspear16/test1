@@ -19,71 +19,29 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-const EDUCATION_CATEGORIES = [
-  {
-    title: "Quran Programs",
-    provider: "DUA at GIC",
-    description: "Foundational and advanced Quranic studies for various age groups.",
-    icon: BookOpen,
-    items: [
-      "Full-time Hifdh Program",
-      "After School Quran Programs",
-      "Summer Quran Intensives"
-    ],
-    link: "https://darululoomaustin.org/quran",
-    linkText: "View Quran Programs"
-  },
-  {
-    title: "Seminary Programs",
-    provider: "DUA at GIC",
-    description: "In-depth traditional Islamic sciences for serious students of knowledge.",
-    icon: GraduationCap,
-    items: [
-      "1 Year Full-Time Seminary",
-      "3 Year Part-Time Naseeha Program",
-      "Summer Deen Intensives"
-    ],
-    link: "https://darululoomaustin.org/seminary",
-    linkText: "Explore Seminary"
-  },
-  {
-    title: "Al Iman Academy",
-    provider: "GIC Sunday School",
-    description: "Weekly Islamic education focusing on character and foundational knowledge.",
-    icon: Users,
-    items: [
-      "Weekend Islamic Studies",
-      "Arabic Language Tracks",
-      "Youth Character Building"
-    ],
-    link: "https://www.alimanacademy.org",
-    linkText: "Visit Al Iman Academy"
-  }
-];
+import fulltimeFlyer from "@assets/fulltime_1770955258901.avif";
+import afterschoolFlyer from "@assets/afterschool_1770955258901.avif";
+import naseehaFlyer from "@assets/naseeha_1770955258900.avif";
+import sundaySchoolFlyer from "@assets/Aliman_Sunday_School_2025_1770955258901.avif";
 
 export default function Education() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-20 hero-gradient">
+        {/* Hero Section - compact */}
+        <section className="py-10 hero-gradient">
           <div className="max-w-7xl mx-auto container px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
-                GIC Education
-              </Badge>
-              <h2 className="text-5xl font-black mb-6">Nurturing <span className="text-primary italic">Knowledge</span> & Faith</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-                Georgetown Islamic Center is proud to host diverse educational programs catering to all ages, 
-                from foundational Quranic studies to advanced seminary tracks.
+              <h2 className="text-4xl font-black mb-3">Education at GIC</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Georgetown Islamic Center hosts diverse educational programs for all ages,
+                from Quranic studies to advanced seminary tracks.
               </p>
             </motion.div>
           </div>
@@ -95,7 +53,7 @@ export default function Education() {
             <Accordion type="single" collapsible className="w-full space-y-4">
               {/* Quran Programs */}
               <AccordionItem value="quran" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
-                <AccordionTrigger className="hover:no-underline py-6">
+                <AccordionTrigger className="hover:no-underline py-6" data-testid="accordion-quran">
                   <div className="flex items-center gap-4 text-left">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <BookOpen className="h-6 w-6 text-primary" />
@@ -107,32 +65,44 @@ export default function Education() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-8 pt-2">
-                  <div className="space-y-8 pl-16">
+                  <div className="space-y-8 pl-4 sm:pl-16">
                     <div>
-                      <h4 className="font-bold text-lg mb-2">Darul Uloom Austin Full Time Quran Hifz</h4>
+                      <h4 className="font-bold text-lg mb-2">Full Time Quran Hifz Program</h4>
                       <p className="text-muted-foreground mb-4">
-                        Students will memorize the Quran, learn to recite with proper tajweed and learn the basics of Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh in the Safer Series Curriculum.
+                        Students will memorize the Quran, learn to recite with proper tajweed and learn the basics of Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh in the Safar Series Curriculum. Ages 7-15, separate classes for boys and girls.
                       </p>
                       <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
                         <p className="font-bold mb-1">Class Hours:</p>
-                        <p>Mon - Thu: 8 am - 2 pm</p>
-                        <p>Fri: 8 am - 12 pm</p>
-                        <p>Sat: 8 am - 2 pm</p>
+                        <p>Mon - Thu: 8:00 AM - 2:00 PM</p>
+                        <p>Fri: 8:00 AM - 12:00 PM</p>
+                        <p className="mt-2 font-bold">Tuition:</p>
+                        <p>$400/month (1st student) · $350/month (additional)</p>
                       </div>
-                      <Button asChild variant="outline" size="sm">
-                        <a href="https://darululoomaustin.org/quran" target="_blank" rel="noopener noreferrer">Learn More at DUA</a>
+                      <img src={fulltimeFlyer} alt="Full Time Hifz Program Flyer" className="w-full max-w-sm rounded-xl shadow-md mb-4" />
+                      <Button asChild variant="outline" size="sm" data-testid="link-register-fulltime">
+                        <a href="https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300" target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-3 w-3" /> Register at GIC
+                        </a>
                       </Button>
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-lg mb-2">Darul Uloom Austin After School Program</h4>
+                      <h4 className="font-bold text-lg mb-2">After School Program</h4>
                       <p className="text-muted-foreground mb-4">
-                        Students will learn to connect with the Book of Allah (SWT) and build a solid Islamic foundation in Aqeeda, Hadith, Akhlaq, Fiqh, and Tareekh.
+                        Students will learn to recite Quran with Tajweed and learn some Surahs, along with the Safar Series Curriculum covering Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh.
                       </p>
                       <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
                         <p className="font-bold mb-1">Class Hours:</p>
-                        <p>Mon - Thu: 5 pm - 7:00 pm at GIC</p>
+                        <p>Mon - Thu: 5:00 PM - 7:00 PM at GIC</p>
+                        <p className="mt-2 font-bold">Tuition:</p>
+                        <p>$125/month (1st student) · $100/month (additional)</p>
                       </div>
+                      <img src={afterschoolFlyer} alt="After School Program Flyer" className="w-full max-w-sm rounded-xl shadow-md mb-4" />
+                      <Button asChild variant="outline" size="sm" data-testid="link-register-afterschool">
+                        <a href="https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300" target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-3 w-3" /> Register at GIC
+                        </a>
+                      </Button>
                     </div>
                   </div>
                 </AccordionContent>
@@ -140,7 +110,7 @@ export default function Education() {
 
               {/* Seminary Programs */}
               <AccordionItem value="seminary" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
-                <AccordionTrigger className="hover:no-underline py-6">
+                <AccordionTrigger className="hover:no-underline py-6" data-testid="accordion-seminary">
                   <div className="flex items-center gap-4 text-left">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <GraduationCap className="h-6 w-6 text-primary" />
@@ -152,11 +122,11 @@ export default function Education() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-8 pt-2">
-                  <div className="space-y-8 pl-16">
+                  <div className="space-y-8 pl-4 sm:pl-16">
                     <div>
-                      <h4 className="font-bold text-lg mb-2">DUA Seminary Naseeha Program</h4>
+                      <h4 className="font-bold text-lg mb-2">Naseeha Program (Part-Time)</h4>
                       <p className="text-muted-foreground mb-4">
-                        The Naseeha Program aims to help our students live Islamically in a secular environment through sacred knowledge and time with Ulama.
+                        A two-year foundational part-time course designed to provide students with a deeper understanding of their faith. Whether one aspires to become a scholar or serve the community in other capacities, this program offers a balanced curriculum to nurture both the intellect and character. For students 14 years and above.
                       </p>
                       <div className="grid grid-cols-2 gap-2 text-sm mb-4">
                         {["Arabic Syntax", "Morphology", "Personal Development", "Hadith", "Aqidah", "Fiqh"].map(item => (
@@ -166,8 +136,42 @@ export default function Education() {
                           </div>
                         ))}
                       </div>
-                      <Button asChild variant="outline" size="sm">
-                        <a href="https://darululoomaustin.org/seminary" target="_blank" rel="noopener noreferrer">Learn More at DUA</a>
+                      <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
+                        <p className="font-bold mb-1">Schedule:</p>
+                        <p>September to May</p>
+                        <p>Saturdays & Sundays: 11:00 AM - 2:00 PM</p>
+                        <p className="mt-2 font-bold">Tuition:</p>
+                        <p>$150/month (1st student) · $100/month (additional)</p>
+                        <p>$100 book fee (yearly)</p>
+                      </div>
+                      <img src={naseehaFlyer} alt="Naseeha Program Flyer" className="w-full max-w-sm rounded-xl shadow-md mb-4" />
+                      <Button asChild variant="outline" size="sm" data-testid="link-register-naseeha">
+                        <a href="https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300" target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-3 w-3" /> Register Now
+                        </a>
+                      </Button>
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold text-lg mb-2">Full-Time Seminary Year 1</h4>
+                      <p className="text-muted-foreground mb-4">
+                        The One-Year Alim Program is a transformative experience designed to build a strong foundation in Islamic sciences. Through a full-time schedule and immersive curriculum, students grow spiritually, academically, and personally. For students 14 years and above.
+                      </p>
+                      <div className="bg-secondary/20 p-4 rounded-xl mb-4 text-sm">
+                        <p className="font-bold mb-1">Schedule:</p>
+                        <p>August 2025 to May 2026</p>
+                        <p>Mon - Thu: 8:00 AM - 4:00 PM</p>
+                        <p>Fri: 8:00 AM - 12:00 PM</p>
+                        <p className="mt-2 font-bold">Curriculum:</p>
+                        <p>Spiritual Purification, Aqeedah, Arabic Grammar, Seerah, Tajwid, Arabic Literature</p>
+                        <p className="mt-2 font-bold">Tuition:</p>
+                        <p>$400/month (1st student) · $350/month (additional)</p>
+                        <p>$100 book fee (yearly)</p>
+                      </div>
+                      <Button asChild variant="outline" size="sm" data-testid="link-register-seminary">
+                        <a href="https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300" target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-3 w-3" /> Register Now
+                        </a>
                       </Button>
                     </div>
                   </div>
@@ -176,7 +180,7 @@ export default function Education() {
 
               {/* Al Iman Sunday School */}
               <AccordionItem value="aliman" className="border border-border/50 rounded-2xl overflow-hidden px-4 bg-white shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:bg-primary/5 group">
-                <AccordionTrigger className="hover:no-underline py-6">
+                <AccordionTrigger className="hover:no-underline py-6" data-testid="accordion-sunday-school">
                   <div className="flex items-center gap-4 text-left">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
                       <Users className="h-6 w-6 text-primary" />
@@ -188,9 +192,9 @@ export default function Education() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-8 pt-2">
-                  <div className="space-y-6 pl-16">
+                  <div className="space-y-6 pl-4 sm:pl-16">
                     <p className="text-muted-foreground">
-                      Sunday School 2025. Every Sunday from 10AM to 2:15PM at GIC.
+                      Sunday School 2025 — Every Sunday from 10:00 AM to 2:15 PM at GIC.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="bg-secondary/20 p-4 rounded-xl text-sm">
@@ -208,8 +212,11 @@ export default function Education() {
                         <p>First Day: Sept 14, 2025</p>
                       </div>
                     </div>
-                    <Button asChild variant="outline" size="sm">
-                      <a href="https://alimanaustin.org" target="_blank" rel="noopener noreferrer">Visit Al Iman Academy</a>
+                    <img src={sundaySchoolFlyer} alt="Al Iman Sunday School 2025 Flyer" className="w-full max-w-sm rounded-xl shadow-md" />
+                    <Button asChild variant="outline" size="sm" data-testid="link-aliman-academy">
+                      <a href="https://alimanaustin.org" target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-3 w-3" /> Visit Al Iman Academy
+                      </a>
                     </Button>
                   </div>
                 </AccordionContent>
@@ -218,39 +225,31 @@ export default function Education() {
           </div>
         </section>
 
-        {/* Summer Special Section */}
-        <section className="py-12 bg-secondary/30 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+        {/* Darul Uloom Austin Section */}
+        <section className="py-12 bg-secondary/30">
           <div className="max-w-7xl mx-auto container px-4">
-            <div className="bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden border border-primary/5">
-              <div className="flex flex-col md:flex-row items-center gap-12">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Sparkles className="h-5 w-5 text-accent" />
-                    <span className="text-sm font-bold uppercase tracking-widest text-accent">Summer 2026</span>
-                  </div>
-                  <h3 className="text-4xl font-bold mb-6">Deen Intensive & Summer Programs</h3>
-                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                    Make your summer meaningful. Join our annual Deen Intensive and summer Quran programs 
-                    designed for youth and adults seeking a spiritual boost.
-                  </p>
-                  <Button size="lg" className="rounded-full bg-primary px-10">
-                    Registration Opening Soon
-                  </Button>
-                </div>
-                <div className="flex-1 grid grid-cols-2 gap-4">
-                  <div className="p-6 bg-secondary/20 rounded-2xl border border-primary/5">
-                    <Calendar className="h-6 w-6 text-primary mb-2" />
-                    <p className="font-bold">June - July</p>
-                    <p className="text-xs text-muted-foreground uppercase">Program Dates</p>
-                  </div>
-                  <div className="p-6 bg-secondary/20 rounded-2xl border border-primary/5">
-                    <Users className="h-6 w-6 text-primary mb-2" />
-                    <p className="font-bold">All Ages</p>
-                    <p className="text-xs text-muted-foreground uppercase">Target Groups</p>
-                  </div>
-                </div>
+            <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-lg border border-primary/10">
+              <div className="flex items-center gap-2 mb-4">
+                <GraduationCap className="h-5 w-5 text-primary" />
+                <Badge className="bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                  Educational Partner
+                </Badge>
               </div>
+              <h3 className="text-3xl font-bold mb-4">Darul Uloom Austin (DUA)</h3>
+              <p className="text-muted-foreground mb-4 leading-relaxed">
+                Darul Uloom Austin is a 501(c)(3) non-profit institution with a mission to prepare future leaders with sound Islamic knowledge and spiritual and ethical values, rooted in the sacred teachings of the Qur'an and Sunnah.
+              </p>
+              <p className="text-muted-foreground mb-4 leading-relaxed">
+                Over the years, DUA has grown to operate multiple campuses including NAMCC, ICBC, and GIC, offering full-time and part-time Hifdh, After School, and Seminary programs. The institution is powered by dedicated teachers, experienced scholars, and a nurturing community.
+              </p>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Starting in 2007, DUA has since expanded to include girls and boys full-time programs, Naseeha seminary programs, Deen Intensives, and GIC academic tracks. In 2025, DUA celebrates its 16th graduation with 28 alumni now serving in diverse roles — from Islamic scholarship to industry and higher education.
+              </p>
+              <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
+                <Button className="rounded-full bg-primary px-8" data-testid="link-dua-website">
+                  <ExternalLink className="mr-2 h-4 w-4" /> Visit Darul Uloom Austin
+                </Button>
+              </a>
             </div>
           </div>
         </section>
