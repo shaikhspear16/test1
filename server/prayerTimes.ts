@@ -18,6 +18,23 @@ function formatTime(raw: string): string {
   return raw.replace(/(am|pm)$/i, (m) => ` ${m.toUpperCase()}`).replace(/\s+/g, ' ').trim();
 }
 
+function addMinutes(timeStr: string, minutes: number): string {
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return timeStr;
+  let [, hourStr, minStr, period] = match;
+  let hour = parseInt(hourStr, 10);
+  let min = parseInt(minStr, 10);
+  if (period.toUpperCase() === "PM" && hour !== 12) hour += 12;
+  if (period.toUpperCase() === "AM" && hour === 12) hour = 0;
+  const totalMin = hour * 60 + min + minutes;
+  let newHour = Math.floor(totalMin / 60) % 24;
+  const newMin = totalMin % 60;
+  const newPeriod = newHour >= 12 ? "PM" : "AM";
+  if (newHour === 0) newHour = 12;
+  else if (newHour > 12) newHour -= 12;
+  return `${newHour}:${String(newMin).padStart(2, '0')} ${newPeriod}`;
+}
+
 async function fetchFromApi(): Promise<PrayerTime[]> {
   const res = await fetch(MASJIDAL_API);
   if (!res.ok) throw new Error(`MasjidAl API returned ${res.status}`);
@@ -35,10 +52,12 @@ async function fetchFromApi(): Promise<PrayerTime[]> {
   ];
 
   if (iqamas.jummah1) {
-    prayers.push({ name: "Jumu'ah 1", adhan: formatTime(iqamas.jummah1), iqamah: formatTime(iqamas.jummah1) });
+    const adhan1 = formatTime(iqamas.jummah1);
+    prayers.push({ name: "Jumu'ah 1", adhan: adhan1, iqamah: addMinutes(adhan1, 30) });
   }
   if (iqamas.jummah2) {
-    prayers.push({ name: "Jumu'ah 2", adhan: formatTime(iqamas.jummah2), iqamah: formatTime(iqamas.jummah2) });
+    const adhan2 = formatTime(iqamas.jummah2);
+    prayers.push({ name: "Jumu'ah 2", adhan: adhan2, iqamah: addMinutes(adhan2, 30) });
   }
 
   return prayers;
