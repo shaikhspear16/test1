@@ -29,15 +29,11 @@ import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1
 import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.jpeg";
 import type { Event } from "@shared/schema";
 
-const PRAYER_TIMES = [
-  { name: "Fajr", time: "5:45 AM", iqamah: "6:15 AM" },
-  { name: "Dhuhr", time: "12:35 PM", iqamah: "1:00 PM" },
-  { name: "Asr", time: "3:45 PM", iqamah: "4:15 PM" },
-  { name: "Maghrib", time: "6:05 PM", iqamah: "6:10 PM" },
-  { name: "Isha", time: "7:25 PM", iqamah: "7:45 PM" },
-  { name: "Jumu'ah 1", time: "1:15 PM", iqamah: "1:30 PM" },
-  { name: "Jumu'ah 2", time: "2:15 PM", iqamah: "2:30 PM" },
-];
+interface PrayerTime {
+  name: string;
+  adhan: string;
+  iqamah?: string;
+}
 
 interface DisplayEvent {
   id?: number;
@@ -73,6 +69,17 @@ const FALLBACK_FLYERS: DisplayEvent[] = [
 export default function Home() {
   const [email, setEmail] = useState("");
   const [selectedFlyer, setSelectedFlyer] = useState<DisplayEvent | null>(null);
+
+  const { data: prayerTimes } = useQuery<PrayerTime[]>({
+    queryKey: ["/api/prayer-times"],
+    queryFn: async () => {
+      const res = await fetch("/api/prayer-times");
+      if (!res.ok) throw new Error("Failed to fetch prayer times");
+      return res.json();
+    },
+    staleTime: 60 * 60 * 1000,
+    refetchInterval: 60 * 60 * 1000,
+  });
 
   const { data: dbEvents } = useQuery({
     queryKey: ["/api/events"],
@@ -138,21 +145,27 @@ export default function Home() {
                   <Card className="border-none bg-transparent shadow-none">
                     <CardContent className="p-2">
                       <div className="space-y-0.5">
-                        {PRAYER_TIMES.map((prayer) => (
-                          <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group">
+                        {prayerTimes ? prayerTimes.map((prayer) => (
+                          <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
                             <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
                             <div className="flex gap-6 text-right">
                               <div className="min-w-[65px]">
-                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Begins</p>
-                                <p className="font-medium text-sm text-foreground/70">{prayer.time}</p>
+                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
+                                <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
                               </div>
-                              <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
-                                <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0 italic">Iqamah</p>
-                                <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
-                              </div>
+                              {prayer.iqamah && (
+                                <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
+                                  <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0 italic">Iqamah</p>
+                                  <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
+                                </div>
+                              )}
                             </div>
                           </div>
-                        ))}
+                        )) : (
+                          <div className="flex justify-center py-4">
+                            <p className="text-sm text-muted-foreground">Loading prayer times...</p>
+                          </div>
+                        )}
                       </div>
                       <div className="mt-3 p-1">
                         <Button 

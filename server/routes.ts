@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { insertEventSchema, insertSmsConsentSchema } from "@shared/schema";
+import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -64,6 +65,18 @@ export async function registerRoutes(
     res.set("Cross-Origin-Resource-Policy", "cross-origin");
     next();
   }, express.static(uploadsDir));
+
+  startPrayerTimesRefresh();
+
+  app.get("/api/prayer-times", async (req, res) => {
+    try {
+      const prayers = await getPrayerTimes();
+      res.json(prayers);
+    } catch (error) {
+      console.error("Error fetching prayer times:", error);
+      res.status(500).json({ message: "Failed to fetch prayer times" });
+    }
+  });
 
   app.get("/api/events", async (req, res) => {
     try {
