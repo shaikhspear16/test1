@@ -20,12 +20,7 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from "@/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import flyer1 from "@assets/arabic_1768797774024.jpeg";
 import flyer2 from "@assets/ramadan_1768797774026.jpeg";
 import flyer3 from "@assets/tafsir_1768797774026.jpeg";
@@ -213,48 +208,7 @@ export default function Home() {
         </section>
 
         {/* Flyer Modal */}
-        <Dialog open={!!selectedFlyer} onOpenChange={(open) => !open && setSelectedFlyer(null)}>
-          <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background/95 backdrop-blur-md">
-            <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
-              <div className="flex-1 bg-black/5 flex items-center justify-center p-4">
-                <img 
-                  src={selectedFlyer?.imageUrl} 
-                  alt={selectedFlyer?.title || "Event"} 
-                  className="max-h-full max-w-full object-contain shadow-2xl rounded-lg"
-                />
-              </div>
-              {(selectedFlyer?.description || selectedFlyer?.registrationLink) && (
-                <div className="w-full md:w-80 p-8 flex flex-col justify-center bg-white border-l border-border">
-                  <DialogHeader className="mb-6">
-                    <DialogTitle className="text-2xl font-black text-primary leading-tight">{selectedFlyer?.title}</DialogTitle>
-                  </DialogHeader>
-                  
-                  {selectedFlyer?.description && (
-                    <p className="text-muted-foreground mb-8 leading-relaxed">
-                      {selectedFlyer.description}
-                    </p>
-                  )}
-
-                  {selectedFlyer?.registrationLink && (
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold uppercase tracking-widest text-primary/60">Registration</p>
-                      <a 
-                        href={selectedFlyer.registrationLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="block w-full"
-                      >
-                        <Button className="w-full bg-primary hover:bg-primary/90 rounded-full h-12 text-base font-bold">
-                          Register Now <ExternalLink className="ml-2 h-4 w-4" />
-                        </Button>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
+        <ImageLightbox item={selectedFlyer} onClose={() => setSelectedFlyer(null)} />
 
         {/* Education Section / DUA Link */}
         <section className="py-12 bg-white border-t border-border/50">
