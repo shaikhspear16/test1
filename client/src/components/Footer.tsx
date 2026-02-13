@@ -1,4 +1,4 @@
-import { Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Youtube, Mail, Phone, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
 
@@ -16,15 +16,21 @@ export function Footer() {
               Serving the spiritual and social needs of the Muslim community in Georgetown, Round Rock, and surrounding areas.
             </p>
             <div className="flex gap-4">
-              <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
-                <Youtube className="h-4 w-4" />
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
-                <Mail className="h-4 w-4" />
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
-                <Phone className="h-4 w-4" />
-              </Button>
+              <a href="https://www.youtube.com/@gicmasjid" target="_blank" rel="noopener noreferrer">
+                <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
+                  <Youtube className="h-4 w-4" />
+                </Button>
+              </a>
+              <a href="https://www.facebook.com/GICMasjid/" target="_blank" rel="noopener noreferrer">
+                <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
+                  <Facebook className="h-4 w-4" />
+                </Button>
+              </a>
+              <a href="mailto:info@gicmasjid.org">
+                <Button size="icon" variant="outline" className="rounded-full border-background/20 hover:bg-background/10">
+                  <Mail className="h-4 w-4" />
+                </Button>
+              </a>
             </div>
           </div>
           
