@@ -10,17 +10,26 @@ import fs from "fs";
 
 const ALLOWED_ADMIN_DOMAIN = "@gicmasjid.org";
 
-const isAdmin: RequestHandler = (req, res, next) => {
+const isAdmin: RequestHandler = async (req, res, next) => {
   const user = req.user as any;
   
   if (!user?.claims?.email) {
     return res.status(403).json({ message: "Access denied: No email found" });
   }
   
-  const email = user.claims.email as string;
-  if (!email.endsWith(ALLOWED_ADMIN_DOMAIN)) {
+  const email = (user.claims.email as string).toLowerCase();
+
+  const adminRecord = await storage.getAdminUserByEmail(email);
+  if (adminRecord?.isBanned) {
+    return res.status(403).json({ message: "Access denied: Your account has been banned" });
+  }
+
+  const isDomainAdmin = email.endsWith(ALLOWED_ADMIN_DOMAIN);
+  const isWhitelisted = adminRecord?.isWhitelisted === true;
+
+  if (!isDomainAdmin && !isWhitelisted) {
     return res.status(403).json({ 
-      message: `Access denied: Only ${ALLOWED_ADMIN_DOMAIN} accounts can access admin features` 
+      message: `Access denied: Only ${ALLOWED_ADMIN_DOMAIN} accounts or whitelisted users can access admin features` 
     });
   }
   
@@ -222,6 +231,80 @@ export async function registerRoutes(
 
   app.get("/api/admin/check", isAuthenticated, isAdmin, (req, res) => {
     res.json({ isAdmin: true });
+  });
+
+  app.get("/api/admin/users", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAdminUsers();
+      res.json(users);
+    } catch (error) {
+      console.error("Error fetching admin users:", error);
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  app.post("/api/admin/users", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { email, displayName } = req.body;
+      if (!email || typeof email !== "string" || !email.includes("@")) {
+        return res.status(400).json({ message: "A valid email address is required" });
+      }
+
+      const existing = await storage.getAdminUserByEmail(email);
+      if (existing) {
+        return res.status(409).json({ message: "This email is already in the admin users list" });
+      }
+
+      const user = await storage.createAdminUser({
+        email: email.trim(),
+        displayName: displayName?.trim() || null,
+        isBanned: false,
+        isWhitelisted: true,
+      });
+      res.status(201).json(user);
+    } catch (error) {
+      console.error("Error creating admin user:", error);
+      res.status(500).json({ message: "Failed to add user" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id as string);
+      const { isBanned, isWhitelisted, displayName } = req.body;
+
+      const updateData: Record<string, any> = {};
+      if (typeof isBanned === "boolean") updateData.isBanned = isBanned;
+      if (typeof isWhitelisted === "boolean") updateData.isWhitelisted = isWhitelisted;
+      if (typeof displayName === "string") updateData.displayName = displayName.trim() || null;
+
+      if (Object.keys(updateData).length === 0) {
+        return res.status(400).json({ message: "No valid update data provided" });
+      }
+
+      const user = await storage.updateAdminUser(id, updateData);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error("Error updating admin user:", error);
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  });
+
+  app.delete("/api/admin/users/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id as string);
+      const deleted = await storage.deleteAdminUser(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json({ message: "User removed successfully" });
+    } catch (error) {
+      console.error("Error deleting admin user:", error);
+      res.status(500).json({ message: "Failed to delete user" });
+    }
   });
 
   return httpServer;

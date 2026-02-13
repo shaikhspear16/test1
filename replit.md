@@ -28,7 +28,7 @@ Preferred communication style: Simple, everyday language.
 ### Authentication System
 - **Provider**: Replit OpenID Connect (OIDC) authentication
 - **Session Storage**: PostgreSQL-backed sessions using connect-pg-simple
-- **Admin Access Control**: Domain-based restriction (`@gicmasjid.org` emails only)
+- **Admin Access Control**: Domain-based (`@gicmasjid.org`) OR whitelist-based via admin_users table; banned users are blocked
 - **User Management**: Automatic user creation/update on login via upsert pattern
 
 ### Data Storage
@@ -39,8 +39,10 @@ Preferred communication style: Simple, everyday language.
 
 ### Key Data Models
 - **Events**: Stores event flyers with title, description, image URL, registration link, and display order
+- **Admin Users**: Stores whitelisted/banned admin users with email, display name, banned and whitelisted flags
 - **Users**: Stores authenticated user profiles from Replit Auth
 - **Sessions**: Manages user sessions for authentication persistence
+- **SMS Consents**: Stores phone numbers for SMS alert signups
 
 ### File Structure
 - `client/`: React frontend application

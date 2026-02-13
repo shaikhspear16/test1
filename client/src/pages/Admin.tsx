@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/Navbar";
@@ -10,19 +10,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/auth-utils";
-import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield } from "lucide-react";
+import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, Users, CalendarDays, Ban, CheckCircle, UserPlus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { Event } from "@shared/schema";
+import type { Event, AdminUser } from "@shared/schema";
+
+type Tab = "events" | "users";
 
 export default function Admin() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState<Tab>("events");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [formData, setFormData] = useState({
@@ -32,6 +35,9 @@ export default function Admin() {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserName, setNewUserName] = useState("");
 
   const { data: adminCheck, isLoading: adminCheckLoading, error: adminError } = useQuery({
     queryKey: ["/api/admin/check"],
@@ -54,6 +60,16 @@ export default function Admin() {
       return res.json() as Promise<Event[]>;
     },
     enabled: !!adminCheck?.isAdmin,
+  });
+
+  const { data: adminUsers, isLoading: usersLoading } = useQuery({
+    queryKey: ["/api/admin/users"],
+    queryFn: async () => {
+      const res = await fetch("/api/admin/users", { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      return res.json() as Promise<AdminUser[]>;
+    },
+    enabled: !!adminCheck?.isAdmin && activeTab === "users",
   });
 
   const createMutation = useMutation({
@@ -126,6 +142,70 @@ export default function Admin() {
         return;
       }
       toast({ title: "Failed to delete event", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const addUserMutation = useMutation({
+    mutationFn: async (data: { email: string; displayName: string }) => {
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({ message: "Failed to add user" }));
+        throw new Error(errBody.message);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      toast({ title: "User added successfully" });
+      setIsUserDialogOpen(false);
+      setNewUserEmail("");
+      setNewUserName("");
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to add user", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const toggleBanMutation = useMutation({
+    mutationFn: async ({ id, isBanned }: { id: number; isBanned: boolean }) => {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isBanned }),
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to update user");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      toast({ title: "User updated" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to update user", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to delete user");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      toast({ title: "User removed" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to remove user", description: error.message, variant: "destructive" });
     },
   });
 
@@ -210,11 +290,11 @@ export default function Admin() {
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-6">
-                Please sign in with your @gicmasjid.org Google account to access the admin panel.
+                Please sign in with your Replit account to access the admin panel.
               </p>
               <a href="/api/login">
                 <Button data-testid="button-login" className="w-full rounded-full bg-primary">
-                  Sign In with Google
+                  Sign In
                 </Button>
               </a>
             </CardContent>
@@ -237,7 +317,7 @@ export default function Admin() {
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-4">
-                Only @gicmasjid.org accounts can access the admin panel.
+                Only authorized accounts can access the admin panel.
               </p>
               <p className="text-sm text-muted-foreground mb-6">
                 Signed in as: {user?.email}
@@ -262,86 +342,211 @@ export default function Admin() {
         <div className="max-w-7xl mx-auto container px-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-              <h1 className="text-3xl font-bold">Event Management</h1>
-              <p className="text-muted-foreground">Manage events shown on the home page</p>
+              <h1 className="text-3xl font-bold">Admin Panel</h1>
+              <p className="text-muted-foreground">Signed in as {user?.email}</p>
             </div>
-            <div className="flex gap-3">
-              <Button data-testid="button-add-event" onClick={openCreateDialog} className="rounded-full bg-primary">
-                <Plus className="mr-2 h-4 w-4" /> Add Event
+            <a href="/api/logout">
+              <Button data-testid="button-logout" variant="outline" className="rounded-full">
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
               </Button>
-              <a href="/api/logout">
-                <Button data-testid="button-logout" variant="outline" className="rounded-full">
-                  <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                </Button>
-              </a>
-            </div>
+            </a>
           </div>
 
-          {eventsLoading ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : events && events.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event) => (
-                <Card key={event.id} className="overflow-hidden">
-                  <div className="aspect-[3/4] relative">
-                    <img
-                      src={event.imageUrl}
-                      alt={event.title || "Event"}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <h3 className="font-bold text-lg">{event.title || "Untitled Event"}</h3>
-                    </div>
-                  </div>
-                  <CardContent className="p-4">
-                    {event.description && (
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
-                    {event.registrationLink && (
-                      <p className="text-xs text-primary truncate mb-3">
-                        {event.registrationLink}
-                      </p>
-                    )}
-                    <div className="flex gap-2">
-                      <Button
-                        data-testid={`button-edit-event-${event.id}`}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => openEditDialog(event)}
-                        className="flex-1"
-                      >
-                        <Edit className="mr-1 h-3 w-3" /> Edit
-                      </Button>
-                      <Button
-                        data-testid={`button-delete-event-${event.id}`}
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          if (confirm("Are you sure you want to delete this event?")) {
-                            deleteMutation.mutate(event.id);
-                          }
-                        }}
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
+          <div className="flex gap-2 mb-8 border-b">
+            <button
+              data-testid="tab-events"
+              onClick={() => setActiveTab("events")}
+              className={`flex items-center gap-2 px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+                activeTab === "events"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <CalendarDays className="h-4 w-4" />
+              Events
+            </button>
+            <button
+              data-testid="tab-users"
+              onClick={() => setActiveTab("users")}
+              className={`flex items-center gap-2 px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+                activeTab === "users"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              Users
+            </button>
+          </div>
+
+          {activeTab === "events" && (
+            <>
+              <div className="flex justify-end mb-6">
+                <Button data-testid="button-add-event" onClick={openCreateDialog} className="rounded-full bg-primary">
+                  <Plus className="mr-2 h-4 w-4" /> Add Event
+                </Button>
+              </div>
+
+              {eventsLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : events && events.length > 0 ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {events.map((event) => (
+                    <Card key={event.id} className="overflow-hidden">
+                      <div className="aspect-[3/4] relative">
+                        <img
+                          src={event.imageUrl}
+                          alt={event.title || "Event"}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                          <h3 className="font-bold text-lg">{event.title || "Untitled Event"}</h3>
+                        </div>
+                      </div>
+                      <CardContent className="p-4">
+                        {event.description && (
+                          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                            {event.description}
+                          </p>
+                        )}
+                        {event.registrationLink && (
+                          <p className="text-xs text-primary truncate mb-3">
+                            {event.registrationLink}
+                          </p>
+                        )}
+                        <div className="flex gap-2">
+                          <Button
+                            data-testid={`button-edit-event-${event.id}`}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => openEditDialog(event)}
+                            className="flex-1"
+                          >
+                            <Edit className="mr-1 h-3 w-3" /> Edit
+                          </Button>
+                          <Button
+                            data-testid={`button-delete-event-${event.id}`}
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => {
+                              if (confirm("Are you sure you want to delete this event?")) {
+                                deleteMutation.mutate(event.id);
+                              }
+                            }}
+                            disabled={deleteMutation.isPending}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card className="p-12 text-center">
+                  <p className="text-muted-foreground mb-4">No events yet. Create your first event!</p>
+                  <Button onClick={openCreateDialog} className="rounded-full bg-primary">
+                    <Plus className="mr-2 h-4 w-4" /> Add Event
+                  </Button>
                 </Card>
-              ))}
-            </div>
-          ) : (
-            <Card className="p-12 text-center">
-              <p className="text-muted-foreground mb-4">No events yet. Create your first event!</p>
-              <Button onClick={openCreateDialog} className="rounded-full bg-primary">
-                <Plus className="mr-2 h-4 w-4" /> Add Event
-              </Button>
-            </Card>
+              )}
+            </>
+          )}
+
+          {activeTab === "users" && (
+            <>
+              <div className="flex justify-end mb-6">
+                <Button data-testid="button-add-user" onClick={() => setIsUserDialogOpen(true)} className="rounded-full bg-primary">
+                  <UserPlus className="mr-2 h-4 w-4" /> Add User
+                </Button>
+              </div>
+
+              {usersLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : adminUsers && adminUsers.length > 0 ? (
+                <div className="space-y-3">
+                  {adminUsers.map((adminUser) => (
+                    <Card key={adminUser.id} className={`${adminUser.isBanned ? "opacity-60 border-destructive/30" : ""}`}>
+                      <CardContent className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-medium truncate" data-testid={`text-user-email-${adminUser.id}`}>
+                              {adminUser.email}
+                            </p>
+                            {adminUser.isWhitelisted && (
+                              <span className="inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                <CheckCircle className="h-3 w-3" /> Whitelisted
+                              </span>
+                            )}
+                            {adminUser.isBanned && (
+                              <span className="inline-flex items-center gap-1 text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                                <Ban className="h-3 w-3" /> Banned
+                              </span>
+                            )}
+                          </div>
+                          {adminUser.displayName && (
+                            <p className="text-sm text-muted-foreground">{adminUser.displayName}</p>
+                          )}
+                          {adminUser.createdAt && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Added {new Date(adminUser.createdAt).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex gap-2 shrink-0">
+                          <Button
+                            data-testid={`button-toggle-ban-${adminUser.id}`}
+                            variant={adminUser.isBanned ? "default" : "outline"}
+                            size="sm"
+                            onClick={() =>
+                              toggleBanMutation.mutate({
+                                id: adminUser.id,
+                                isBanned: !adminUser.isBanned,
+                              })
+                            }
+                            disabled={toggleBanMutation.isPending}
+                          >
+                            {adminUser.isBanned ? (
+                              <><CheckCircle className="mr-1 h-3 w-3" /> Unban</>
+                            ) : (
+                              <><Ban className="mr-1 h-3 w-3" /> Ban</>
+                            )}
+                          </Button>
+                          <Button
+                            data-testid={`button-delete-user-${adminUser.id}`}
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => {
+                              if (confirm(`Remove ${adminUser.email} from the admin users list?`)) {
+                                deleteUserMutation.mutate(adminUser.id);
+                              }
+                            }}
+                            disabled={deleteUserMutation.isPending}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <Card className="p-12 text-center">
+                  <p className="text-muted-foreground mb-4">
+                    No users in the admin list yet. Users with @gicmasjid.org emails automatically have access.
+                    You can add other users here to whitelist them.
+                  </p>
+                  <Button onClick={() => setIsUserDialogOpen(true)} className="rounded-full bg-primary">
+                    <UserPlus className="mr-2 h-4 w-4" /> Add User
+                  </Button>
+                </Card>
+              )}
+            </>
           )}
         </div>
       </main>
@@ -451,6 +656,75 @@ export default function Admin() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 {editingEvent ? "Update Event" : "Create Event"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Whitelisted User</DialogTitle>
+          </DialogHeader>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!newUserEmail.trim()) return;
+              addUserMutation.mutate({ email: newUserEmail.trim(), displayName: newUserName.trim() });
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <Label htmlFor="user-email">Email Address *</Label>
+              <Input
+                data-testid="input-user-email"
+                id="user-email"
+                type="email"
+                value={newUserEmail}
+                onChange={(e) => setNewUserEmail(e.target.value)}
+                placeholder="user@example.com"
+                className="mt-1"
+                required
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                This user will be granted admin access even without a @gicmasjid.org email.
+              </p>
+            </div>
+
+            <div>
+              <Label htmlFor="user-name">Display Name (optional)</Label>
+              <Input
+                data-testid="input-user-name"
+                id="user-name"
+                value={newUserName}
+                onChange={(e) => setNewUserName(e.target.value)}
+                placeholder="John Doe"
+                className="mt-1"
+              />
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsUserDialogOpen(false);
+                  setNewUserEmail("");
+                  setNewUserName("");
+                }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                data-testid="button-submit-user"
+                type="submit"
+                className="flex-1 bg-primary"
+                disabled={addUserMutation.isPending}
+              >
+                {addUserMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Add User
               </Button>
             </div>
           </form>
