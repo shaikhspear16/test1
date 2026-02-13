@@ -14,13 +14,33 @@ export default function SMSConsent() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Success",
-      description: "Thank you for your consent. This is a mockup, so no data was actually saved.",
-    });
-    setPhoneNumber("");
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/sms-consent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      toast({
+        title: "Success",
+        description: data.message,
+      });
+      setPhoneNumber("");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,7 +109,7 @@ export default function SMSConsent() {
                           className="h-14 rounded-2xl border-border/50 bg-white"
                         />
                       </div>
-                      <Button type="submit" className="w-full h-14 rounded-2xl bg-primary text-lg font-bold shadow-lg shadow-primary/20">
+                      <Button type="submit" disabled={isSubmitting} className="w-full h-14 rounded-2xl bg-primary text-lg font-bold shadow-lg shadow-primary/20">
                         Submit Consent
                       </Button>
                       <p className="text-[10px] text-center text-muted-foreground uppercase tracking-widest">

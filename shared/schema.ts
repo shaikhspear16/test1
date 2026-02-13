@@ -16,6 +16,20 @@ export const events = pgTable("events", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const smsConsents = pgTable("sms_consents", {
+  id: serial("id").primaryKey(),
+  phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertSmsConsentSchema = createInsertSchema(smsConsents).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertSmsConsent = z.infer<typeof insertSmsConsentSchema>;
+export type SmsConsent = typeof smsConsents.$inferSelect;
+
 export const insertEventSchema = createInsertSchema(events).omit({
   id: true,
   displayOrder: true,

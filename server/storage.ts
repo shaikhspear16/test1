@@ -1,4 +1,4 @@
-import { events, type Event, type InsertEvent } from "@shared/schema";
+import { events, smsConsents, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc } from "drizzle-orm";
 
@@ -8,6 +8,7 @@ export interface IStorage {
   createEvent(event: InsertEvent): Promise<Event>;
   updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event | undefined>;
   deleteEvent(id: number): Promise<boolean>;
+  createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -40,6 +41,11 @@ export class DatabaseStorage implements IStorage {
   async deleteEvent(id: number): Promise<boolean> {
     const result = await db.delete(events).where(eq(events.id, id)).returning();
     return result.length > 0;
+  }
+
+  async createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent> {
+    const [result] = await db.insert(smsConsents).values(consent).returning();
+    return result;
   }
 }
 

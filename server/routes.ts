@@ -2,7 +2,7 @@ import express, { type Express, type RequestHandler } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
-import { insertEventSchema } from "@shared/schema";
+import { insertEventSchema, insertSmsConsentSchema } from "@shared/schema";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -86,6 +86,20 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error fetching event:", error);
       res.status(500).json({ message: "Failed to fetch event" });
+    }
+  });
+
+  app.post("/api/sms-consent", async (req, res) => {
+    try {
+      const parsed = insertSmsConsentSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "A valid phone number is required" });
+      }
+      const consent = await storage.createSmsConsent(parsed.data);
+      res.status(201).json({ message: "Thank you for signing up for SMS alerts!" });
+    } catch (error) {
+      console.error("Error saving SMS consent:", error);
+      res.status(500).json({ message: "Failed to save consent" });
     }
   });
 
