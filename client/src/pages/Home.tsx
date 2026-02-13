@@ -181,7 +181,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto container px-4">
             <div className="text-center mb-12">
               <h3 className="text-4xl font-bold mb-4">Upcoming Events</h3>
-              <p className="text-muted-foreground max-w-xl mx-auto">Stay connected with our community through educational seminars, youth programs, and family gatherings.</p>
+              <p className="text-muted-foreground max-w-xl mx-auto">Stay connected through educational programs, community gatherings, and special events for all ages.</p>
             </div>
 
             <Carousel 
@@ -263,10 +263,9 @@ export default function Home() {
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 px-3 py-1">
                 Educational Partner
               </Badge>
-              <h3 className="text-4xl font-bold mb-6">Darul Uloom Austin</h3>
+              <h3 className="text-4xl font-bold mb-6">Darul Uloom Austin (DUA)</h3>
               <p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
-                Darul Uloom Austin (DUA) is a premier Islamic educational institution that provides holistic learning 
-                at our GIC campus, serving the community since 2007.
+                Darul Uloom Austin is an Islamic educational institution dedicated to teaching the Qur’an and Islamic studies. GIC serves as one of its three campuses.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
@@ -300,9 +299,9 @@ export default function Home() {
                 ></iframe>
               </div>
               <div className="order-1 lg:order-2 lg:flex-1">
-                <h3 className="text-4xl font-bold mb-6">Growing Together <br/>In Texas</h3>
+                <h3 className="text-4xl font-bold mb-6">Building the Future Together</h3>
                 <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                  The Georgetown Islamic Center (GIC) is more than just a masjid. It's a vibrant hub for Muslims in the Round Rock and Georgetown area to connect, learn, and contribute.
+                  Georgetown Islamic Center is creating a strong foundation for Muslims in the Round Rock and Georgetown area — a place to strengthen faith, nurture families, and grow a lasting community.
                 </p>
                 <div className="space-y-4 max-w-sm mx-auto lg:mx-0 text-left">
                   {[
