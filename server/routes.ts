@@ -1,23 +1,34 @@
 import express, { type Express, type RequestHandler } from "express";
 import { createServer, type Server } from "http";
+import session from "express-session";
+import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
-import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 import { insertEventSchema, insertSmsConsentSchema } from "@shared/schema";
 import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+declare module "express-session" {
+  interface SessionData {
+    adminEmail?: string;
+  }
+}
+
+const isAuthenticated: RequestHandler = (req, res, next) => {
+  if (!req.session?.adminEmail) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  next();
+};
+
 const ALLOWED_ADMIN_DOMAIN = "@gicmasjid.org";
 
 const isAdmin: RequestHandler = async (req, res, next) => {
-  const user = req.user as any;
-  
-  if (!user?.claims?.email) {
-    return res.status(403).json({ message: "Access denied: No email found" });
+  const email = req.session?.adminEmail;
+  if (!email) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
-  
-  const email = (user.claims.email as string).toLowerCase();
 
   const adminRecord = await storage.getAdminUserByEmail(email);
   if (adminRecord?.isBanned) {
@@ -28,11 +39,11 @@ const isAdmin: RequestHandler = async (req, res, next) => {
   const isWhitelisted = adminRecord?.isWhitelisted === true;
 
   if (!isDomainAdmin && !isWhitelisted) {
-    return res.status(403).json({ 
-      message: `Access denied: Only ${ALLOWED_ADMIN_DOMAIN} accounts or whitelisted users can access admin features` 
+    return res.status(403).json({
+      message: `Access denied: Only ${ALLOWED_ADMIN_DOMAIN} accounts or whitelisted users can access admin features`,
     });
   }
-  
+
   next();
 };
 
@@ -67,8 +78,30 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  await setupAuth(app);
-  registerAuthRoutes(app);
+  const sessionTtl = 7 * 24 * 60 * 60 * 1000;
+  const pgStore = connectPg(session);
+  const sessionStore = new pgStore({
+    conString: process.env.DATABASE_URL,
+    createTableIfMissing: true,
+    ttl: sessionTtl,
+    tableName: "sessions",
+  });
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "gic-admin-secret-key",
+      store: sessionStore,
+      resave: false,
+      saveUninitialized: false,
+      proxy: true,
+      cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: sessionTtl,
+      },
+    })
+  );
 
   app.use("/uploads", (req, res, next) => {
     res.set("Cross-Origin-Resource-Policy", "cross-origin");
@@ -76,6 +109,45 @@ export async function registerRoutes(
   }, express.static(uploadsDir));
 
   startPrayerTimesRefresh();
+
+  app.post("/api/auth/login", (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminEmail || !adminPassword) {
+      return res.status(500).json({ message: "Admin credentials not configured" });
+    }
+
+    if (email.toLowerCase() !== adminEmail.toLowerCase() || password !== adminPassword) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    req.session.adminEmail = email.toLowerCase();
+    res.json({ email: email.toLowerCase() });
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Failed to logout" });
+      }
+      res.clearCookie("connect.sid");
+      res.json({ message: "Logged out successfully" });
+    });
+  });
+
+  app.get("/api/auth/me", (req, res) => {
+    if (!req.session?.adminEmail) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    res.json({ email: req.session.adminEmail });
+  });
 
   app.get("/api/prayer-times", async (req, res) => {
     try {
@@ -155,7 +227,7 @@ export async function registerRoutes(
     try {
       const id = parseInt(req.params.id as string);
       const existingEvent = await storage.getEvent(id);
-      
+
       if (!existingEvent) {
         return res.status(404).json({ message: "Event not found" });
       }
@@ -166,23 +238,23 @@ export async function registerRoutes(
         registrationLink: string | null;
         imageUrl: string;
       }> = {};
-      
+
       if (req.body.title !== undefined) {
-        updateData.title = typeof req.body.title === "string" && req.body.title.trim() 
-          ? req.body.title.trim() 
+        updateData.title = typeof req.body.title === "string" && req.body.title.trim()
+          ? req.body.title.trim()
           : null;
       }
       if (req.body.description !== undefined) {
-        updateData.description = typeof req.body.description === "string" && req.body.description.trim() 
-          ? req.body.description.trim() 
+        updateData.description = typeof req.body.description === "string" && req.body.description.trim()
+          ? req.body.description.trim()
           : null;
       }
       if (req.body.registrationLink !== undefined) {
-        updateData.registrationLink = typeof req.body.registrationLink === "string" && req.body.registrationLink.trim() 
-          ? req.body.registrationLink.trim() 
+        updateData.registrationLink = typeof req.body.registrationLink === "string" && req.body.registrationLink.trim()
+          ? req.body.registrationLink.trim()
           : null;
       }
-      
+
       if (req.file) {
         updateData.imageUrl = `/uploads/${req.file.filename}`;
         if (existingEvent.imageUrl && existingEvent.imageUrl.startsWith("/uploads/")) {
@@ -209,7 +281,7 @@ export async function registerRoutes(
     try {
       const id = parseInt(req.params.id as string);
       const existingEvent = await storage.getEvent(id);
-      
+
       if (!existingEvent) {
         return res.status(404).json({ message: "Event not found" });
       }

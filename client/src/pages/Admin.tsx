@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { isUnauthorizedError } from "@/lib/auth-utils";
 import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, Users, CalendarDays, Ban, CheckCircle, UserPlus } from "lucide-react";
 import {
   Dialog,
@@ -22,10 +21,12 @@ import type { Event, AdminUser } from "@shared/schema";
 type Tab = "events" | "users";
 
 export default function Admin() {
-  const { user, isLoading: authLoading, isAuthenticated } = useAuth();
+  const { user, isLoading: authLoading, isAuthenticated, login, loginError, isLoggingIn, logout, isLoggingOut } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<Tab>("events");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [formData, setFormData] = useState({
@@ -88,11 +89,6 @@ export default function Admin() {
       resetForm();
     },
     onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({ title: "Session expired", description: "Redirecting to login...", variant: "destructive" });
-        setTimeout(() => { window.location.href = "/api/login"; }, 500);
-        return;
-      }
       toast({ title: "Failed to create event", description: error.message, variant: "destructive" });
     },
   });
@@ -113,11 +109,6 @@ export default function Admin() {
       resetForm();
     },
     onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({ title: "Session expired", description: "Redirecting to login...", variant: "destructive" });
-        setTimeout(() => { window.location.href = "/api/login"; }, 500);
-        return;
-      }
       toast({ title: "Failed to update event", description: error.message, variant: "destructive" });
     },
   });
@@ -136,11 +127,6 @@ export default function Admin() {
       toast({ title: "Event deleted successfully" });
     },
     onError: (error: Error) => {
-      if (isUnauthorizedError(error)) {
-        toast({ title: "Session expired", description: "Redirecting to login...", variant: "destructive" });
-        setTimeout(() => { window.location.href = "/api/login"; }, 500);
-        return;
-      }
       toast({ title: "Failed to delete event", description: error.message, variant: "destructive" });
     },
   });
@@ -247,12 +233,12 @@ export default function Admin() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const data = new FormData();
     if (formData.title) data.append("title", formData.title);
     if (formData.description) data.append("description", formData.description);
     if (formData.registrationLink) data.append("registrationLink", formData.registrationLink);
-    
+
     if (editingEvent) {
       if (imageFile) data.append("image", imageFile);
       updateMutation.mutate({ id: editingEvent.id, data });
@@ -266,7 +252,15 @@ export default function Admin() {
     }
   };
 
-  if (authLoading || adminCheckLoading) {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login({ email: loginEmail, password: loginPassword });
+    } catch {
+    }
+  };
+
+  if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -286,19 +280,65 @@ export default function Admin() {
           <Card className="max-w-md w-full mx-4">
             <CardHeader className="text-center">
               <Shield className="h-16 w-16 mx-auto text-primary mb-4" />
-              <CardTitle className="text-2xl">Admin Access Required</CardTitle>
+              <CardTitle className="text-2xl">Admin Login</CardTitle>
             </CardHeader>
-            <CardContent className="text-center">
-              <p className="text-muted-foreground mb-6">
-                Please sign in with your Replit account to access the admin panel.
-              </p>
-              <a href="/api/login">
-                <Button data-testid="button-login" className="w-full rounded-full bg-primary">
+            <CardContent>
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                  <Label htmlFor="login-email">Email</Label>
+                  <Input
+                    data-testid="input-login-email"
+                    id="login-email"
+                    type="email"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    placeholder="admin@gicmasjid.org"
+                    className="mt-1"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="login-password">Password</Label>
+                  <Input
+                    data-testid="input-login-password"
+                    id="login-password"
+                    type="password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="Enter password"
+                    className="mt-1"
+                    required
+                  />
+                </div>
+                {loginError && (
+                  <p className="text-sm text-destructive" data-testid="text-login-error">
+                    {loginError.message}
+                  </p>
+                )}
+                <Button
+                  data-testid="button-login"
+                  type="submit"
+                  className="w-full rounded-full bg-primary"
+                  disabled={isLoggingIn}
+                >
+                  {isLoggingIn && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Sign In
                 </Button>
-              </a>
+              </form>
             </CardContent>
           </Card>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (adminCheckLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </main>
         <Footer />
       </div>
@@ -322,11 +362,14 @@ export default function Admin() {
               <p className="text-sm text-muted-foreground mb-6">
                 Signed in as: {user?.email}
               </p>
-              <a href="/api/logout">
-                <Button variant="outline" className="w-full rounded-full">
-                  <LogOut className="mr-2 h-4 w-4" /> Sign Out
-                </Button>
-              </a>
+              <Button
+                variant="outline"
+                className="w-full rounded-full"
+                onClick={() => logout()}
+                disabled={isLoggingOut}
+              >
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
+              </Button>
             </CardContent>
           </Card>
         </main>
@@ -345,11 +388,15 @@ export default function Admin() {
               <h1 className="text-3xl font-bold">Admin Panel</h1>
               <p className="text-muted-foreground">Signed in as {user?.email}</p>
             </div>
-            <a href="/api/logout">
-              <Button data-testid="button-logout" variant="outline" className="rounded-full">
-                <LogOut className="mr-2 h-4 w-4" /> Sign Out
-              </Button>
-            </a>
+            <Button
+              data-testid="button-logout"
+              variant="outline"
+              className="rounded-full"
+              onClick={() => logout()}
+              disabled={isLoggingOut}
+            >
+              <LogOut className="mr-2 h-4 w-4" /> Sign Out
+            </Button>
           </div>
 
           <div className="flex gap-2 mb-8 border-b">
@@ -538,8 +585,7 @@ export default function Admin() {
               ) : (
                 <Card className="p-12 text-center">
                   <p className="text-muted-foreground mb-4">
-                    No users in the admin list yet. Users with @gicmasjid.org emails automatically have access.
-                    You can add other users here to whitelist them.
+                    No users in the admin list yet. You can add users here to whitelist them.
                   </p>
                   <Button onClick={() => setIsUserDialogOpen(true)} className="rounded-full bg-primary">
                     <UserPlus className="mr-2 h-4 w-4" /> Add User
