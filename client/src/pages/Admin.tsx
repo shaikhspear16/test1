@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, Users, CalendarDays, Ban, CheckCircle, UserPlus } from "lucide-react";
+import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, Users, CalendarDays, Ban, CheckCircle, UserPlus, ArrowUp, ArrowDown } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -131,6 +131,34 @@ export default function Admin() {
       toast({ title: "Failed to delete event", description: error.message, variant: "destructive" });
     },
   });
+
+  const reorderMutation = useMutation({
+    mutationFn: async (orderedIds: number[]) => {
+      const res = await fetch("/api/admin/events/reorder", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderedIds }),
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/events"] });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to reorder events", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const moveEvent = (index: number, direction: "up" | "down") => {
+    if (!events) return;
+    const newIndex = direction === "up" ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= events.length) return;
+    const reordered = [...events];
+    [reordered[index], reordered[newIndex]] = [reordered[newIndex], reordered[index]];
+    reorderMutation.mutate(reordered.map((e) => e.id));
+  };
 
   const addUserMutation = useMutation({
     mutationFn: async (data: { email: string; displayName: string }) => {
@@ -442,38 +470,54 @@ export default function Admin() {
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
               ) : events && events.length > 0 ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {events.map((event) => (
+                <div className="space-y-3">
+                  {events.map((event, index) => (
                     <Card key={event.id} className="overflow-hidden">
-                      <div className="aspect-[3/4] relative">
-                        <img
-                          src={event.imageUrl}
-                          alt={event.title || "Event"}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                          <h3 className="font-bold text-lg">{event.title || "Untitled Event"}</h3>
+                      <CardContent className="flex items-center gap-4 p-4">
+                        <div className="flex flex-col gap-1 shrink-0">
+                          <Button
+                            data-testid={`button-move-up-${event.id}`}
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0"
+                            onClick={() => moveEvent(index, "up")}
+                            disabled={index === 0 || reorderMutation.isPending}
+                          >
+                            <ArrowUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            data-testid={`button-move-down-${event.id}`}
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0"
+                            onClick={() => moveEvent(index, "down")}
+                            disabled={index === events.length - 1 || reorderMutation.isPending}
+                          >
+                            <ArrowDown className="h-4 w-4" />
+                          </Button>
                         </div>
-                      </div>
-                      <CardContent className="p-4">
-                        {event.description && (
-                          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                            {event.description}
-                          </p>
-                        )}
-                        {event.registrationLink && (
-                          <p className="text-xs text-primary truncate mb-3">
-                            {event.registrationLink}
-                          </p>
-                        )}
-                        <div className="flex gap-2">
+                        <div className="h-20 w-16 rounded-md overflow-hidden shrink-0">
+                          <img
+                            src={event.imageUrl}
+                            alt={event.title || "Event"}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold truncate">{event.title || "Untitled Event"}</h3>
+                          {event.description && (
+                            <p className="text-sm text-muted-foreground line-clamp-1">{event.description}</p>
+                          )}
+                          {event.registrationLink && (
+                            <p className="text-xs text-primary truncate mt-1">{event.registrationLink}</p>
+                          )}
+                        </div>
+                        <div className="flex gap-2 shrink-0">
                           <Button
                             data-testid={`button-edit-event-${event.id}`}
                             variant="outline"
                             size="sm"
                             onClick={() => openEditDialog(event)}
-                            className="flex-1"
                           >
                             <Edit className="mr-1 h-3 w-3" /> Edit
                           </Button>

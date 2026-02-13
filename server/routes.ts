@@ -308,6 +308,20 @@ export async function registerRoutes(
     }
   });
 
+  app.put("/api/admin/events/reorder", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { orderedIds } = req.body;
+      if (!Array.isArray(orderedIds) || orderedIds.some((id: any) => typeof id !== "number")) {
+        return res.status(400).json({ message: "orderedIds must be an array of numbers" });
+      }
+      await storage.reorderEvents(orderedIds);
+      res.json({ message: "Events reordered successfully" });
+    } catch (error) {
+      console.error("Error reordering events:", error);
+      res.status(500).json({ message: "Failed to reorder events" });
+    }
+  });
+
   app.get("/api/admin/check", isAuthenticated, isAdmin, (req, res) => {
     res.json({ isAdmin: true });
   });

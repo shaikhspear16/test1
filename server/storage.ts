@@ -1,6 +1,6 @@
 import { events, smsConsents, adminUsers, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type AdminUser, type InsertAdminUser } from "@shared/schema";
 import { db } from "./db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, sql } from "drizzle-orm";
 
 export interface IStorage {
   getEvents(): Promise<Event[]>;
@@ -8,6 +8,7 @@ export interface IStorage {
   createEvent(event: InsertEvent): Promise<Event>;
   updateEvent(id: number, event: Partial<InsertEvent>): Promise<Event | undefined>;
   deleteEvent(id: number): Promise<boolean>;
+  reorderEvents(orderedIds: number[]): Promise<void>;
   createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent>;
   getAdminUsers(): Promise<AdminUser[]>;
   getAdminUserByEmail(email: string): Promise<AdminUser | undefined>;
@@ -46,6 +47,15 @@ export class DatabaseStorage implements IStorage {
   async deleteEvent(id: number): Promise<boolean> {
     const result = await db.delete(events).where(eq(events.id, id)).returning();
     return result.length > 0;
+  }
+
+  async reorderEvents(orderedIds: number[]): Promise<void> {
+    for (let i = 0; i < orderedIds.length; i++) {
+      await db
+        .update(events)
+        .set({ displayOrder: i + 1 })
+        .where(eq(events.id, orderedIds[i]));
+    }
   }
 
   async createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent> {
