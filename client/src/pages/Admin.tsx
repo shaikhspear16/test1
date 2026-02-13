@@ -33,6 +33,7 @@ export default function Admin() {
     title: "",
     description: "",
     registrationLink: "",
+    registrationLinkText: "Register Now",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -198,7 +199,7 @@ export default function Admin() {
   const resetForm = () => {
     setIsDialogOpen(false);
     setEditingEvent(null);
-    setFormData({ title: "", description: "", registrationLink: "" });
+    setFormData({ title: "", description: "", registrationLink: "", registrationLinkText: "Register Now" });
     setImageFile(null);
     setImagePreview(null);
   };
@@ -214,6 +215,7 @@ export default function Admin() {
       title: event.title || "",
       description: event.description || "",
       registrationLink: event.registrationLink || "",
+      registrationLinkText: event.registrationLinkText || "Register Now",
     });
     setImagePreview(event.imageUrl);
     setIsDialogOpen(true);
@@ -238,6 +240,7 @@ export default function Admin() {
     if (formData.title) data.append("title", formData.title);
     if (formData.description) data.append("description", formData.description);
     if (formData.registrationLink) data.append("registrationLink", formData.registrationLink);
+    if (formData.registrationLink && formData.registrationLinkText) data.append("registrationLinkText", formData.registrationLinkText);
 
     if (editingEvent) {
       if (imageFile) data.append("image", imageFile);
@@ -681,6 +684,20 @@ export default function Admin() {
                 className="mt-1"
               />
             </div>
+
+            {formData.registrationLink && (
+              <div>
+                <Label htmlFor="registrationLinkText">Button Text</Label>
+                <Input
+                  data-testid="input-event-link-text"
+                  id="registrationLinkText"
+                  value={formData.registrationLinkText}
+                  onChange={(e) => setFormData({ ...formData, registrationLinkText: e.target.value })}
+                  placeholder="Register Now"
+                  className="mt-1"
+                />
+              </div>
+            )}
 
             <div className="flex gap-3 pt-4">
               <Button

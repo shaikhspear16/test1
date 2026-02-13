@@ -208,6 +208,7 @@ export async function registerRoutes(
         description: req.body.description || null,
         imageUrl: `/uploads/${req.file.filename}`,
         registrationLink: req.body.registrationLink || null,
+        registrationLinkText: req.body.registrationLinkText || "Register Now",
       };
 
       const parseResult = insertEventSchema.safeParse(eventData);
@@ -236,6 +237,7 @@ export async function registerRoutes(
         title: string | null;
         description: string | null;
         registrationLink: string | null;
+        registrationLinkText: string | null;
         imageUrl: string;
       }> = {};
 
@@ -253,6 +255,11 @@ export async function registerRoutes(
         updateData.registrationLink = typeof req.body.registrationLink === "string" && req.body.registrationLink.trim()
           ? req.body.registrationLink.trim()
           : null;
+      }
+      if (req.body.registrationLinkText !== undefined) {
+        updateData.registrationLinkText = typeof req.body.registrationLinkText === "string" && req.body.registrationLinkText.trim()
+          ? req.body.registrationLinkText.trim()
+          : "Register Now";
       }
 
       if (req.file) {

@@ -41,6 +41,7 @@ interface DisplayEvent {
   title?: string | null;
   description?: string | null;
   registrationLink?: string | null;
+  registrationLinkText?: string | null;
 }
 
 const FALLBACK_FLYERS: DisplayEvent[] = [
@@ -97,6 +98,7 @@ export default function Home() {
         title: e.title,
         description: e.description,
         registrationLink: e.registrationLink,
+        registrationLinkText: e.registrationLinkText,
       }))
     : FALLBACK_FLYERS;
 

@@ -28,6 +28,7 @@ export const events = pgTable("events", {
   description: text("description"),
   imageUrl: text("image_url").notNull(),
   registrationLink: text("registration_link"),
+  registrationLinkText: text("registration_link_text").default("Register Now"),
   displayOrder: serial("display_order"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

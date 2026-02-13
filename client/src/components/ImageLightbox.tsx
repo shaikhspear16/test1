@@ -7,6 +7,7 @@ export interface LightboxItem {
   title?: string | null;
   description?: string | null;
   registrationLink?: string | null;
+  registrationLinkText?: string | null;
 }
 
 interface ImageLightboxProps {
@@ -39,19 +40,16 @@ export function ImageLightbox({ item, onClose }: ImageLightboxProps) {
               )}
 
               {item?.registrationLink && (
-                <div className="space-y-4">
-                  <p className="text-xs font-bold uppercase tracking-widest text-primary/60">Registration</p>
-                  <a
-                    href={item.registrationLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full"
-                  >
-                    <Button className="w-full bg-primary hover:bg-primary/90 rounded-full h-12 text-base font-bold" data-testid="lightbox-register-button">
-                      Register Now <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                  </a>
-                </div>
+                <a
+                  href={item.registrationLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full"
+                >
+                  <Button className="w-full bg-primary hover:bg-primary/90 rounded-full h-12 text-base font-bold" data-testid="lightbox-register-button">
+                    {item.registrationLinkText || "Register Now"} <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
               )}
             </div>
           )}
