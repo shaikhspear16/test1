@@ -48,6 +48,20 @@ export const insertSmsConsentSchema = createInsertSchema(smsConsents).omit({
 export type InsertSmsConsent = z.infer<typeof insertSmsConsentSchema>;
 export type SmsConsent = typeof smsConsents.$inferSelect;
 
+export const newsletterSignups = pgTable("newsletter_signups", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertNewsletterSignupSchema = createInsertSchema(newsletterSignups).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertNewsletterSignup = z.infer<typeof insertNewsletterSignupSchema>;
+export type NewsletterSignup = typeof newsletterSignups.$inferSelect;
+
 export const insertEventSchema = createInsertSchema(events).omit({
   id: true,
   displayOrder: true,

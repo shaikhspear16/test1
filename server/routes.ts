@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
-import { insertEventSchema, insertSmsConsentSchema } from "@shared/schema";
+import { insertEventSchema, insertSmsConsentSchema, insertNewsletterSignupSchema } from "@shared/schema";
 import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
 import multer from "multer";
 import path from "path";
@@ -194,6 +194,20 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error saving SMS consent:", error);
       res.status(500).json({ message: "Failed to save consent" });
+    }
+  });
+
+  app.post("/api/newsletter", async (req, res) => {
+    try {
+      const parsed = insertNewsletterSignupSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "A valid email is required" });
+      }
+      await storage.createNewsletterSignup(parsed.data);
+      res.status(201).json({ message: "Thank you for subscribing!" });
+    } catch (error) {
+      console.error("Error saving newsletter signup:", error);
+      res.status(500).json({ message: "Failed to subscribe" });
     }
   });
 

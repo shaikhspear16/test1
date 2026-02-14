@@ -69,6 +69,7 @@ const FALLBACK_FLYERS: DisplayEvent[] = [
 
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [selectedFlyer, setSelectedFlyer] = useState<DisplayEvent | null>(null);
 
   const { data: prayerTimes } = useQuery<PrayerTime[]>({
@@ -340,19 +341,43 @@ export default function Home() {
             <p className="text-primary-foreground/80 mb-10 text-lg">
               Subscribe to our newsletter to receive weekly updates on prayer times, community events, and special announcements.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-4">
-              <Input 
-                data-testid="input-email"
-                type="email" 
-                placeholder="Enter your email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-full px-6 flex-grow"
-              />
-              <Button data-testid="button-subscribe" size="lg" className="h-14 bg-accent text-accent-foreground hover:bg-accent/85 font-bold rounded-full px-10 transition-colors">
-                Subscribe Now
-              </Button>
-            </form>
+            {newsletterStatus === "success" ? (
+              <p className="text-lg text-white/90 font-medium" data-testid="text-newsletter-success">Thank you for subscribing!</p>
+            ) : (
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                if (!email.trim()) return;
+                setNewsletterStatus("loading");
+                try {
+                  const res = await fetch("/api/newsletter", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email.trim() }),
+                  });
+                  if (!res.ok) throw new Error();
+                  setNewsletterStatus("success");
+                  setEmail("");
+                } catch {
+                  setNewsletterStatus("error");
+                }
+              }} className="flex flex-col sm:flex-row gap-4">
+                <Input 
+                  data-testid="input-email"
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); if (newsletterStatus === "error") setNewsletterStatus("idle"); }}
+                  className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-full px-6 flex-grow"
+                  required
+                />
+                <Button data-testid="button-subscribe" size="lg" className="h-14 bg-accent text-accent-foreground hover:bg-accent/85 font-bold rounded-full px-10 transition-colors" disabled={newsletterStatus === "loading"}>
+                  {newsletterStatus === "loading" ? "Subscribing..." : "Subscribe Now"}
+                </Button>
+                {newsletterStatus === "error" && (
+                  <p className="text-red-200 text-sm mt-2 sm:mt-0 sm:self-center">Something went wrong. Please try again.</p>
+                )}
+              </form>
+            )}
           </div>
         </section>
       </main>

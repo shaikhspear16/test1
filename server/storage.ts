@@ -1,4 +1,4 @@
-import { events, smsConsents, adminUsers, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type AdminUser, type InsertAdminUser } from "@shared/schema";
+import { events, smsConsents, adminUsers, newsletterSignups, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type AdminUser, type InsertAdminUser, type NewsletterSignup, type InsertNewsletterSignup } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc, sql } from "drizzle-orm";
 
@@ -15,6 +15,7 @@ export interface IStorage {
   createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
   updateAdminUser(id: number, data: Partial<InsertAdminUser>): Promise<AdminUser | undefined>;
   deleteAdminUser(id: number): Promise<boolean>;
+  createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -85,6 +86,11 @@ export class DatabaseStorage implements IStorage {
   async deleteAdminUser(id: number): Promise<boolean> {
     const result = await db.delete(adminUsers).where(eq(adminUsers.id, id)).returning();
     return result.length > 0;
+  }
+
+  async createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup> {
+    const [result] = await db.insert(newsletterSignups).values(signup).returning();
+    return result;
   }
 }
 
