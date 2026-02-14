@@ -1,4 +1,4 @@
-import { events, smsConsents, adminUsers, newsletterSignups, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type AdminUser, type InsertAdminUser, type NewsletterSignup, type InsertNewsletterSignup } from "@shared/schema";
+import { events, smsConsents, newsletterSignups, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type NewsletterSignup, type InsertNewsletterSignup } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc, sql } from "drizzle-orm";
 
@@ -10,11 +10,6 @@ export interface IStorage {
   deleteEvent(id: number): Promise<boolean>;
   reorderEvents(orderedIds: number[]): Promise<void>;
   createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent>;
-  getAdminUsers(): Promise<AdminUser[]>;
-  getAdminUserByEmail(email: string): Promise<AdminUser | undefined>;
-  createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
-  updateAdminUser(id: number, data: Partial<InsertAdminUser>): Promise<AdminUser | undefined>;
-  deleteAdminUser(id: number): Promise<boolean>;
   createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup>;
 }
 
@@ -62,30 +57,6 @@ export class DatabaseStorage implements IStorage {
   async createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent> {
     const [result] = await db.insert(smsConsents).values(consent).returning();
     return result;
-  }
-
-  async getAdminUsers(): Promise<AdminUser[]> {
-    return await db.select().from(adminUsers).orderBy(asc(adminUsers.id));
-  }
-
-  async getAdminUserByEmail(email: string): Promise<AdminUser | undefined> {
-    const [user] = await db.select().from(adminUsers).where(eq(adminUsers.email, email.toLowerCase()));
-    return user;
-  }
-
-  async createAdminUser(user: InsertAdminUser): Promise<AdminUser> {
-    const [result] = await db.insert(adminUsers).values({ ...user, email: user.email.toLowerCase() }).returning();
-    return result;
-  }
-
-  async updateAdminUser(id: number, data: Partial<InsertAdminUser>): Promise<AdminUser | undefined> {
-    const [result] = await db.update(adminUsers).set(data).where(eq(adminUsers.id, id)).returning();
-    return result;
-  }
-
-  async deleteAdminUser(id: number): Promise<boolean> {
-    const result = await db.delete(adminUsers).where(eq(adminUsers.id, id)).returning();
-    return result.length > 0;
   }
 
   async createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup> {

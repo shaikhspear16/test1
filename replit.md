@@ -26,10 +26,9 @@ Preferred communication style: Simple, everyday language.
 - **Static Serving**: Express static middleware for production builds
 
 ### Authentication System
-- **Provider**: Replit OpenID Connect (OIDC) authentication
+- **Provider**: Simple email/password login using ADMIN_EMAIL and ADMIN_PASSWORD secrets
 - **Session Storage**: PostgreSQL-backed sessions using connect-pg-simple
-- **Admin Access Control**: Domain-based (`@gicmasjid.org`) OR whitelist-based via admin_users table; banned users are blocked
-- **User Management**: Automatic user creation/update on login via upsert pattern
+- **Admin Access Control**: Single admin account verified against environment secrets
 
 ### Data Storage
 - **Database**: PostgreSQL with Drizzle ORM
@@ -38,11 +37,10 @@ Preferred communication style: Simple, everyday language.
 - **Validation**: Zod schemas generated from Drizzle tables via drizzle-zod
 
 ### Key Data Models
-- **Events**: Stores event flyers with title, description, image URL, registration link, and display order
-- **Admin Users**: Stores whitelisted/banned admin users with email, display name, banned and whitelisted flags
-- **Users**: Stores authenticated user profiles from Replit Auth
+- **Events**: Stores event flyers with title, description, image URL, registration link, customizable button text, and display order
 - **Sessions**: Manages user sessions for authentication persistence
 - **SMS Consents**: Stores phone numbers for SMS alert signups
+- **Newsletter Signups**: Stores email addresses and timestamps from newsletter form
 
 ### File Structure
 - `client/`: React frontend application
@@ -54,7 +52,6 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Third-Party Services
-- **Replit Auth**: OpenID Connect authentication provider
 - **PostgreSQL**: Primary database (provisioned via Replit)
 - **Google Fonts**: Plus Jakarta Sans and Playfair Display typography
 
@@ -66,7 +63,6 @@ Preferred communication style: Simple, everyday language.
 
 ### Key npm Packages
 - `drizzle-orm` / `drizzle-kit`: Database ORM and migration tooling
-- `passport` / `openid-client`: Authentication middleware
 - `multer`: Multipart form handling for file uploads
 - `express-session` / `connect-pg-simple`: Session management
 - `@tanstack/react-query`: Async state management
