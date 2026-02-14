@@ -167,7 +167,52 @@ export async function registerRoutes(
       if (!parsed.success) {
         return res.status(400).json({ message: "A valid email is required" });
       }
+
       await storage.createNewsletterSignup(parsed.data);
+
+      const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY;
+      const MAILCHIMP_LIST_ID = "6f4281f9d5";
+      const MAILCHIMP_DC = "us14";
+
+      if (!MAILCHIMP_API_KEY) {
+        console.error("MAILCHIMP_API_KEY not configured");
+        return res.status(201).json({ message: "Thank you for subscribing!" });
+      }
+
+      const ip = req.headers["x-forwarded-for"]?.toString().split(",")[0]?.trim() || req.socket.remoteAddress || "";
+      const now = new Date();
+      const timestamp = now.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, "");
+
+      try {
+        const mailchimpRes = await fetch(
+          `https://${MAILCHIMP_DC}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Basic ${Buffer.from(`anystring:${MAILCHIMP_API_KEY}`).toString("base64")}`,
+            },
+            body: JSON.stringify({
+              email_address: parsed.data.email,
+              email_type: "html",
+              status: "subscribed",
+              ip_signup: ip,
+              timestamp_signup: timestamp,
+            }),
+          }
+        );
+
+        if (!mailchimpRes.ok) {
+          const errBody = await mailchimpRes.json().catch(() => ({}));
+          if ((errBody as any)?.title === "Member Exists") {
+            return res.status(200).json({ message: "You're already subscribed!" });
+          }
+          console.error("Mailchimp API error:", errBody);
+        }
+      } catch (mailchimpErr) {
+        console.error("Mailchimp request failed:", mailchimpErr);
+      }
+
       res.status(201).json({ message: "Thank you for subscribing!" });
     } catch (error) {
       console.error("Error saving newsletter signup:", error);
