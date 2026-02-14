@@ -10,7 +10,9 @@ import {
   Mail,
   MapPin,
   Youtube,
-  Phone
+  Phone,
+  DollarSign,
+  Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -40,6 +42,22 @@ const DONATION_METHODS = [
     description: "Company matching program. Search for 'Georgetown Islamic Center' on your portal.",
     icon: Building2,
     color: "bg-orange-50 text-orange-600"
+  },
+  {
+    title: "PayPal",
+    description: "Donate securely through PayPal with any credit card or PayPal balance.",
+    icon: DollarSign,
+    actionText: "Donate via PayPal",
+    link: "https://www.paypal.com/donate/?hosted_button_id=Z5EWC3S6HFKZC",
+    color: "bg-sky-50 text-sky-600"
+  },
+  {
+    title: "Venmo",
+    description: "Quick and easy donation through Venmo.",
+    icon: Smartphone,
+    actionText: "Donate via Venmo",
+    link: "https://venmo.com/GIC-Masjid",
+    color: "bg-teal-50 text-teal-600"
   },
   {
     title: "Check",
