@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
+import { useUpload } from "@/hooks/use-upload";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,8 @@ export default function Admin() {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadedObjectPath, setUploadedObjectPath] = useState<string | null>(null);
+  const { uploadFile, isUploading } = useUpload();
 
   const { data: adminCheck, isLoading: adminCheckLoading, error: adminError } = useQuery({
     queryKey: ["/api/admin/check"],
@@ -59,10 +62,11 @@ export default function Admin() {
   });
 
   const createMutation = useMutation({
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (data: Record<string, any>) => {
       const res = await fetch("/api/admin/events", {
         method: "POST",
-        body: data,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
         credentials: "include",
       });
       if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
@@ -79,10 +83,11 @@ export default function Admin() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: FormData }) => {
+    mutationFn: async ({ id, data }: { id: number; data: Record<string, any> }) => {
       const res = await fetch(`/api/admin/events/${id}`, {
         method: "PATCH",
-        body: data,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
         credentials: "include",
       });
       if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
@@ -150,6 +155,7 @@ export default function Admin() {
     setFormData({ title: "", description: "", registrationLink: "", registrationLinkText: "Register Now" });
     setImageFile(null);
     setImagePreview(null);
+    setUploadedObjectPath(null);
   };
 
   const openCreateDialog = () => {
@@ -181,24 +187,39 @@ export default function Admin() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data = new FormData();
-    if (formData.title) data.append("title", formData.title);
-    if (formData.description) data.append("description", formData.description);
-    if (formData.registrationLink) data.append("registrationLink", formData.registrationLink);
-    if (formData.registrationLink && formData.registrationLinkText) data.append("registrationLinkText", formData.registrationLinkText);
+    let imageUrl = uploadedObjectPath || editingEvent?.imageUrl;
 
-    if (editingEvent) {
-      if (imageFile) data.append("image", imageFile);
-      updateMutation.mutate({ id: editingEvent.id, data });
-    } else {
-      if (!imageFile) {
-        toast({ title: "Image is required", variant: "destructive" });
+    if (imageFile && !uploadedObjectPath) {
+      const result = await uploadFile(imageFile);
+      if (!result) {
+        toast({ title: "Failed to upload image", variant: "destructive" });
         return;
       }
-      data.append("image", imageFile);
+      imageUrl = result.objectPath;
+      setUploadedObjectPath(result.objectPath);
+    }
+
+    if (!imageUrl && !editingEvent) {
+      toast({ title: "Image is required", variant: "destructive" });
+      return;
+    }
+
+    const data: Record<string, any> = {};
+    if (formData.title) data.title = formData.title;
+    if (formData.description) data.description = formData.description;
+    if (formData.registrationLink) data.registrationLink = formData.registrationLink;
+    if (formData.registrationLink && formData.registrationLinkText) data.registrationLinkText = formData.registrationLinkText;
+
+    if (editingEvent) {
+      if (imageUrl && imageUrl !== editingEvent.imageUrl) {
+        data.imageUrl = imageUrl;
+      }
+      updateMutation.mutate({ id: editingEvent.id, data });
+    } else {
+      data.imageUrl = imageUrl;
       createMutation.mutate(data);
     }
   };
@@ -556,9 +577,9 @@ export default function Admin() {
                 data-testid="button-submit-event"
                 type="submit"
                 className="flex-1 bg-primary"
-                disabled={createMutation.isPending || updateMutation.isPending}
+                disabled={createMutation.isPending || updateMutation.isPending || isUploading}
               >
-                {(createMutation.isPending || updateMutation.isPending) && (
+                {(createMutation.isPending || updateMutation.isPending || isUploading) && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 {editingEvent ? "Update Event" : "Create Event"}

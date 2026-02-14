@@ -5,9 +5,7 @@ import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
 import { insertEventSchema, insertSmsConsentSchema, insertNewsletterSignupSchema } from "@shared/schema";
 import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
-import multer from "multer";
-import path from "path";
-import fs from "fs";
+import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
 
 declare module "express-session" {
   interface SessionData {
@@ -35,33 +33,6 @@ const isAdmin: RequestHandler = (req, res, next) => {
 
   next();
 };
-
-const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      cb(null, uniqueSuffix + path.extname(file.originalname));
-    },
-  }),
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    if (mimetype && extname) {
-      return cb(null, true);
-    }
-    cb(new Error("Only image files are allowed"));
-  },
-  limits: { fileSize: 10 * 1024 * 1024 },
-});
 
 export async function registerRoutes(
   httpServer: Server,
@@ -92,10 +63,7 @@ export async function registerRoutes(
     })
   );
 
-  app.use("/uploads", (req, res, next) => {
-    res.set("Cross-Origin-Resource-Policy", "cross-origin");
-    next();
-  }, express.static(uploadsDir));
+  registerObjectStorageRoutes(app);
 
   startPrayerTimesRefresh();
 
@@ -200,18 +168,20 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/admin/events", isAuthenticated, isAdmin, upload.single("image"), async (req, res) => {
+  app.post("/api/admin/events", isAuthenticated, isAdmin, async (req, res) => {
     try {
-      if (!req.file) {
+      const { title, description, imageUrl, registrationLink, registrationLinkText } = req.body;
+
+      if (!imageUrl) {
         return res.status(400).json({ message: "Image is required" });
       }
 
       const eventData = {
-        title: req.body.title || null,
-        description: req.body.description || null,
-        imageUrl: `/uploads/${req.file.filename}`,
-        registrationLink: req.body.registrationLink || null,
-        registrationLinkText: req.body.registrationLinkText || "Register Now",
+        title: title || null,
+        description: description || null,
+        imageUrl,
+        registrationLink: registrationLink || null,
+        registrationLinkText: registrationLinkText || "Register Now",
       };
 
       const parseResult = insertEventSchema.safeParse(eventData);
@@ -227,7 +197,7 @@ export async function registerRoutes(
     }
   });
 
-  app.patch("/api/admin/events/:id", isAuthenticated, isAdmin, upload.single("image"), async (req, res) => {
+  app.patch("/api/admin/events/:id", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const id = parseInt(req.params.id as string);
       const existingEvent = await storage.getEvent(id);
@@ -265,14 +235,8 @@ export async function registerRoutes(
           : "Register Now";
       }
 
-      if (req.file) {
-        updateData.imageUrl = `/uploads/${req.file.filename}`;
-        if (existingEvent.imageUrl && existingEvent.imageUrl.startsWith("/uploads/")) {
-          const oldPath = path.join(uploadsDir, path.basename(existingEvent.imageUrl));
-          if (fs.existsSync(oldPath)) {
-            fs.unlinkSync(oldPath);
-          }
-        }
+      if (req.body.imageUrl) {
+        updateData.imageUrl = req.body.imageUrl;
       }
 
       if (Object.keys(updateData).length === 0) {
@@ -294,13 +258,6 @@ export async function registerRoutes(
 
       if (!existingEvent) {
         return res.status(404).json({ message: "Event not found" });
-      }
-
-      if (existingEvent.imageUrl && existingEvent.imageUrl.startsWith("/uploads/")) {
-        const imagePath = path.join(uploadsDir, path.basename(existingEvent.imageUrl));
-        if (fs.existsSync(imagePath)) {
-          fs.unlinkSync(imagePath);
-        }
       }
 
       await storage.deleteEvent(id);

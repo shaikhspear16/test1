@@ -22,7 +22,7 @@ Preferred communication style: Simple, everyday language.
 - **Runtime**: Node.js with Express
 - **Language**: TypeScript (ESM modules)
 - **API Design**: RESTful endpoints under `/api/*` prefix
-- **File Uploads**: Multer for handling event image uploads
+- **File Uploads**: Replit App Storage with presigned URL upload flow
 - **Static Serving**: Express static middleware for production builds
 
 ### Authentication System
@@ -46,7 +46,7 @@ Preferred communication style: Simple, everyday language.
 - `client/`: React frontend application
 - `server/`: Express backend with API routes
 - `shared/`: Shared types and database schema
-- `uploads/`: User-uploaded event images
+- `server/replit_integrations/`: Replit integration modules (object storage)
 - `migrations/`: Database migration files
 
 ## External Dependencies
@@ -63,7 +63,8 @@ Preferred communication style: Simple, everyday language.
 
 ### Key npm Packages
 - `drizzle-orm` / `drizzle-kit`: Database ORM and migration tooling
-- `multer`: Multipart form handling for file uploads
+- `@google-cloud/storage`: Replit App Storage client
+- `@uppy/core` / `@uppy/aws-s3` / `@uppy/dashboard` / `@uppy/react`: File upload UI components
 - `express-session` / `connect-pg-simple`: Session management
 - `@tanstack/react-query`: Async state management
 - `framer-motion`: Animation library
