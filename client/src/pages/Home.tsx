@@ -27,6 +27,7 @@ import flyer3 from "@assets/tafsir_1768797774026.jpeg";
 import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.jpeg";
 import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.jpeg";
 import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.jpeg";
+import expansionImg from "@assets/expansion_1771091257029.jpg";
 import type { Event } from "@shared/schema";
 
 interface PrayerTime {
@@ -224,6 +225,36 @@ export default function Home() {
 
         {/* Flyer Modal */}
         <ImageLightbox item={selectedFlyer} onClose={() => setSelectedFlyer(null)} />
+
+        {/* GIC Expansion Section */}
+        <section className="py-12 bg-white border-t border-border/50">
+          <div className="max-w-7xl mx-auto container px-4">
+            <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 items-center">
+              <div className="md:w-1/2 rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={expansionImg}
+                  alt="GIC Expansion - New 2 acre property adjacent to existing masjid"
+                  className="w-full h-auto"
+                  data-testid="img-expansion"
+                />
+              </div>
+              <div className="md:w-1/2 text-center md:text-left">
+                <Badge className="mb-3 bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                  Alhamdulillah
+                </Badge>
+                <h3 className="text-2xl font-bold mb-4">GIC Expansion</h3>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  With the Help and Mercy of Allah <span className="font-arabic">&#xFDFA;</span>, and through your generous support, we have successfully closed on the purchase of the 2 acres adjacent to GIC. May Allah accept every contribution, place barakah in your wealth, health, and families.
+                </p>
+                <a href="https://donorbox.org/let-s-secure-a-new-land-for-gic-masjid" target="_blank" rel="noopener noreferrer">
+                  <Button className="rounded-full bg-primary px-8" data-testid="button-expansion-donate">
+                    Support the Expansion <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Education Section / DUA Link */}
         <section className="py-12 bg-white border-t border-border/50">
