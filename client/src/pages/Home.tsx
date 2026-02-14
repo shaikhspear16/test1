@@ -6,8 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { 
   Bell,
-  Download,
-  ExternalLink
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -126,12 +125,12 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <Link href="/donate">
-                    <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90">
+                    <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/85 transition-colors">
                       Donate Now
                     </Button>
                   </Link>
                   <Link href="/about">
-                    <Button size="lg" variant="outline" className="rounded-full px-8">
+                    <Button size="lg" variant="outline" className="rounded-full px-8 hover:bg-secondary/80 transition-colors">
                       Learn More
                     </Button>
                   </Link>
@@ -247,8 +246,8 @@ export default function Home() {
                   With the Help and Mercy of Allah <span className="font-arabic">&#xFDFA;</span>, and through your generous support, we have successfully closed on the purchase of the 2 acres adjacent to GIC. May Allah accept every contribution, place barakah in your wealth, health, and families.
                 </p>
                 <a href="https://donorbox.org/let-s-secure-a-new-land-for-gic-masjid" target="_blank" rel="noopener noreferrer">
-                  <Button className="rounded-full bg-primary px-8" data-testid="button-expansion-donate">
-                    Support the Expansion <ExternalLink className="ml-2 h-4 w-4" />
+                  <Button className="rounded-full bg-primary px-8 hover:bg-primary/85 transition-colors" data-testid="button-expansion-donate">
+                    Support the Expansion
                   </Button>
                 </a>
               </div>
@@ -269,12 +268,12 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
-                  <Button className="rounded-full bg-primary px-8">
+                  <Button className="rounded-full bg-primary px-8 hover:bg-primary/85 transition-colors">
                     Visit DUA Website
                   </Button>
                 </a>
                 <Link href="/education">
-                  <Button variant="outline" className="rounded-full px-8">
+                  <Button variant="outline" className="rounded-full px-8 hover:bg-secondary/80 transition-colors">
                     View Programs at GIC
                   </Button>
                 </Link>
@@ -319,7 +318,7 @@ export default function Home() {
                   ))}
                 </div>
                 <Link href="/about">
-                  <Button className="mt-10 rounded-full bg-primary" size="lg">
+                  <Button className="mt-10 rounded-full bg-primary hover:bg-primary/85 transition-colors" size="lg">
                     Learn More About Us
                   </Button>
                 </Link>
@@ -350,7 +349,7 @@ export default function Home() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-full px-6 flex-grow"
               />
-              <Button data-testid="button-subscribe" size="lg" className="h-14 bg-accent text-accent-foreground hover:bg-accent/90 font-bold rounded-full px-10">
+              <Button data-testid="button-subscribe" size="lg" className="h-14 bg-accent text-accent-foreground hover:bg-accent/85 font-bold rounded-full px-10 transition-colors">
                 Subscribe Now
               </Button>
             </form>
