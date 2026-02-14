@@ -141,7 +141,7 @@ export class ObjectStorageService {
     }
 
     const objectId = randomUUID();
-    const fullPath = `${privateObjectDir}/uploads/${objectId}`;
+    const fullPath = `${privateObjectDir}/event-flyers/${objectId}`;
 
     const { bucketName, objectName } = parseObjectPath(fullPath);
 
