@@ -6,6 +6,7 @@ import { storage } from "./storage";
 import { insertEventSchema, insertSmsConsentSchema, insertNewsletterSignupSchema } from "@shared/schema";
 import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
 import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
+import path from "path";
 
 declare module "express-session" {
   interface SessionData {
@@ -62,6 +63,12 @@ export async function registerRoutes(
       },
     })
   );
+
+  const uploadsDir = path.join(process.cwd(), "uploads");
+  app.use("/uploads", (req, res, next) => {
+    res.set("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  }, express.static(uploadsDir));
 
   registerObjectStorageRoutes(app);
 
@@ -309,6 +316,56 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error seeding events:", error);
       res.status(500).json({ message: "Failed to seed events" });
+    }
+  });
+
+  app.post("/api/admin/migrate-images", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const allEvents = await storage.getEvents();
+      const storageService = new (await import("./replit_integrations/object_storage/objectStorage")).ObjectStorageService();
+      const fs = await import("fs");
+      const pathMod = await import("path");
+      const uploadsDir = pathMod.default.join(process.cwd(), "uploads");
+      let migrated = 0;
+
+      for (const event of allEvents) {
+        if (!event.imageUrl || !event.imageUrl.startsWith("/uploads/")) continue;
+
+        const filename = pathMod.default.basename(event.imageUrl);
+        const localPath = pathMod.default.join(uploadsDir, filename);
+
+        if (!fs.default.existsSync(localPath)) {
+          console.log(`[migrate] Event ${event.id}: file not found (${filename})`);
+          continue;
+        }
+
+        const uploadURL = await storageService.getObjectEntityUploadURL();
+        const objectPath = storageService.normalizeObjectEntityPath(uploadURL);
+
+        const fileBuffer = fs.default.readFileSync(localPath);
+        const ext = pathMod.default.extname(filename).toLowerCase();
+        const ctMap: Record<string, string> = {
+          ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+          ".png": "image/png", ".gif": "image/gif", ".webp": "image/webp",
+        };
+
+        const response = await fetch(uploadURL, {
+          method: "PUT",
+          body: fileBuffer,
+          headers: { "Content-Type": ctMap[ext] || "application/octet-stream" },
+        });
+
+        if (!response.ok) continue;
+
+        await storage.updateEvent(event.id, { imageUrl: objectPath });
+        migrated++;
+        console.log(`[migrate] Event ${event.id}: migrated to ${objectPath}`);
+      }
+
+      res.json({ message: `Migrated ${migrated} images to cloud storage` });
+    } catch (error) {
+      console.error("Error migrating images:", error);
+      res.status(500).json({ message: "Failed to migrate images" });
     }
   });
 
