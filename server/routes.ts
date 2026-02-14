@@ -326,6 +326,32 @@ export async function registerRoutes(
     res.json({ isAdmin: true });
   });
 
+  app.post("/api/admin/seed-events", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const existing = await storage.getEvents();
+      if (existing.length > 0) {
+        return res.status(400).json({ message: "Events already exist, skipping seed" });
+      }
+      const { events: seedEvents } = req.body;
+      if (!Array.isArray(seedEvents)) {
+        return res.status(400).json({ message: "events array required" });
+      }
+      for (const ev of seedEvents) {
+        await storage.createEvent({
+          title: ev.title || null,
+          description: ev.description || null,
+          imageUrl: ev.imageUrl,
+          registrationLink: ev.registrationLink || null,
+          registrationLinkText: ev.registrationLinkText || "Register Now",
+        });
+      }
+      res.json({ message: `Seeded ${seedEvents.length} events` });
+    } catch (error) {
+      console.error("Error seeding events:", error);
+      res.status(500).json({ message: "Failed to seed events" });
+    }
+  });
+
   app.get("/api/admin/users", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const users = await storage.getAdminUsers();
