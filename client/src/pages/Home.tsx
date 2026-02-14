@@ -230,13 +230,15 @@ export default function Home() {
         <section className="py-12 bg-white border-t border-border/50">
           <div className="max-w-7xl mx-auto container px-4">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 items-center">
-              <div className="md:w-1/2 rounded-2xl overflow-hidden shadow-lg">
-                <img
-                  src={expansionImg}
-                  alt="GIC Expansion - New 2 acre property adjacent to existing masjid"
-                  className="w-full h-auto"
-                  data-testid="img-expansion"
-                />
+              <div className="md:w-1/2 flex items-center justify-center">
+                <div className="rounded-2xl overflow-hidden shadow-lg">
+                  <img
+                    src={expansionImg}
+                    alt="GIC Expansion - New 2 acre property adjacent to existing masjid"
+                    className="w-full h-auto"
+                    data-testid="img-expansion"
+                  />
+                </div>
               </div>
               <div className="md:w-1/2 text-center md:text-left">
                 <Badge className="mb-3 bg-primary/10 text-primary border-primary/20 px-3 py-1">
