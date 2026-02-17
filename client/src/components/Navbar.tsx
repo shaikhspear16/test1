@@ -42,9 +42,9 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/donate" className="hidden sm:block">
-            <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
-              <Heart className="mr-2 h-4 w-4" /> Donate
+          <Link href="/donate">
+            <Button data-testid="button-donate" className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 sm:px-6 text-sm sm:text-base">
+              <Heart className="mr-1 sm:mr-2 h-4 w-4" /> Donate
             </Button>
           </Link>
 
@@ -79,11 +79,6 @@ export function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <Link href="/donate" className="sm:hidden" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-primary text-white rounded-full">
-                  <Heart className="mr-2 h-4 w-4" /> Donate
-                </Button>
-              </Link>
             </div>
           </motion.div>
         )}
