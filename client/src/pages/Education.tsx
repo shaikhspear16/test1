@@ -43,6 +43,10 @@ function ProgramItem({ program, onImageClick }: { program: ProgramCard; onImageC
           src={program.imageUrl}
           alt={program.title}
           className="w-full rounded-xl shadow-md transition-transform group-hover:scale-[1.02]"
+          width={256}
+          height={341}
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="flex-1">

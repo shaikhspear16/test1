@@ -414,6 +414,9 @@ export default function Admin() {
                             src={event.imageUrl}
                             alt={event.title || "Event"}
                             className="w-full h-full object-cover"
+                            width={64}
+                            height={80}
+                            loading="lazy"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -479,6 +482,8 @@ export default function Admin() {
                       src={imagePreview}
                       alt="Preview"
                       className="w-full h-48 object-cover rounded-lg"
+                      width={400}
+                      height={192}
                     />
                     <Button
                       type="button"

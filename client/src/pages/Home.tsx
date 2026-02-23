@@ -20,12 +20,12 @@ import {
   CarouselPrevious 
 } from "@/components/ui/carousel";
 import { ImageLightbox } from "@/components/ImageLightbox";
-import flyer1 from "@assets/arabic_1768797774024.jpeg";
-import flyer2 from "@assets/ramadan_1768797774026.jpeg";
-import flyer3 from "@assets/tafsir_1768797774026.jpeg";
-import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.jpeg";
-import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.jpeg";
-import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.jpeg";
+import flyer1 from "@assets/arabic_1768797774024.webp";
+import flyer2 from "@assets/ramadan_1768797774026.webp";
+import flyer3 from "@assets/tafsir_1768797774026.webp";
+import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.webp";
+import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.webp";
+import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.webp";
 import type { Event } from "@shared/schema";
 
 interface PrayerTime {
@@ -211,7 +211,7 @@ export default function Home() {
                       className="rounded-2xl overflow-hidden shadow-lg border border-border cursor-pointer"
                       onClick={() => setSelectedFlyer(event)}
                     >
-                      <img src={event.imageUrl} alt={event.title || "Event"} className="w-full h-auto object-cover aspect-[3/4]" />
+                      <img src={event.imageUrl} alt={event.title || "Event"} className="w-full h-auto object-cover aspect-[3/4]" width={400} height={533} loading="lazy" decoding="async" />
                     </motion.div>
                   </CarouselItem>
                 ))}
@@ -284,6 +284,7 @@ export default function Home() {
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowFullScreen
+                  loading="lazy"
                 ></iframe>
               </div>
               <div className="order-1 lg:order-2 lg:flex-1">

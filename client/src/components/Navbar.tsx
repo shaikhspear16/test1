@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
+import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +21,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-3">
-            <img src={logo} alt="GIC Logo" className="h-12 w-auto" />
+            <img src={logo} alt="GIC Logo" className="h-12 w-auto" width={48} height={48} />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-primary leading-tight">Georgetown</h1>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Islamic Center</p>
@@ -53,6 +53,7 @@ export function Navbar() {
             size="icon" 
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>

@@ -25,6 +25,8 @@ export function ImageLightbox({ item, onClose }: ImageLightboxProps) {
               src={item?.imageUrl}
               alt={item?.title || "Image"}
               className="max-h-full max-w-full object-contain shadow-2xl rounded-lg"
+              width={600}
+              height={800}
             />
           </div>
           {(item?.description || item?.registrationLink) && (

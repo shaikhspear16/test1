@@ -1,6 +1,6 @@
 import { Youtube, Mail, Phone, MapPin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@assets/GIC_Logo_Brown_1768797787406.png";
+import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
 
 export function Footer() {
   return (
@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col md:grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" />
+              <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" width={40} height={40} loading="lazy" />
               <span className="text-xl font-bold">Georgetown Islamic Center</span>
             </div>
             <p className="text-background/60 mb-8 max-w-sm">
