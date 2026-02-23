@@ -9,7 +9,7 @@ export function Footer() {
         <div className="flex flex-col md:grid md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" width={40} height={40} loading="lazy" />
+              <img src={logo} alt="GIC Logo" className="h-10 brightness-0 invert" width={53} height={40} loading="lazy" />
               <span className="text-xl font-bold">Georgetown Islamic Center</span>
             </div>
             <p className="text-background/60 mb-8 max-w-sm">

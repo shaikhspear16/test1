@@ -72,6 +72,12 @@ export async function registerRoutes(
 
   registerObjectStorageRoutes(app);
 
+  app.get("/robots.txt", (_req, res) => {
+    res.type("text/plain").send(
+      `User-agent: *\nAllow: /\n\nSitemap: https://gic-modernizer--musababdullah.replit.app/sitemap.xml\n`
+    );
+  });
+
   startPrayerTimesRefresh();
 
   app.post("/api/auth/login", (req, res) => {

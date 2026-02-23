@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { 
@@ -26,6 +25,12 @@ import flyer3 from "@assets/tafsir_1768797774026.webp";
 import flyerNoorKids from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406.webp";
 import flyerSistersTafseer from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408.webp";
 import flyerPotluck from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408.webp";
+import flyer1Sm from "@assets/arabic_1768797774024_400w.webp";
+import flyer2Sm from "@assets/ramadan_1768797774026_400w.webp";
+import flyer3Sm from "@assets/tafsir_1768797774026_400w.webp";
+import flyerNoorKidsSm from "@assets/WhatsApp_Image_2025-12-28_at_12.00.16_1768851179406_400w.webp";
+import flyerSistersTafseerSm from "@assets/WhatsApp_Image_2026-01-08_at_12.23.56_1768851179408_400w.webp";
+import flyerPotluckSm from "@assets/WhatsApp_Image_2026-01-08_at_10.29.36_1768851179408_400w.webp";
 import type { Event } from "@shared/schema";
 
 interface PrayerTime {
@@ -37,6 +42,7 @@ interface PrayerTime {
 interface DisplayEvent {
   id?: number;
   imageUrl: string;
+  imageSrcSet?: string;
   title?: string | null;
   description?: string | null;
   registrationLink?: string | null;
@@ -45,31 +51,45 @@ interface DisplayEvent {
 
 const FALLBACK_FLYERS: DisplayEvent[] = [
   { 
-    imageUrl: flyerNoorKids, 
+    imageUrl: flyerNoorKids,
+    imageSrcSet: `${flyerNoorKidsSm} 400w, ${flyerNoorKids} 800w`,
     title: "Family Night with Noor Kids", 
     registrationLink: "https://tinyurl.com/GIC-2026-NoorKids",
     description: "Join us for an engaging session with Br. Amin Aaser from Noor Kids. Featuring inspiring stories and interactive learning."
   },
   { 
-    imageUrl: flyerPotluck, 
+    imageUrl: flyerPotluck,
+    imageSrcSet: `${flyerPotluckSm} 400w, ${flyerPotluck} 800w`,
     title: "Monthly Community Potluck", 
     registrationLink: "https://tinyurl.com/GIC-Monthly-Potluck",
     description: "A monthly gathering to strengthen community bonds. Speaker: Mufti Hassan from Chicago."
   },
   { 
-    imageUrl: flyerSistersTafseer, 
+    imageUrl: flyerSistersTafseer,
+    imageSrcSet: `${flyerSistersTafseerSm} 400w, ${flyerSistersTafseer} 800w`,
     title: "Sisters Tafseer Class", 
     description: "Join us as we journey through the Tafseer of the Qur'an with Imam Osama Hussain and Muallimah Umme Yahya."
   },
-  { imageUrl: flyer1, title: "Arabic Language Class" },
-  { imageUrl: flyer2, title: "Ramadan Prep" },
-  { imageUrl: flyer3, title: "Weekly Tafsir" },
+  { imageUrl: flyer1, imageSrcSet: `${flyer1Sm} 400w, ${flyer1} 800w`, title: "Arabic Language Class" },
+  { imageUrl: flyer2, imageSrcSet: `${flyer2Sm} 400w, ${flyer2} 800w`, title: "Ramadan Prep" },
+  { imageUrl: flyer3, imageSrcSet: `${flyer3Sm} 400w, ${flyer3} 800w`, title: "Weekly Tafsir" },
 ];
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [selectedFlyer, setSelectedFlyer] = useState<DisplayEvent | null>(null);
+
+  useEffect(() => {
+    if (!customElements.get('lite-youtube')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://esm.sh/lite-youtube-embed/src/lite-yt-embed.css';
+      document.head.appendChild(link);
+      // @ts-ignore - external URL module
+      import('https://esm.sh/lite-youtube-embed');
+    }
+  }, []);
 
   const { data: prayerTimes } = useQuery<PrayerTime[]>({
     queryKey: ["/api/prayer-times"],
@@ -113,17 +133,12 @@ export default function Home() {
         <section className="relative overflow-hidden pt-12 pb-20 hero-gradient">
           <div className="max-w-7xl mx-auto container px-4">
             <div className="flex flex-col lg:flex-row lg:items-center gap-12 text-center lg:text-left">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex-1"
-              >
+              <div className="flex-1 animate-fade-in-up">
                 <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
                   Georgetown Islamic Center
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed italic">
-                  "The best among you are those who have the best manners and character." [<a href="https://sunnah.com/bukhari:6029" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">Bukhari</a>]
+                  "The best among you are those who have the best manners and character." [<a href="https://sunnah.com/bukhari:6029" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80" aria-label="Hadith reference: Sahih al-Bukhari 6029">Bukhari</a>]
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <Link href="/donate">
@@ -137,14 +152,9 @@ export default function Home() {
                     </Button>
                   </Link>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative lg:justify-self-end w-full max-w-md mx-auto"
-              >
+              <div className="relative lg:justify-self-end w-full max-w-md mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                 <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-white/20 overflow-hidden p-2">
                   <Card className="border-none bg-transparent shadow-none">
                     <CardContent className="p-2">
@@ -159,7 +169,7 @@ export default function Home() {
                               </div>
                               {prayer.iqamah && (
                                 <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
-                                  <p className="text-[9px] uppercase tracking-tighter text-primary/60 font-bold mb-0 italic">Iqamah</p>
+                                  <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
                                   <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
                                 </div>
                               )}
@@ -183,7 +193,7 @@ export default function Home() {
                     </CardContent>
                   </Card>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -206,13 +216,22 @@ export default function Home() {
               <CarouselContent>
                 {displayEvents.map((event, index) => (
                   <CarouselItem key={event.id || index} className="md:basis-1/2 lg:basis-1/3 p-4">
-                    <motion.div 
-                      whileHover={{ y: -10 }}
-                      className="rounded-2xl overflow-hidden shadow-lg border border-border cursor-pointer"
+                    <div
+                      className="rounded-2xl overflow-hidden shadow-lg border border-border cursor-pointer transition-transform duration-300 hover:-translate-y-2.5"
                       onClick={() => setSelectedFlyer(event)}
                     >
-                      <img src={event.imageUrl} alt={event.title || "Event"} className="w-full h-auto object-cover aspect-[3/4]" width={400} height={533} loading="lazy" decoding="async" />
-                    </motion.div>
+                      <img
+                        src={event.imageUrl}
+                        srcSet={event.imageSrcSet}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        alt={event.title || "Event"}
+                        className="w-full h-auto object-cover aspect-[3/4]"
+                        width={400}
+                        height={533}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
@@ -275,18 +294,10 @@ export default function Home() {
         <section id="about" className="py-12 bg-secondary/30">
           <div className="max-w-7xl mx-auto container px-4">
             <div className="flex flex-col lg:flex-row gap-16 items-center text-center lg:text-left">
-              <div className="order-2 lg:order-1 relative rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black w-full lg:flex-1">
-                {/* Embedded Youtube Mockup */}
-                <iframe 
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/qxhQ3qq2T-w" 
-                  title="GIC Lectures"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                  loading="lazy"
-                ></iframe>
-              </div>
+              <div
+                className="order-2 lg:order-1 rounded-3xl overflow-hidden shadow-2xl w-full lg:flex-1"
+                dangerouslySetInnerHTML={{ __html: '<lite-youtube videoid="qxhQ3qq2T-w" playlabel="Play: GIC Lectures" style="display:block;width:100%;aspect-ratio:16/9"></lite-youtube>' }}
+              />
               <div className="order-1 lg:order-2 lg:flex-1">
                 <h3 className="text-4xl font-bold mb-6">Building the Future Together</h3>
                 <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl mx-auto lg:mx-0">
@@ -356,7 +367,7 @@ export default function Home() {
                   placeholder="Enter your email" 
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); if (newsletterStatus === "error") setNewsletterStatus("idle"); }}
-                  className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-full px-6 flex-grow"
+                  className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/70 rounded-full px-6 flex-grow"
                   required
                 />
                 <Button data-testid="button-subscribe" size="lg" className="h-14 bg-accent text-accent-foreground hover:bg-accent/85 font-bold rounded-full px-10 transition-colors" disabled={newsletterStatus === "loading"}>
