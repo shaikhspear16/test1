@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
@@ -8,6 +7,7 @@ import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [location] = useLocation();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -15,6 +15,28 @@ export function Navbar() {
     { name: "Resources", href: "/resources" },
     { name: "About", href: "/about" },
   ];
+
+  useEffect(() => {
+    const el = menuRef.current;
+    if (!el) return;
+    if (isMenuOpen) {
+      el.style.display = "block";
+      const height = el.scrollHeight;
+      el.style.height = "0px";
+      el.style.opacity = "0";
+      el.offsetHeight;
+      el.style.height = height + "px";
+      el.style.opacity = "1";
+    } else {
+      el.style.height = "0px";
+      el.style.opacity = "0";
+      const onEnd = () => {
+        el.style.display = "none";
+        el.removeEventListener("transitionend", onEnd);
+      };
+      el.addEventListener("transitionend", onEnd, { once: true });
+    }
+  }, [isMenuOpen]);
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -60,30 +82,24 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b border-border/50 overflow-hidden"
-          >
-            <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.href}
-                  href={link.href} 
-                  className={location === link.href ? "text-primary font-bold" : "hover:text-primary transition-colors"} 
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={menuRef}
+        className="md:hidden bg-background border-b border-border/50 overflow-hidden transition-[height,opacity] duration-300 ease-in-out"
+        style={{ display: "none", height: 0, opacity: 0 }}
+      >
+        <div className="max-w-7xl mx-auto container px-4 py-6 flex flex-col gap-4 text-lg font-medium">
+          {navLinks.map((link) => (
+            <Link 
+              key={link.href}
+              href={link.href} 
+              className={location === link.href ? "text-primary font-bold" : "hover:text-primary transition-colors"} 
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 }

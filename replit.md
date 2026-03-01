@@ -14,7 +14,7 @@ Preferred communication style: Simple, everyday language.
 - **Framework**: React 18 with TypeScript
 - **Routing**: Wouter (lightweight React router)
 - **Styling**: Tailwind CSS with shadcn/ui component library (new-york style)
-- **Animations**: Framer Motion for page transitions and UI effects
+- **Animations**: Framer Motion for page transitions (lazy-loaded pages only); CSS transitions for Navbar mobile menu
 - **State Management**: TanStack React Query for server state and caching
 - **Build Tool**: Vite with custom plugins for Replit integration
 
