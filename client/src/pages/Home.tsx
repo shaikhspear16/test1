@@ -138,7 +138,7 @@ export default function Home() {
                   Georgetown Islamic Center
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed italic">
-                  "The best among you are those who have the best manners and character." [<a href="https://sunnah.com/bukhari:6029" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80" aria-label="Hadith reference: Sahih al-Bukhari 6029">Bukhari</a>]
+                  "The best among you are those who have the best manners and character." [Bukhari]
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                   <Link href="/donate">
@@ -254,7 +254,7 @@ export default function Home() {
               <p className="text-muted-foreground leading-relaxed mb-5">
                 Support the effort to make GIC debt-free. Every donation counts.
               </p>
-              <a href="https://us.mohid.co/tx/austin/gic/masjid/online/donation" target="_blank" rel="noopener noreferrer">
+              <a href="https://us.mohid.co/tx/austin/gic/masjid/online/donation/2" target="_blank" rel="noopener noreferrer">
                 <Button className="rounded-full bg-primary px-8 hover:bg-primary/85 transition-colors" data-testid="button-loan-payoff">
                   Support Now
                 </Button>

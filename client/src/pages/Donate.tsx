@@ -32,8 +32,7 @@ const DONATION_METHODS = [
     description: "Direct bank transfer. Please specify category in memo.",
     icon: Send,
     details: [
-      { label: "General", value: "donate@gicmasjid.org" },
-      { label: "Expansion", value: "expansion@gicmasjid.org" }
+      { label: "General", value: "donate@gicmasjid.org" }
     ],
     color: "bg-purple-50 text-purple-600"
   },
@@ -145,28 +144,6 @@ export default function Donate() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action for Expansion */}
-        <section className="py-12 bg-secondary/30">
-          <div className="max-w-7xl mx-auto container px-4 text-center">
-            <div className="max-w-4xl mx-auto bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
-              <h3 className="text-3xl font-bold mb-6">Support Our Expansion</h3>
-              <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-                As our community grows, so does our need for a larger space. Join us in building a legacy for 
-                future generations in Georgetown and Round Rock.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="rounded-full bg-primary px-10">
-                  Expansion Project Info
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-full px-10">
-                  Recurring Donation
-                </Button>
-              </div>
             </div>
           </div>
         </section>
