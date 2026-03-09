@@ -69,6 +69,8 @@ const DONATION_METHODS = [
   }
 ];
 
+import { RamadanDonationSection } from "@/components/RamadanDonationSection";
+
 export default function Donate() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,40 +102,7 @@ export default function Donate() {
           </div>
         </section>
 
-        {/* Ramadan Last 10 Nights */}
-        <section className="py-10 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-b border-amber-200/50">
-          <div className="max-w-7xl mx-auto container px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Card className="max-w-3xl mx-auto border-amber-200 bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="text-center pb-2">
-                  <span className="text-4xl mb-2 block" aria-hidden="true">🌙</span>
-                  <CardTitle className="text-2xl md:text-3xl font-black">Last 10 Nights of Ramadan</CardTitle>
-                  <CardDescription className="text-base mt-2 max-w-lg mx-auto">
-                    Don't miss Laylatul Qadr. Automate your donations for the last 10 nights and ensure your generosity counts every single night.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="text-center space-y-4">
-                  <p className="text-sm text-amber-700 font-medium italic">
-                    "The Night of Decree is better than a thousand months." — [Quran 97:3]
-                  </p>
-                  <Button
-                    asChild
-                    className="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-10 py-3 text-base font-bold shadow-md hover:shadow-lg transition-all"
-                    data-testid="button-ramadan-last-10"
-                  >
-                    <a href="https://mohid.co/go/YQWPllK" target="_blank" rel="noopener noreferrer">
-                      Automate Your Giving <ChevronRight className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </section>
+        <RamadanDonationSection showCard />
 
         {/* Donation Methods Grid */}
         <section className="py-12 bg-white">

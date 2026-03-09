@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { RamadanDonationSection } from "@/components/RamadanDonationSection";
 import { 
   Bell,
   Download
@@ -246,26 +247,7 @@ export default function Home() {
         {/* Flyer Modal */}
         <ImageLightbox item={selectedFlyer} onClose={() => setSelectedFlyer(null)} />
 
-        {/* Ramadan Last 10 Nights Section */}
-        <section className="py-10 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-t border-amber-200/50">
-          <div className="max-w-7xl mx-auto container px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <span className="text-4xl mb-4 block" aria-hidden="true">🌙</span>
-              <h3 className="text-3xl font-black mb-3" data-testid="text-ramadan-last-10">Last 10 Nights of Ramadan</h3>
-              <p className="text-muted-foreground leading-relaxed mb-3 max-w-xl mx-auto">
-                Don't miss Laylatul Qadr. Automate your donations for the last 10 nights and ensure your generosity counts every single night.
-              </p>
-              <p className="text-sm text-amber-700 font-medium mb-6 italic">
-                "The Night of Decree is better than a thousand months." — [Quran 97:3]
-              </p>
-              <Button asChild className="rounded-full bg-amber-600 hover:bg-amber-700 text-white px-10 py-3 text-base font-bold shadow-lg hover:shadow-xl transition-all" data-testid="button-ramadan-last-10">
-                <a href="https://mohid.co/go/YQWPllK" target="_blank" rel="noopener noreferrer">
-                  Automate Your Giving
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
+        <RamadanDonationSection />
 
         {/* Loan Payoff Section */}
         <section className="py-8 bg-white border-t border-border/50">
