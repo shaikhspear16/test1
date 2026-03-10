@@ -163,48 +163,50 @@ export default function Home() {
                 <div className="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-white/20 overflow-hidden p-2">
                   <Card className="border-none bg-transparent shadow-none">
                     <CardContent className="p-2">
-                      <div className="space-y-0.5">
+                      <div className="space-y-0">
                         {prayerData ? (
                           <>
+                            {/* Header Row */}
+                            <div className="flex items-center px-4 py-3 border-b border-border/50 font-bold text-xs uppercase tracking-wide text-muted-foreground">
+                              <span className="flex-1">Prayer</span>
+                              <span className="w-[65px] text-center">Adhan</span>
+                              <span className="w-[65px] text-center">Iqamah</span>
+                            </div>
+
+                            {/* Daily Prayers */}
                             {prayerData.daily.map((prayer) => (
-                              <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
-                                <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
-                                <div className="flex gap-6 text-right">
-                                  <div className="min-w-[65px]">
-                                    <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
-                                    <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
+                              <div key={prayer.name} className="flex items-center px-4 py-2.5 hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
+                                <span className="flex-1 font-bold text-sm text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
+                                <span className="w-[65px] text-center text-sm font-medium text-foreground/70">{prayer.adhan}</span>
+                                {prayer.iqamah ? (
+                                  <div className="w-[65px] text-center">
+                                    <span className="inline-block bg-primary/5 rounded-lg px-1.5 py-0.5 border border-primary/10 font-black text-primary text-xs">{prayer.iqamah}</span>
                                   </div>
-                                  {prayer.iqamah && (
-                                    <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
-                                      <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
-                                      <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
-                                    </div>
-                                  )}
-                                </div>
+                                ) : (
+                                  <div className="w-[65px]" />
+                                )}
                               </div>
                             ))}
+
+                            {/* Divider */}
                             {prayerData.jummah.length > 0 && (
-                              <>
-                                <hr className="border-t-2 border-border mx-4 my-2" />
-                                {prayerData.jummah.map((prayer) => (
-                                  <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
-                                    <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
-                                    <div className="flex gap-6 text-right">
-                                      <div className="min-w-[65px]">
-                                        <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
-                                        <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
-                                      </div>
-                                      {prayer.iqamah && (
-                                        <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
-                                          <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
-                                          <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
-                              </>
+                              <hr className="border-t-2 border-border my-1.5 mx-2" />
                             )}
+
+                            {/* Jummah Prayers */}
+                            {prayerData.jummah.map((prayer) => (
+                              <div key={prayer.name} className="flex items-center px-4 py-2.5 hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
+                                <span className="flex-1 font-bold text-sm text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
+                                <span className="w-[65px] text-center text-sm font-medium text-foreground/70">{prayer.adhan}</span>
+                                {prayer.iqamah ? (
+                                  <div className="w-[65px] text-center">
+                                    <span className="inline-block bg-primary/5 rounded-lg px-1.5 py-0.5 border border-primary/10 font-black text-primary text-xs">{prayer.iqamah}</span>
+                                  </div>
+                                ) : (
+                                  <div className="w-[65px]" />
+                                )}
+                              </div>
+                            ))}
                           </>
                         ) : (
                           <div className="flex justify-center py-4">
