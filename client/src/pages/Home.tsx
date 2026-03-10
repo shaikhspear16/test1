@@ -161,7 +161,7 @@ export default function Home() {
                     <CardContent className="p-2">
                       <div className="space-y-0.5">
                         {prayerTimes ? prayerTimes.map((prayer) => (
-                          <div key={prayer.name} className={`flex items-center justify-between px-4 py-2 rounded-2xl transition-colors group ${prayer.name.includes("Jumu'ah") ? "bg-blue-100/80 hover:bg-blue-100" : "hover:bg-primary/5"}`} data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
+                          <div key={prayer.name} className={`flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group ${prayer.name.includes("Jumu'ah") ? "border-t border-border/40 pt-3 mt-1" : ""}`} data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
                             <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
                             <div className="flex gap-6 text-right">
                               <div className="min-w-[65px]">
