@@ -92,12 +92,16 @@ export default function Home() {
     }
   }, []);
 
-  const { data: prayerTimes } = useQuery<PrayerTime[]>({
+  const { data: prayerData } = useQuery<{ daily: PrayerTime[]; jummah: PrayerTime[] }>({
     queryKey: ["/api/prayer-times"],
     queryFn: async () => {
       const res = await fetch("/api/prayer-times");
       if (!res.ok) throw new Error("Failed to fetch prayer times");
-      return res.json();
+      const all: PrayerTime[] = await res.json();
+      return {
+        daily: all.filter((p) => !p.name.includes("Jumu'ah")),
+        jummah: all.filter((p) => p.name.includes("Jumu'ah")),
+      };
     },
     staleTime: 60 * 60 * 1000,
     refetchInterval: 60 * 60 * 1000,
@@ -160,23 +164,49 @@ export default function Home() {
                   <Card className="border-none bg-transparent shadow-none">
                     <CardContent className="p-2">
                       <div className="space-y-0.5">
-                        {prayerTimes ? prayerTimes.map((prayer) => (
-                          <div key={prayer.name} className={`flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group ${prayer.name.includes("Jumu'ah") ? "border-t-4 border-border pt-3 mt-1" : ""}`} data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
-                            <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
-                            <div className="flex gap-6 text-right">
-                              <div className="min-w-[65px]">
-                                <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
-                                <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
-                              </div>
-                              {prayer.iqamah && (
-                                <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
-                                  <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
-                                  <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
+                        {prayerData ? (
+                          <>
+                            {prayerData.daily.map((prayer) => (
+                              <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
+                                <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
+                                <div className="flex gap-6 text-right">
+                                  <div className="min-w-[65px]">
+                                    <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
+                                    <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
+                                  </div>
+                                  {prayer.iqamah && (
+                                    <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
+                                      <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
+                                      <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
+                                    </div>
+                                  )}
                                 </div>
-                              )}
-                            </div>
-                          </div>
-                        )) : (
+                              </div>
+                            ))}
+                            {prayerData.jummah.length > 0 && (
+                              <>
+                                <hr className="border-t-2 border-border mx-4 my-2" />
+                                {prayerData.jummah.map((prayer) => (
+                                  <div key={prayer.name} className="flex items-center justify-between px-4 py-2 rounded-2xl hover:bg-primary/5 transition-colors group" data-testid={`prayer-${prayer.name.toLowerCase().replace(/['\s]/g, '-')}`}>
+                                    <span className="font-bold text-base text-foreground/80 group-hover:text-primary transition-colors">{prayer.name}</span>
+                                    <div className="flex gap-6 text-right">
+                                      <div className="min-w-[65px]">
+                                        <p className="text-[9px] uppercase tracking-tighter text-muted-foreground mb-0">Adhan</p>
+                                        <p className="font-medium text-sm text-foreground/70">{prayer.adhan}</p>
+                                      </div>
+                                      {prayer.iqamah && (
+                                        <div className="min-w-[65px] bg-primary/5 rounded-xl px-2 py-0.5 border border-primary/10">
+                                          <p className="text-[9px] uppercase tracking-tighter text-primary font-bold mb-0 italic">Iqamah</p>
+                                          <p className="font-black text-primary text-sm">{prayer.iqamah}</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                          </>
+                        ) : (
                           <div className="flex justify-center py-4">
                             <p className="text-sm text-muted-foreground">Loading prayer times...</p>
                           </div>
