@@ -17,15 +17,12 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50">
-      <a
-        href="https://mohid.co/go/YQWPllK"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4 hover:bg-amber-700 transition-colors"
-        data-testid="link-announcement-bar"
+      <div
+        className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4"
+        data-testid="announcement-bar"
       >
-        🌙 Last 10 Nights of Ramadan — Automate Your Donations →
-      </a>
+        🌙 Eid ul Fitr tentatively Fri, Mar 20 — final confirmation Thu, Mar 19 after Isha.
+      </div>
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
