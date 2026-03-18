@@ -26,7 +26,7 @@ const RESOURCE_GROUPS = [
     resources: [
       { name: "Imam's Office Hours", link: "https://calendly.com/webapps-a_s/30minswithshaykhosama", icon: Clock },
       { name: "Funeral Services", link: "https://www.icgamuslimcemetery.org/", icon: MapPin },
-      { name: "GIC Bylaws", link: "https://df1da1ab-4c2b-4a24-a2a0-f5c2975d946d.filesusr.com/ugd/eea850_b32378b8bd3d4851af56846d681fedbb.pdf", icon: FileText },
+      { name: "Moonsighting Policy", link: "https://hilalcommittee.org/", icon: FileText },
       { name: "GAMRC Relief Application", link: "https://austinzakat.org/ApplyForHelp", icon: FileText },
       { name: "SMS Consent Form", link: "/sms-consent", icon: MessageSquare, internal: true }
     ]

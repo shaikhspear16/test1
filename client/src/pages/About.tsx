@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import { 
   History, 
   Target, 
-  Compass, 
+  FileText,
   ArrowRight,
-  Sparkles,
   Milestone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,40 +63,43 @@ export default function About() {
           </div>
         </section>
 
-        {/* Vision & Mission Section */}
+        {/* Vision Section */}
         <section className="py-12 bg-white">
           <div className="max-w-7xl mx-auto container px-4">
-            <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              <Card className="border-none shadow-lg bg-secondary/20 p-8 rounded-3xl">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                  <Target className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  To create a comprehensive institution serving our local community through a vibrant Masjid and a dedicated Islamic Education Center. We strive to seek the pleasure of Allah by spreading the authentic teachings of Islam in light of the Qur’an and Sunnah.
-                </p>
-              </Card>
+            <Card className="border-none shadow-lg bg-secondary/20 p-8 rounded-3xl max-w-3xl mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <Target className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-3xl font-bold mb-4">Our Vision</h3>
+              <p className="text-muted-foreground leading-relaxed text-lg">
+                To create a comprehensive institution serving our local community through a vibrant Masjid and a dedicated Islamic Education Center. We strive to seek the pleasure of Allah by spreading the authentic teachings of Islam in light of the Qur'an and Sunnah.
+              </p>
+            </Card>
+          </div>
+        </section>
 
-              <Card className="border-none shadow-lg bg-primary/5 p-8 rounded-3xl">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
-                  <Compass className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Moonsighting Policy</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  GIC follows the Central Hilal Committee of North America (CHC) for determining Ramadan and Eid dates. This unified approach ensures we celebrate together as a community, following verified moon sighting claims across the US.
-                </p>
-                <Button asChild variant="link" className="p-0 h-auto text-primary mt-4 font-bold">
-                  <a href="https://hilalcommittee.org/" target="_blank" rel="noopener noreferrer">
-                    Visit CHC Website <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
-                </Button>
-              </Card>
-            </div>
+        {/* Bylaws Section */}
+        <section className="py-12 bg-secondary/10">
+          <div className="max-w-7xl mx-auto container px-4">
+            <Card className="border-none shadow-lg bg-white p-8 rounded-3xl max-w-3xl mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                <FileText className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-3xl font-bold mb-4">GIC Bylaws</h3>
+              <p className="text-muted-foreground leading-relaxed text-lg mb-6">
+                Our organizational bylaws establish the governance structure and operational procedures that guide Georgetown Islamic Center. Download our bylaws to learn about our institutional framework and community guidelines.
+              </p>
+              <Button asChild className="bg-primary hover:bg-primary/90 text-white rounded-lg">
+                <a href="https://df1da1ab-4c2b-4a24-a2a0-f5c2975d946d.filesusr.com/ugd/eea850_b32378b8bd3d4851af56846d681fedbb.pdf" target="_blank" rel="noopener noreferrer">
+                  Download Bylaws <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </Card>
           </div>
         </section>
 
         {/* Timeline Section */}
-        <section className="py-12 bg-secondary/10">
+        <section className="py-12 bg-white">
           <div className="max-w-7xl mx-auto container px-4 max-w-4xl">
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -131,21 +133,6 @@ export default function About() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Long Term Goal Section */}
-        <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-             <div className="absolute -top-24 -left-24 w-96 h-96 border-8 border-white rounded-full" />
-             <div className="absolute -bottom-24 -right-24 w-96 h-96 border-8 border-white rounded-full" />
-          </div>
-          <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
-            <Sparkles className="h-12 w-12 mx-auto mb-6 opacity-80" />
-            <h3 className="text-3xl font-bold mb-6">Our Long Term Goal</h3>
-            <p className="text-xl leading-relaxed opacity-90 italic">
-              "To establish a world-class seminary that will produce the future scholars of Islam, serving the community and the world at large."
-            </p>
           </div>
         </section>
       </main>
