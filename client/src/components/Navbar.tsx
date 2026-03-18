@@ -21,7 +21,7 @@ export function Navbar() {
         className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4"
         data-testid="announcement-bar"
       >
-        🌙 Eid ul Fitr tentatively Fri, Mar 20 — final confirmation Thu, Mar 19 after Isha.
+        🌙 Eid ul Fitr Tentatively Fri, Mar 20 | Final Confirmation Thu, Mar 19 after Isha
       </div>
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">

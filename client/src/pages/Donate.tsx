@@ -102,7 +102,7 @@ export default function Donate() {
           </div>
         </section>
 
-        <RamadanDonationSection showCard />
+        {/* <RamadanDonationSection showCard /> */}
 
         {/* Donation Methods Grid */}
         <section className="py-12 bg-white">
