@@ -1,12 +1,26 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, X, X as CloseIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
+import type { Event } from "@shared/schema";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showEidModal, setShowEidModal] = useState(false);
   const [location] = useLocation();
+
+  const { data: dbEvents } = useQuery<Event[]>({
+    queryKey: ["/api/events"],
+    queryFn: async () => {
+      const res = await fetch("/api/events");
+      if (!res.ok) throw new Error("Failed to fetch events");
+      return res.json();
+    },
+  });
+
+  const firstEvent = dbEvents?.[0];
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -17,14 +31,38 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50">
-      <Link href="/">
-        <div
-          className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4 hover:bg-amber-700 transition-colors cursor-pointer"
-          data-testid="announcement-bar"
+      <div
+        className="bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4"
+        data-testid="announcement-bar"
+      >
+        🌙 Eid Mubarak! Eid ul Fitr will be Friday, Mar 20th{" "}
+        <button
+          onClick={() => setShowEidModal(true)}
+          className="underline hover:opacity-80 transition-opacity font-bold ml-1"
         >
-          🌙 Eid Mubarak! Eid ul Fitr will be Friday, Mar 20th
+          prayer details
+        </button>
+      </div>
+
+      {/* Eid Prayer Details Modal */}
+      {showEidModal && firstEvent && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" onClick={() => setShowEidModal(false)}>
+          <div className="bg-white rounded-2xl overflow-hidden max-w-2xl w-full max-h-[90vh] flex flex-col relative" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShowEidModal(false)}
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full z-10"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5 text-gray-800" />
+            </button>
+            <img
+              src={firstEvent.imageUrl}
+              alt="Eid Prayer Details"
+              className="w-full h-auto object-cover"
+            />
+          </div>
         </div>
-      </Link>
+      )}
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
