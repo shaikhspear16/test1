@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Heart, Menu, X, X as CloseIcon } from "lucide-react";
+import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ImageLightbox } from "@/components/ImageLightbox";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
 import eidFlyer from "@assets/image_1773966142866.png";
 
@@ -33,24 +34,10 @@ export function Navbar() {
       </div>
 
       {/* Eid Prayer Details Modal */}
-      {showEidModal && (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" onClick={() => setShowEidModal(false)}>
-          <div className="bg-white rounded-2xl overflow-hidden max-w-2xl w-full max-h-[90vh] flex flex-col relative" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setShowEidModal(false)}
-              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full z-10"
-              aria-label="Close"
-            >
-              <X className="h-5 w-5 text-gray-800" />
-            </button>
-            <img
-              src={eidFlyer}
-              alt="Eid ul Fitr Prayer Details"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        </div>
-      )}
+      <ImageLightbox
+        item={showEidModal ? { imageUrl: eidFlyer, title: "Eid ul Fitr Prayer Details" } : null}
+        onClose={() => setShowEidModal(false)}
+      />
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
