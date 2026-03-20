@@ -17,12 +17,14 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50">
-      <div
-        className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4"
-        data-testid="announcement-bar"
-      >
-        🌙 Eid ul Fitr Tentatively Fri, Mar 20 | Final Confirmation Thu, Mar 19 after Isha
-      </div>
+      <Link href="/">
+        <div
+          className="block bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4 hover:bg-amber-700 transition-colors cursor-pointer"
+          data-testid="announcement-bar"
+        >
+          🌙 Eid Mubarak! Eid ul Fitr will be Friday, Mar 20th
+        </div>
+      </Link>
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
