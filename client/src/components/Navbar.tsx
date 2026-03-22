@@ -2,13 +2,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Heart, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ImageLightbox } from "@/components/ImageLightbox";
 import logo from "@assets/GIC_Logo_Brown_1768797787406.webp";
-import eidFlyer from "@assets/image_1773966142866.png";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showEidModal, setShowEidModal] = useState(false);
   const [location] = useLocation();
 
   const navLinks = [
@@ -20,25 +17,6 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50">
-      <div
-        className="bg-amber-600 text-white text-center text-sm font-semibold py-2 px-4"
-        data-testid="announcement-bar"
-      >
-        🌙 Eid Mubarak! Eid ul Fitr will be Friday, Mar 20th.{" "}
-        <button
-          onClick={() => setShowEidModal(true)}
-          className="underline hover:opacity-80 transition-opacity font-bold ml-1"
-        >
-          Prayer Details
-        </button>
-      </div>
-
-      {/* Eid Prayer Details Modal */}
-      <ImageLightbox
-        item={showEidModal ? { imageUrl: eidFlyer, title: "Eid ul Fitr Prayer Details" } : null}
-        onClose={() => setShowEidModal(false)}
-      />
-
       <div className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-7xl mx-auto container px-4 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
