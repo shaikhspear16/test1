@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { RamadanDonationSection } from "@/components/RamadanDonationSection";
 import { 
   Bell,
   Download
@@ -278,8 +277,6 @@ export default function Home() {
 
         {/* Flyer Modal */}
         <ImageLightbox item={selectedFlyer} onClose={() => setSelectedFlyer(null)} />
-
-        <RamadanDonationSection />
 
         {/* Loan Payoff Section */}
         <section className="py-8 bg-white border-t border-border/50">
