@@ -48,4 +48,4 @@ mockupState = "FULLSTACK"
 integrations = ["javascript_log_in_with_replit:2.0.0", "javascript_object_storage:2.0.0"]
 
 [objectStorage]
-defaultBucketID = "replit-objstore-92bc4a3e-eee8-4377-b1ed-8cf12a07baa8"
+defaultBucketID = "replit-objstore-9322edbe-9c51-4514-814a-67ad99449c58"
