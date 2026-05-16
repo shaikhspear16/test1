@@ -9,6 +9,7 @@ import Home from "@/pages/Home";
 
 const Donate = lazy(() => import("@/pages/Donate"));
 const Education = lazy(() => import("@/pages/Education"));
+const Calendar = lazy(() => import("@/pages/Calendar"));
 const About = lazy(() => import("@/pages/About"));
 const Resources = lazy(() => import("@/pages/Resources"));
 const SMSConsent = lazy(() => import("@/pages/SMSConsent"));
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/donate" component={Donate} />
         <Route path="/education" component={Education} />
+        <Route path="/calendar" component={Calendar} />
         <Route path="/about" component={About} />
         <Route path="/resources" component={Resources} />
         <Route path="/sms-consent" component={SMSConsent} />
