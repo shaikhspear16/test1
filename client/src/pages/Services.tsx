@@ -233,21 +233,16 @@ export default function Services() {
                     <BookOpen className="h-5 w-5 text-primary" />
                     <h3 className="text-xl font-semibold">Requirements</h3>
                   </div>
-                  <ul className="space-y-3 text-muted-foreground">
-                    {[
-                      "Both parties must be Muslim or the non-Muslim party must be from the People of the Book (Ahl al-Kitab).",
-                      "A valid marriage license issued by the State of Texas must be obtained prior to the ceremony.",
-                      "A Wali (male guardian) for the bride must be present or provide written consent.",
-                      "Two Muslim witnesses must be present at the time of the Nikkah.",
-                      "Mahr (dowry) must be agreed upon by both parties before the ceremony.",
-                      "Please complete the Nikkah Request Form at least two weeks in advance.",
-                    ].map((req) => (
-                      <li key={req} className="flex gap-3">
-                        <span className="text-primary font-bold shrink-0 mt-0.5">•</span>
-                        <span>{req}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <ol className="space-y-3 text-muted-foreground">
+                    <li className="flex gap-3">
+                      <span className="font-bold text-primary shrink-0">1.</span>
+                      <span>Both bride and groom must be Muslim. If one is not a Muslim, he/she must be willing to take the Shahadah before the Nikkah Ceremony begins.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="font-bold text-primary shrink-0">2.</span>
+                      <span>A legal marriage certificate from the county must be obtained in advance.</span>
+                    </li>
+                  </ol>
                 </Card>
 
                 {/* Request Form CTA */}
@@ -287,39 +282,6 @@ export default function Services() {
                 </Card>
               </div>
 
-              {/* Process steps */}
-              <div className="grid sm:grid-cols-4 gap-4">
-                {[
-                  {
-                    step: "01",
-                    title: "Submit Request",
-                    description: "Fill out the Nikkah Request Form with your details and preferred date.",
-                  },
-                  {
-                    step: "02",
-                    title: "Confirmation",
-                    description: "Our team will reach out to confirm availability and review requirements.",
-                  },
-                  {
-                    step: "03",
-                    title: "Get Your License",
-                    description: "Obtain a Texas marriage license from your county clerk's office.",
-                  },
-                  {
-                    step: "04",
-                    title: "The Ceremony",
-                    description: "Join us for a blessed Nikkah ceremony in the presence of your family and witnesses.",
-                  },
-                ].map((item) => (
-                  <Card key={item.step} className="p-5 border border-border/50">
-                    <span className="text-3xl font-bold text-primary/20">{item.step}</span>
-                    <h4 className="font-semibold mt-2 mb-1">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {item.description}
-                    </p>
-                  </Card>
-                ))}
-              </div>
             </motion.div>
           </div>
         </section>
