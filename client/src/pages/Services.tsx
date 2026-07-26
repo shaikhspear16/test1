@@ -9,6 +9,7 @@ import {
   MapPin,
   ClipboardList,
   Users,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -272,6 +273,41 @@ export default function Services() {
                 </Card>
               </div>
 
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Divider */}
+        <div className="border-t border-border/40" />
+
+        {/* Imam Services */}
+        <section className="py-16 bg-white" id="imam-services">
+          <div className="max-w-7xl mx-auto container px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <CalendarDays className="h-5 w-5 text-primary" />
+                <span className="text-sm font-bold uppercase tracking-widest text-primary">
+                  Imam Services
+                </span>
+              </div>
+              <h2 className="text-3xl font-bold mb-4">Schedule Time with the Imam</h2>
+              <p className="text-muted-foreground max-w-2xl mb-8 leading-relaxed">
+                Shaykh Osama is available for one-on-one appointments for any need — whether it's spiritual counseling, marriage guidance, fiqh questions, or anything else on your mind. Book a 30-minute slot at your convenience.
+              </p>
+              <a
+                href="https://calendly.com/webapps-a_s/30minswithshaykhosama?month=2026-07"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-primary hover:bg-primary/90 text-white">
+                  Book Office Hours <ExternalLink className="ml-2 h-4 w-4" />
+                </Button>
+              </a>
             </motion.div>
           </div>
         </section>

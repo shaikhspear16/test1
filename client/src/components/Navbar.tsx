@@ -13,6 +13,7 @@ const navLinks = [
     children: [
       { name: "Funeral", href: "/services#funeral-services" },
       { name: "Marriage", href: "/services#marriage-services" },
+      { name: "Imam", href: "/services#imam-services" },
     ],
   },
   { name: "Calendar", href: "/calendar" },
