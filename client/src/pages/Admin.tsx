@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, ArrowUp, ArrowDown } from "lucide-react";
+import { Loader2, Plus, Trash2, Edit, X, Upload, LogOut, Shield, ArrowUp, ArrowDown, UserPlus, Users } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -19,12 +19,17 @@ import {
 } from "@/components/ui/dialog";
 import type { Event } from "@shared/schema";
 
+interface AllowlistEntry {
+  id: number;
+  email: string;
+  createdAt: string;
+}
+
 export default function Admin() {
-  const { user, isLoading: authLoading, isAuthenticated, login, loginError, isLoggingIn, logout, isLoggingOut } = useAuth();
+  const { user, isLoading: authLoading, isAuthenticated, login, logout } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [formData, setFormData] = useState({
@@ -59,6 +64,61 @@ export default function Admin() {
       return res.json() as Promise<Event[]>;
     },
     enabled: !!adminCheck?.isAdmin,
+  });
+
+  const { data: allowlist, isLoading: allowlistLoading } = useQuery({
+    queryKey: ["/api/admin/allowlist"],
+    queryFn: async () => {
+      const res = await fetch("/api/admin/allowlist", { credentials: "include" });
+      if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+      return res.json() as Promise<AllowlistEntry[]>;
+    },
+    enabled: !!adminCheck?.isAdmin,
+  });
+
+  const addAdminMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const res = await fetch("/api/admin/allowlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ message: "Failed to add admin" }));
+        throw new Error(err.message);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/allowlist"] });
+      setNewAdminEmail("");
+      toast({ title: "Admin added successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to add admin", description: error.message, variant: "destructive" });
+    },
+  });
+
+  const removeAdminMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/admin/allowlist/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ message: "Failed to remove admin" }));
+        throw new Error(err.message);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/allowlist"] });
+      toast({ title: "Admin removed" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Failed to remove admin", description: error.message, variant: "destructive" });
+    },
   });
 
   const createMutation = useMutation({
@@ -224,14 +284,6 @@ export default function Admin() {
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login({ email: loginEmail, password: loginPassword });
-    } catch {
-    }
-  };
-
   if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -254,49 +306,17 @@ export default function Admin() {
               <Shield className="h-16 w-16 mx-auto text-primary mb-4" />
               <CardTitle className="text-2xl">Admin Login</CardTitle>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <Label htmlFor="login-email">Email</Label>
-                  <Input
-                    data-testid="input-login-email"
-                    id="login-email"
-                    type="email"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="admin@gicmasjid.org"
-                    className="mt-1"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="login-password">Password</Label>
-                  <Input
-                    data-testid="input-login-password"
-                    id="login-password"
-                    type="password"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    placeholder="Enter password"
-                    className="mt-1"
-                    required
-                  />
-                </div>
-                {loginError && (
-                  <p className="text-sm text-destructive" data-testid="text-login-error">
-                    {loginError.message}
-                  </p>
-                )}
-                <Button
-                  data-testid="button-login"
-                  type="submit"
-                  className="w-full rounded-full bg-primary"
-                  disabled={isLoggingIn}
-                >
-                  {isLoggingIn && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Sign In
-                </Button>
-              </form>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-6">
+                Sign in with your account to access the admin panel. You can use your Google account.
+              </p>
+              <Button
+                data-testid="button-login"
+                className="w-full rounded-full bg-primary"
+                onClick={login}
+              >
+                Log In
+              </Button>
             </CardContent>
           </Card>
         </main>
@@ -338,7 +358,6 @@ export default function Admin() {
                 variant="outline"
                 className="w-full rounded-full"
                 onClick={() => logout()}
-                disabled={isLoggingOut}
               >
                 <LogOut className="mr-2 h-4 w-4" /> Sign Out
               </Button>
@@ -365,7 +384,6 @@ export default function Admin() {
               variant="outline"
               className="rounded-full"
               onClick={() => logout()}
-              disabled={isLoggingOut}
             >
               <LogOut className="mr-2 h-4 w-4" /> Sign Out
             </Button>
@@ -463,6 +481,91 @@ export default function Admin() {
                   </Button>
                 </Card>
               )}
+          </div>
+
+          <div className="mt-12">
+            <div className="flex items-center gap-2 mb-4">
+              <Users className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-bold">Admin Access</h2>
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Only emails on this list can access the admin panel. Admins sign in with the Google account matching their listed email.
+                </p>
+                <form
+                  className="flex gap-2 mb-6"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (newAdminEmail.trim()) {
+                      addAdminMutation.mutate(newAdminEmail.trim());
+                    }
+                  }}
+                >
+                  <Input
+                    data-testid="input-new-admin-email"
+                    type="email"
+                    placeholder="admin@example.com"
+                    value={newAdminEmail}
+                    onChange={(e) => setNewAdminEmail(e.target.value)}
+                    required
+                  />
+                  <Button
+                    data-testid="button-add-admin"
+                    type="submit"
+                    className="rounded-full bg-primary shrink-0"
+                    disabled={addAdminMutation.isPending}
+                  >
+                    {addAdminMutation.isPending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <UserPlus className="mr-2 h-4 w-4" />
+                    )}
+                    Add Admin
+                  </Button>
+                </form>
+                {allowlistLoading ? (
+                  <div className="flex justify-center py-6">
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {allowlist?.map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="flex items-center justify-between border border-border/60 rounded-lg px-4 py-2.5"
+                        data-testid={`allowlist-entry-${entry.id}`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-sm font-medium truncate">{entry.email}</span>
+                          {entry.email === user?.email && (
+                            <span className="text-xs text-primary bg-primary/10 rounded-full px-2 py-0.5 shrink-0">You</span>
+                          )}
+                        </div>
+                        <Button
+                          data-testid={`button-remove-admin-${entry.id}`}
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive shrink-0"
+                          disabled={
+                            entry.email === user?.email ||
+                            (allowlist?.length ?? 0) <= 1 ||
+                            removeAdminMutation.isPending
+                          }
+                          onClick={() => {
+                            if (confirm(`Remove ${entry.email} from admin access?`)) {
+                              removeAdminMutation.mutate(entry.id);
+                            }
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>

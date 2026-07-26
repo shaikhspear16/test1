@@ -6,34 +6,60 @@ import { storage } from "./storage";
 import { insertEventSchema, insertSmsConsentSchema, insertNewsletterSignupSchema } from "@shared/schema";
 import { getPrayerTimes, startPrayerTimesRefresh } from "./prayerTimes";
 import { registerObjectStorageRoutes } from "./replit_integrations/object_storage";
+import { setupAuth, isAuthenticated, getUserEmail } from "./replitAuth";
+import { insertAdminAllowlistSchema } from "@shared/schema";
 import path from "path";
 
-declare module "express-session" {
-  interface SessionData {
-    adminEmail?: string;
+const csrfProtection: RequestHandler = (req, res, next) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+    return next();
   }
-}
-
-const isAuthenticated: RequestHandler = (req, res, next) => {
-  if (!req.session?.adminEmail) {
-    return res.status(401).json({ message: "Unauthorized" });
+  const origin = req.headers.origin || req.headers.referer;
+  if (!origin) {
+    return res.status(403).json({ message: "Missing origin" });
+  }
+  try {
+    const originHost = new URL(origin).host;
+    if (originHost !== req.headers.host) {
+      return res.status(403).json({ message: "Cross-origin request rejected" });
+    }
+  } catch {
+    return res.status(403).json({ message: "Invalid origin" });
   }
   next();
 };
 
-const isAdmin: RequestHandler = (req, res, next) => {
-  const email = req.session?.adminEmail;
+const isAdmin: RequestHandler = async (req, res, next) => {
+  const email = getUserEmail(req);
   if (!email) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (email !== adminEmail) {
-    return res.status(403).json({ message: "Access denied" });
+  try {
+    const allowed = await storage.isEmailAllowlisted(email);
+    if (!allowed) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    next();
+  } catch (error) {
+    console.error("Error checking admin allowlist:", error);
+    res.status(500).json({ message: "Failed to verify admin access" });
   }
-
-  next();
 };
+
+async function seedAllowlist() {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) return;
+  try {
+    const list = await storage.getAllowlist();
+    if (list.length === 0) {
+      await storage.addToAllowlist(adminEmail);
+      console.log("Seeded admin allowlist with initial admin email");
+    }
+  } catch (error) {
+    console.error("Failed to seed admin allowlist:", error);
+  }
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -48,9 +74,13 @@ export async function registerRoutes(
     tableName: "sessions",
   });
 
+  if (!process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET must be set");
+  }
+
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || "gic-admin-secret-key",
+      secret: process.env.SESSION_SECRET,
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
@@ -80,43 +110,64 @@ export async function registerRoutes(
 
   startPrayerTimesRefresh();
 
-  app.post("/api/auth/login", (req, res) => {
-    const { email, password } = req.body;
+  await setupAuth(app);
+  await seedAllowlist();
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
-    }
+  app.use("/api/admin", csrfProtection);
 
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-
-    if (!adminEmail || !adminPassword) {
-      return res.status(500).json({ message: "Admin credentials not configured" });
-    }
-
-    if (email.toLowerCase() !== adminEmail.toLowerCase() || password !== adminPassword) {
-      return res.status(401).json({ message: "Invalid email or password" });
-    }
-
-    req.session.adminEmail = email.toLowerCase();
-    res.json({ email: email.toLowerCase() });
-  });
-
-  app.post("/api/auth/logout", (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ message: "Failed to logout" });
-      }
-      res.clearCookie("connect.sid");
-      res.json({ message: "Logged out successfully" });
-    });
-  });
-
-  app.get("/api/auth/me", (req, res) => {
-    if (!req.session?.adminEmail) {
+  app.get("/api/auth/me", isAuthenticated, (req, res) => {
+    const email = getUserEmail(req);
+    if (!email) {
       return res.status(401).json({ message: "Not authenticated" });
     }
-    res.json({ email: req.session.adminEmail });
+    res.json({ email });
+  });
+
+  app.get("/api/admin/allowlist", isAuthenticated, isAdmin, async (_req, res) => {
+    try {
+      const list = await storage.getAllowlist();
+      res.json(list);
+    } catch (error) {
+      console.error("Error fetching allowlist:", error);
+      res.status(500).json({ message: "Failed to fetch allowlist" });
+    }
+  });
+
+  app.post("/api/admin/allowlist", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const parsed = insertAdminAllowlistSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "A valid email is required" });
+      }
+      const entry = await storage.addToAllowlist(parsed.data.email);
+      res.status(201).json(entry);
+    } catch (error) {
+      console.error("Error adding to allowlist:", error);
+      res.status(500).json({ message: "Failed to add admin" });
+    }
+  });
+
+  app.delete("/api/admin/allowlist/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id as string);
+      const list = await storage.getAllowlist();
+      if (list.length <= 1) {
+        return res.status(400).json({ message: "Cannot remove the last admin" });
+      }
+      const entry = list.find((e) => e.id === id);
+      if (!entry) {
+        return res.status(404).json({ message: "Admin not found" });
+      }
+      const currentEmail = getUserEmail(req);
+      if (entry.email === currentEmail) {
+        return res.status(400).json({ message: "You cannot remove yourself" });
+      }
+      await storage.removeFromAllowlist(id);
+      res.json({ message: "Admin removed" });
+    } catch (error) {
+      console.error("Error removing from allowlist:", error);
+      res.status(500).json({ message: "Failed to remove admin" });
+    }
   });
 
   app.get("/api/prayer-times", async (req, res) => {

@@ -4,6 +4,19 @@ import { z } from "zod";
 
 export * from "./models/auth";
 
+export const adminAllowlist = pgTable("admin_allowlist", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertAdminAllowlistSchema = createInsertSchema(adminAllowlist)
+  .omit({ id: true, createdAt: true })
+  .extend({ email: z.string().email().transform((e) => e.toLowerCase()) });
+
+export type InsertAdminAllowlistEntry = z.infer<typeof insertAdminAllowlistSchema>;
+export type AdminAllowlistEntry = typeof adminAllowlist.$inferSelect;
+
 export const events = pgTable("events", {
   id: serial("id").primaryKey(),
   title: text("title"),

@@ -1,4 +1,4 @@
-import { events, smsConsents, newsletterSignups, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type NewsletterSignup, type InsertNewsletterSignup } from "@shared/schema";
+import { events, smsConsents, newsletterSignups, adminAllowlist, type Event, type InsertEvent, type SmsConsent, type InsertSmsConsent, type NewsletterSignup, type InsertNewsletterSignup, type AdminAllowlistEntry } from "@shared/schema";
 import { db } from "./db";
 import { eq, asc, sql } from "drizzle-orm";
 
@@ -11,6 +11,10 @@ export interface IStorage {
   reorderEvents(orderedIds: number[]): Promise<void>;
   createSmsConsent(consent: InsertSmsConsent): Promise<SmsConsent>;
   createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup>;
+  getAllowlist(): Promise<AdminAllowlistEntry[]>;
+  isEmailAllowlisted(email: string): Promise<boolean>;
+  addToAllowlist(email: string): Promise<AdminAllowlistEntry>;
+  removeFromAllowlist(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -62,6 +66,37 @@ export class DatabaseStorage implements IStorage {
   async createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup> {
     const [result] = await db.insert(newsletterSignups).values(signup).returning();
     return result;
+  }
+
+  async getAllowlist(): Promise<AdminAllowlistEntry[]> {
+    return await db.select().from(adminAllowlist).orderBy(asc(adminAllowlist.createdAt));
+  }
+
+  async isEmailAllowlisted(email: string): Promise<boolean> {
+    const [entry] = await db
+      .select()
+      .from(adminAllowlist)
+      .where(eq(adminAllowlist.email, email.toLowerCase()));
+    return !!entry;
+  }
+
+  async addToAllowlist(email: string): Promise<AdminAllowlistEntry> {
+    const [entry] = await db
+      .insert(adminAllowlist)
+      .values({ email: email.toLowerCase() })
+      .onConflictDoNothing()
+      .returning();
+    if (entry) return entry;
+    const [existing] = await db
+      .select()
+      .from(adminAllowlist)
+      .where(eq(adminAllowlist.email, email.toLowerCase()));
+    return existing;
+  }
+
+  async removeFromAllowlist(id: number): Promise<boolean> {
+    const result = await db.delete(adminAllowlist).where(eq(adminAllowlist.id, id)).returning();
+    return result.length > 0;
   }
 }
 
