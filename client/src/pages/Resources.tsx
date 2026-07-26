@@ -24,7 +24,6 @@ const RESOURCE_GROUPS = [
     title: "Services & Support",
     icon: HandHelping,
     resources: [
-      { name: "Imam's Office Hours", link: "https://calendly.com/webapps-a_s/30minswithshaykhosama", icon: Clock },
       { name: "Moonsighting Policy", link: "https://hilalcommittee.org/", icon: FileText },
       { name: "GAMRC Relief Application", link: "https://austinzakat.org/ApplyForHelp", icon: FileText },
       { name: "SMS Consent Form", link: "/sms-consent", icon: MessageSquare, internal: true }
