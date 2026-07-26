@@ -25,7 +25,6 @@ const RESOURCE_GROUPS = [
     icon: HandHelping,
     resources: [
       { name: "Imam's Office Hours", link: "https://calendly.com/webapps-a_s/30minswithshaykhosama", icon: Clock },
-      { name: "Funeral Services", link: "https://www.icgamuslimcemetery.org/", icon: MapPin },
       { name: "Moonsighting Policy", link: "https://hilalcommittee.org/", icon: FileText },
       { name: "GAMRC Relief Application", link: "https://austinzakat.org/ApplyForHelp", icon: FileText },
       { name: "SMS Consent Form", link: "/sms-consent", icon: MessageSquare, internal: true }
@@ -43,7 +42,6 @@ const RESOURCE_GROUPS = [
     title: "Forms & Requests",
     icon: FileText,
     resources: [
-      { name: "Nikkah Request Form", link: "https://docs.google.com/forms/d/e/1FAIpQLSdqZ7ILcDGEEUQez_jJPWa-d0jESr3US37ga2Q6WMf6JKX5hw/viewform?pli=1", icon: Heart },
       { name: "Ramadan Excuse Letter", link: "https://docs.google.com/document/d/1KycE7-qqiG-Mel1KvLGIvcMQgMinj9DxatniaygXknI/edit?pli=1&tab=t.0", icon: FileText },
       { name: "Eid Excuse Letter", link: "https://docs.google.com/document/d/1Ix8yenJZQ7ZDMK9znHomkHhEDrNmFs_vsiqLpxd3qAU/edit?pli=1&tab=t.0", icon: FileText }
     ]
