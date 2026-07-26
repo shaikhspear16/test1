@@ -61,8 +61,7 @@ export default function Services() {
                 Supporting Families in Times of Loss
               </h2>
               <p className="text-muted-foreground max-w-3xl mb-10 leading-relaxed">
-                Losing a loved one is one of life's most difficult moments. GIC
-                is here to help our community navigate the Islamic burial
+                Losing a loved one is one of life's most difficult moments. We are here to help our community navigate the Islamic burial
                 process with care and dignity. We coordinate with the ICGA
                 Muslim Cemetery to ensure your loved one is honored according
                 to Islamic tradition.
@@ -236,7 +235,7 @@ export default function Services() {
                   <ol className="space-y-3 text-muted-foreground">
                     <li className="flex gap-3">
                       <span className="font-bold text-primary shrink-0">1.</span>
-                      <span>Both bride and groom must be Muslim. If one is not a Muslim, he/she must be willing to take the Shahadah before the Nikkah Ceremony begins.</span>
+                      <span>The bride and groom must both be Muslim. If one is not a Muslim, he/she must be willing to take the Shahadah before the Nikkah Ceremony begins.</span>
                     </li>
                     <li className="flex gap-3">
                       <span className="font-bold text-primary shrink-0">2.</span>
@@ -259,15 +258,6 @@ export default function Services() {
                       Nikkah Request Form. Our team will follow up with you to
                       confirm availability and walk you through the next steps.
                     </p>
-                    <div className="space-y-2 text-sm text-muted-foreground mb-6">
-                      <p className="font-medium text-foreground">Before submitting, please have ready:</p>
-                      <ul className="space-y-1 ml-4">
-                        <li>• Preferred ceremony date &amp; time</li>
-                        <li>• Names of both parties</li>
-                        <li>• Wali's contact information</li>
-                        <li>• Agreed Mahr amount</li>
-                      </ul>
-                    </div>
                   </div>
                   <a
                     href="https://docs.google.com/forms/d/e/1FAIpQLSdqZ7ILcDGEEUQez_jJPWa-d0jESr3US37ga2Q6WMf6JKX5hw/viewform?pli=1"
