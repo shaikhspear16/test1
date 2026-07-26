@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import ScrollToTop from "@/components/ScrollToTop";
 import Home from "@/pages/Home";
 
+const Services = lazy(() => import("@/pages/Services"));
 const Donate = lazy(() => import("@/pages/Donate"));
 const Education = lazy(() => import("@/pages/Education"));
 const Calendar = lazy(() => import("@/pages/Calendar"));
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/donate" component={Donate} />
         <Route path="/education" component={Education} />
         <Route path="/calendar" component={Calendar} />
+        <Route path="/services" component={Services} />
         <Route path="/about" component={About} />
         <Route path="/resources" component={Resources} />
         <Route path="/sms-consent" component={SMSConsent} />
