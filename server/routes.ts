@@ -49,13 +49,16 @@ const isAdmin: RequestHandler = async (req, res, next) => {
 
 async function seedAllowlist() {
   const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail) return;
+  const seedEmails = [
+    ...(adminEmail ? [adminEmail] : []),
+    "musababdullah6231@gmail.com",
+    "tahir.khan@gicmasjid.org",
+  ];
   try {
-    const list = await storage.getAllowlist();
-    if (list.length === 0) {
-      await storage.addToAllowlist(adminEmail);
-      console.log("Seeded admin allowlist with initial admin email");
+    for (const email of seedEmails) {
+      await storage.addToAllowlist(email);
     }
+    console.log("Admin allowlist seeded");
   } catch (error) {
     console.error("Failed to seed admin allowlist:", error);
   }
