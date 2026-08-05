@@ -7,7 +7,6 @@ import {
   Bell,
   Download,
   Heart,
-  Phone,
   ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -374,20 +373,6 @@ export default function Home() {
             <p className="text-muted-foreground mb-6 max-w-2xl text-sm leading-relaxed">
               GIC coordinates Ghusl, Janazah prayer, and burial services in partnership with the ICGA Muslim Cemetery to honor your loved one according to Islamic tradition.
             </p>
-            <div className="grid sm:grid-cols-3 gap-4 mb-6">
-              <Card className="p-4 border border-border/60">
-                <p className="text-xs font-bold uppercase tracking-wide text-primary mb-1">Step 1</p>
-                <p className="text-sm text-muted-foreground">Recite <span className="font-medium text-foreground">Inna lillahi wa inna ilayhi raji'un</span></p>
-              </Card>
-              <Card className="p-4 border border-border/60">
-                <p className="text-xs font-bold uppercase tracking-wide text-primary mb-1">Step 2</p>
-                <p className="text-sm text-muted-foreground">Call ICGA Cemetery: <a href="tel:5126663389" className="font-medium text-primary hover:underline inline-flex items-center gap-1"><Phone className="h-3 w-3" />(512) 666-3389</a></p>
-              </Card>
-              <Card className="p-4 border border-border/60">
-                <p className="text-xs font-bold uppercase tracking-wide text-primary mb-1">Step 3</p>
-                <p className="text-sm text-muted-foreground">Submit the <a href="https://www.icgamuslimcemetery.org/burial" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">Burial Intake Form</a> — they will coordinate next steps</p>
-              </Card>
-            </div>
             <Link href="/services#funeral-services">
               <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 Funeral Services <ArrowRight className="ml-2 h-4 w-4" />
