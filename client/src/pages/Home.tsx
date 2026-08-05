@@ -280,19 +280,38 @@ export default function Home() {
         {/* Flyer Modal */}
         <ImageLightbox item={selectedFlyer} onClose={() => setSelectedFlyer(null)} />
 
-        {/* Loan Payoff Section */}
+        {/* Funeral Services + Loan Payoff */}
         <section className="py-8 bg-white border-t border-border/50">
           <div className="max-w-7xl mx-auto container px-4">
-            <div className="max-w-2xl mx-auto text-center">
-              <h3 className="text-2xl font-bold mb-3" data-testid="text-loan-payoff">Loan Payoff</h3>
-              <p className="text-muted-foreground leading-relaxed mb-5">
-                Support the effort to make GIC debt-free. Every donation counts.
-              </p>
-              <a href="https://us.mohid.co/tx/austin/gic/masjid/online/donation/2" target="_blank" rel="noopener noreferrer">
-                <Button className="rounded-full bg-primary px-8 hover:bg-primary/85 transition-colors" data-testid="button-loan-payoff">
-                  Support Now
-                </Button>
-              </a>
+            <div className="flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-border/50 gap-0">
+              {/* Funeral Services — first on mobile, left on desktop */}
+              <div className="flex-1 text-center pb-8 sm:pb-0 sm:pr-8">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Heart className="h-4 w-4 text-primary" />
+                  <h3 className="text-2xl font-bold">Funeral Services</h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed mb-5">
+                  For burial coordination, contact the ICGA Cemetery at{" "}
+                  <a href="tel:5126663389" className="text-primary font-medium hover:underline whitespace-nowrap">(512) 666-3389</a>.
+                </p>
+                <Link href="/services#funeral-services">
+                  <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                    Funeral Services <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+              {/* Loan Payoff — second on mobile, right on desktop */}
+              <div className="flex-1 text-center pt-8 sm:pt-0 sm:pl-8" data-testid="text-loan-payoff">
+                <h3 className="text-2xl font-bold mb-3">Loan Payoff</h3>
+                <p className="text-muted-foreground leading-relaxed mb-5">
+                  Support the effort to make GIC debt-free. Every donation counts.
+                </p>
+                <a href="https://us.mohid.co/tx/austin/gic/masjid/online/donation/2" target="_blank" rel="noopener noreferrer">
+                  <Button className="rounded-full bg-primary px-8 hover:bg-primary/85 transition-colors" data-testid="button-loan-payoff">
+                    Support Now
+                  </Button>
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -359,25 +378,6 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Funeral Services Section */}
-        <section className="py-10 bg-secondary/30 border-t border-border/50">
-          <div className="max-w-7xl mx-auto container px-4">
-            <div className="flex items-center gap-2 mb-1">
-              <Heart className="h-4 w-4 text-primary" />
-              <span className="text-xs font-bold uppercase tracking-widest text-primary">Funeral Services</span>
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Supporting Families in Times of Loss</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl text-sm leading-relaxed">
-              GIC coordinates Ghusl, Janazah prayer, and burial services in partnership with the ICGA Muslim Cemetery to honor your loved one according to Islamic tradition.
-            </p>
-            <Link href="/services#funeral-services">
-              <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                Funeral Services <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
           </div>
         </section>
 
