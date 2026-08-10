@@ -67,14 +67,14 @@ const QURAN_PROGRAMS: ProgramCard[] = [
     imageUrl: fulltimeFlyer,
     title: "Full Time Quran Hifz Program",
     description: "Students will memorize the Quran, learn to recite with proper tajweed and learn the basics of Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh in the Safar Series Curriculum. Ages 7-15, separate classes for boys and girls.",
-    registrationLink: "https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300",
+    registrationLink: "https://dua.ilmiq.com/apply",
     registrationText: "Register at GIC",
   },
   {
     imageUrl: afterschoolFlyer,
     title: "After School Program",
     description: "Students will learn to recite Quran with Tajweed and learn some Surahs, along with the Safar Series Curriculum covering Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh.",
-    registrationLink: "https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300",
+    registrationLink: "https://dua.ilmiq.com/apply",
     registrationText: "Register at GIC",
   },
 ];
@@ -84,7 +84,7 @@ const SEMINARY_PROGRAMS: ProgramCard[] = [
     imageUrl: naseehaFlyer,
     title: "Naseeha Program",
     description: "A two-year foundational part-time course designed to provide students with a deeper understanding of their faith. Whether one aspires to become a scholar or serve the community, this program offers a balanced curriculum covering Arabic Syntax, Morphology, Hadith, Aqidah, Fiqh, and Personal Development. For students 14 years and above.",
-    registrationLink: "https://us.mohid.co/tx/austin/dua/muntazim/online/assigncourse/300",
+    registrationLink: "https://dua.ilmiq.com/apply",
     registrationText: "Register Now",
   },
 ];
