@@ -18,9 +18,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import fulltimeFlyer from "@assets/fulltime_1770955258901.avif";
-import afterschoolFlyer from "@assets/afterschool_1770955258901.avif";
-import naseehaFlyer from "@assets/naseeha_1770955258900.avif";
+import fulltimeFlyer from "@assets/fulltime_26.webp";
+import afterschoolFlyer from "@assets/afterschool_26.webp";
+import naseehaFlyer from "@assets/naseeha_26.webp";
 import sundaySchoolFlyer from "@assets/Aliman_Sunday_School_2025_1770955258901.avif";
 
 interface ProgramCard {
