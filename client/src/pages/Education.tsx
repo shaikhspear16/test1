@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import fulltimeFlyer from "@assets/fulltime_26.webp";
 import afterschoolFlyer from "@assets/afterschool_26.webp";
 import naseehaFlyer from "@assets/naseeha_26.webp";
-import sundaySchoolFlyer from "@assets/Aliman_Sunday_School_2025_1770955258901.avif";
+import sundaySchoolFlyer from "@assets/aliman_26.webp";
 
 interface ProgramCard {
   imageUrl: string;
