@@ -68,14 +68,14 @@ const QURAN_PROGRAMS: ProgramCard[] = [
     title: "Full Time Quran Hifz Program",
     description: "Students will memorize the Quran, learn to recite with proper tajweed and learn the basics of Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh in the Safar Series Curriculum. Ages 7-15, separate classes for boys and girls.",
     registrationLink: "https://dua.ilmiq.com/apply",
-    registrationText: "Register at GIC",
+    registrationText: "Register Now",
   },
   {
     imageUrl: afterschoolFlyer,
     title: "After School Program",
     description: "Students will learn to recite Quran with Tajweed and learn some Surahs, along with the Safar Series Curriculum covering Aqaaid, Ahadeeth, Akhlaq, Fiqh, and Taareekh.",
     registrationLink: "https://dua.ilmiq.com/apply",
-    registrationText: "Register at GIC",
+    registrationText: "Register Now",
   },
 ];
 
@@ -215,7 +215,7 @@ export default function Education() {
                 Over the years, DUA has grown to operate multiple campuses including NAMCC, ICBC, and GIC, offering full-time and part-time Hifdh, After School, and Seminary programs. The institution is powered by dedicated teachers, experienced scholars, and a nurturing community.
               </p>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Starting in 2007, DUA has since expanded to include girls and boys full-time programs, Naseeha seminary programs, Deen Intensives, and GIC academic tracks. In 2025, DUA celebrates its 16th graduation with 28 alumni now serving in diverse roles — from Islamic scholarship to industry and higher education.
+                Starting in 2007, DUA has since expanded to include girls and boys full-time programs, Naseeha seminary programs, Deen Intensives, and GIC academic tracks.
               </p>
               <a href="https://darululoomaustin.org" target="_blank" rel="noopener noreferrer">
                 <Button className="rounded-full bg-primary px-8" data-testid="link-dua-website">
