@@ -5,19 +5,18 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import type { EventClickArg } from "@fullcalendar/core";
-import "@fullcalendar/daygrid/index.css";
-import "@fullcalendar/timegrid/index.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, Clock3, MapPin } from "lucide-react";
+import { AlertCircle, CalendarDays, Clock3, MapPin } from "lucide-react";
 
 const GOOGLE_CALENDAR_ID = "adilshaikh1608@gmail.com";
 const GOOGLE_CALENDAR_API_KEY = "AIzaSyCn00fYWfmxHLEBMJ8MuTh_dDLszCdLZ-Y";
 
 export default function SandboxCalendar() {
   const [selectedEvent, setSelectedEvent] = useState<EventClickArg["event"] | null>(null);
+  const [calendarError, setCalendarError] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -48,6 +47,12 @@ export default function SandboxCalendar() {
                   }}
                   googleCalendarApiKey={GOOGLE_CALENDAR_API_KEY}
                   events={{ googleCalendarId: GOOGLE_CALENDAR_ID }}
+                  eventSourceSuccess={() => setCalendarError(null)}
+                  eventSourceFailure={() =>
+                    setCalendarError(
+                      "This Google Calendar is not publicly available with the supplied calendar ID and API key."
+                    )
+                  }
                   eventClick={(info) => {
                     info.jsEvent.preventDefault();
                     setSelectedEvent(info.event);
@@ -62,6 +67,18 @@ export default function SandboxCalendar() {
                 />
               </CardContent>
             </Card>
+
+            {calendarError && (
+              <Card className="mt-6 border-destructive/30">
+                <CardContent className="flex items-start gap-3 p-6 text-destructive">
+                  <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-semibold">Unable to load calendar events</p>
+                    <p className="text-sm mt-1">{calendarError}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {selectedEvent && (
               <Card className="mt-6 border-primary/20 bg-primary/5">
